@@ -1,0 +1,14 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.coffeedev</groupId>
+  <artifactId>CoffeeDevProject</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Coffee Dev Project</name>
+  <description>Root Project</description>
+  
+  <modules>
+	  <module>CoffeeDevCommon</module>
+	  <module>CoffeeDevWebParent</module>
+  </modules>
+</project>
