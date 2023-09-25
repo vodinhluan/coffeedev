@@ -1,13 +1,74 @@
-<!DOCTYPE html>
-<html>
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="ISO-8859-1">
-	<title>Hello mưa lớn quá</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" 
+		content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
 
-<body>
-	<h1>abc</h1>
-</body>
+	<title>HOME - COFFEE DEV ADMIN</title>
+
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css"/>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+
 </head>
+<body>
+	<div class="container-fluid">
+		<div>
+			<nav class = "navbar navbar-expand-lg navbar-dark" style="background-color: rgb(200, 150, 94);">
+		    <a class="navbar-brand" th:href="@{/}">
+		        <img th:src="@{/images/logo_stars.png}" width="150px" height="80px"  />
+		    </a>
 
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavbar">
+      			<span class="navbar-toggler-icon"></span>
+   			</button>
+
+		    <div class="collapse navbar-collapse" id="topNavbar">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/users}">Users</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/categories}">Categories</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/products}">Products</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/customers}">Customers</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/shipping}">Shipping</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/orders}">Orders</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/report}">Sale Report</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/menus}">Menus</a>
+						</li>
+
+					</ul>
+				</div>
+			</nav>
+		</div>
+
+		<div>
+			<h1>Welcome to CoffeeDev</h1>
+		</div>
+
+		<div>
+			<p>CoffeeDev Control Panel - Copyright &copy; CoffeeDev</p>
+		</div>
+	</div>
+</body>
 </html>
