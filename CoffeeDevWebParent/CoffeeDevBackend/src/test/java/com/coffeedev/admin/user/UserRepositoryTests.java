@@ -1,18 +1,23 @@
 package com.coffeedev.admin.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.data.domain.PageRequest;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import com.coffeedev.common.entity.Role;
 import com.coffeedev.common.entity.User;
 
-@DataJpaTest
+@DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
 public class UserRepositoryTests {
@@ -97,6 +102,21 @@ public class UserRepositoryTests {
 	public void testUsableUser() {
 		Integer id = 2;
 		repo.updateEnabledStatus(id, true);
+	}
+	
+	@Test
+	public void testListFirstPage() {
+		int pageNumber = 1;
+		int pageSize = 4;
+
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		Page<User> page = repo.findAll(pageable);
+
+		List<User> listUsers = page.getContent();
+
+		listUsers.forEach(user -> System.out.println(user));
+
+		assertThat(listUsers.size()).isEqualTo(pageSize);
 	}
 
 }
