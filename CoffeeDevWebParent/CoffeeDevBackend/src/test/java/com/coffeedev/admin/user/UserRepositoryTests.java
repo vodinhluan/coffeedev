@@ -86,5 +86,17 @@ public class UserRepositoryTests {
 		repo.deleteById(userId);
 
 	}
+	
+	@Test
+	public void testDisableUser() {
+		Integer id = 1;
+		repo.updateEnabledStatus(id, false);
+	}
+
+	@Test
+	public void testUsableUser() {
+		Integer id = 2;
+		repo.updateEnabledStatus(id, true);
+	}
 
 }
