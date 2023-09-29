@@ -14,6 +14,7 @@
 	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 
+
 </head>
 
 <body>
@@ -70,9 +71,8 @@
 			<h2>Manage Users | [[${pageTitle}]]</h2>
 
 		</div>
-
 		<form th:action="@{/users/save}" method="post" style="max-width: 700px; margin: 0 auto"
-			enctype="multipart/form-data" th:object="${user}">
+			enctype="multipart/form-data" th:object="${user}" onsubmit="return checkEmailUnique(this);">
 			<input type="hidden" th:field="*{id}" />
 
 			<div class="border border-secondary rounded p-3">
@@ -143,6 +143,25 @@
 			</div>
 		</form>
 
+		<div class="modal fade text-center" id="modalDialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="modalTitle">Warning</h4>
+						<button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+					</div>
+
+					<div class="modal-body">
+						<span id="modalBody"></span>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		&nbsp;
 		<div style="text-align: center;">
 			<p>CoffeeDev Control Panel - Copyright &copy; CoffeeDev</p>
@@ -151,6 +170,8 @@
 </body>
 
 <script>
+
+
 	$("#fileImage").change(function () {
 		fileSize = this.files[0].size;
 		//alert("File Size:   " + fileSize);
@@ -174,6 +195,34 @@
 		};
 
 		reader.readAsDataURL(file);
+	}
+
+	function checkEmailUnique(form) {
+		url = "[[@{/users/check_email}]]";
+		userEmail = $("#email").val();
+		userId = $("#id").val();
+		csrfValue = $("input[name='_csrf']").val();
+		params = {id: userId, email: userEmail, _csrf: csrfValue}; // object
+
+		$.post(url, params, function (response) {
+			if (response == "OK") {
+				form.submit();
+			} else if (response == "Duplicated") {
+				showModalDialog("Cảnh báo", "Đã có tài khoản khác sử dụng email " + userEmail);
+			} else {
+				showModalDialog("Lỗi", "Phản hồi không xác định từ máy chủ");
+			}
+		}).fail(function () {
+			showModalDialog("Lỗi", "Không kết nối được Server");
+		});
+
+		return false;
+	}
+
+	function showModalDialog(title, message) {
+		$("#modalTitle").text(title);
+		$("#modalBody").text(message);
+		$("#modalDialog").modal("show");
 	}
 
 </script>

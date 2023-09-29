@@ -103,12 +103,12 @@
 						<td>[[${user.roles}]]</td>
 						<td>
 							<a th:if="${user.enabled == true}" class="fa-solid fa-circle-check fa-2x icon-green"
-								style="text-decoration: none; display: flex; justify-content: center;" th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
-								title="Disable This User"></a>
-								
+								style="text-decoration: none; display: flex; justify-content: center;"
+								th:href="@{'/users/' + ${user.id} + '/enabled/false'}" title="Disable This User"></a>
+
 							<a th:if="${user.enabled == false}" class="fa-solid fa-circle fa-2x fa-2x icon-dark"
-								style="text-decoration: none; display: flex; justify-content: center;" th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
-								title="Enable This User"></a>
+								style="text-decoration: none; display: flex; justify-content: center;"
+								th:href="@{'/users/' + ${user.id} + '/enabled/true'}" title="Enable This User"></a>
 						</td>
 
 						<!--edit and delete-->
@@ -124,7 +124,7 @@
 				</tbody>
 			</table>
 		</div>
-		
+
 		<div class="text-center m-1" th:if="${totalItems > 0}">
 			<span>Showing users # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>
 		</div>
@@ -134,67 +134,69 @@
 		</div>
 
 		<nav>
-		  <ul class="pagination justify-content-center">
+			<ul class="pagination justify-content-center">
 				<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-			    	<a class="page-link" th:href="@{/users/page/1}">First</a>
-			    </li>	
+					<a class="page-link" th:href="@{/users/page/1}">First</a>
+				</li>
 
-			    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-			    	<a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1}}">Previous</a>
-			    </li>
+				<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+					<a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1}}">Previous</a>
+				</li>
 
-			    <li th:class="${currentPage != i ? 'page-item': 'page-item active'}" 
-			    	th:each="i : ${#numbers.sequence(1, totalPages)}">
-			    	<a class="page-link" th:href="@{'/users/page/' + ${i}}">[[${i}]]</a>
-			    </li> 
+				<li th:class="${currentPage != i ? 'page-item': 'page-item active'}"
+					th:each="i : ${#numbers.sequence(1, totalPages)}">
+					<a class="page-link" th:href="@{'/users/page/' + ${i}}">[[${i}]]</a>
+				</li>
 
-			    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-			    	<a class="page-link" th:href="@{'/users/page/' + ${currentPage + 1}}">Next</a>
-			    </li>
+				<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+					<a class="page-link" th:href="@{'/users/page/' + ${currentPage + 1}}">Next</a>
+				</li>
 
-			    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-			    	<a class="page-link" th:href="@{'/users/page/' + ${totalPages}}">Last</a>
-			    </li>	
-		  </ul>
+				<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+					<a class="page-link" th:href="@{'/users/page/' + ${totalPages}}">Last</a>
+				</li>
+			</ul>
 		</nav>
 
-		
 
 		&nbsp;
 		<div style="text-align: center;">
 			<p>CoffeeDev Control Panel - Copyright &copy; CoffeeDev</p>
 		</div>
 	</div>
-	
+
 	<div class="modal fade text-center" id="Confirm-Modal">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title" id="Delete Confirmation" 
-					style="color: rgb(74, 77, 21);">Delete Confirmation</h4>
-					<button type="button" class="close" style="font-size: 30px; border: none; background-color: rgb(172, 212, 199);" data-bs-dismiss="modal">&times;</button>
+					<h4 class="modal-title" id="Delete Confirmation" style="color: rgb(74, 77, 21); margin-left: 140px;">Delete Confirmation</h4>
+					<button type="button" class="close"
+						style="font-size: 30px; border: none; background-color: rgb(172, 212, 199);"
+						data-bs-dismiss="modal">&times;</button>
 				</div>
+				
 				<div class="modal-body">
 					<span id="modal-Body" style="color: coral;"></span>
 				</div>
+				
 				<div class="modal-footer">
-					<a class="btn btn-success" href=""id="yesButton">Xóa</a>
-					<button type="button" class="btn btn-danger"data-bs-dismiss="modal" >Không</button>
+					<a class="btn btn-success" href="" id="yesButton">Xóa</a>
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Không</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<script type="text/javascript">
-		modalURL="/users"
-		$(document).ready(function(){
-			$(".link-delete").on("click", function(e){
+		modalURL = "/users"
+		$(document).ready(function () {
+			$(".link-delete").on("click", function (e) {
 				e.preventDefault();
 				link = $(this);
-				userId= link.attr("userId");
-				$("#yesButton").attr("href",link.attr("href"));
+				userId = link.attr("userId");
+				$("#yesButton").attr("href", link.attr("href"));
 				//alert($(this).attr("href"));
-				$("#modal-Body").text("Bạn có muốn xóa tài khoản với ID " +userId+" không?");
+				$("#modal-Body").text("Bạn có muốn xóa tài khoản với ID " + userId + " không?");
 				$("#Confirm-Modal").modal("show");
 			});
 		});

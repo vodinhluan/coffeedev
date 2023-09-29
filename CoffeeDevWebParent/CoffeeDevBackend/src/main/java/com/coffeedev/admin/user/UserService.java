@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.coffeedev.common.entity.Role;
 import com.coffeedev.common.entity.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.transaction.Transactional;
 
@@ -25,6 +26,9 @@ public class UserService {
 
 	@Autowired
 	private RoleRepository roleRepo;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	public List<User>listAll() {
 		return (List<User>) userRepo.findAll();
@@ -34,6 +38,7 @@ public class UserService {
 		Pageable pageable = PageRequest.of(pageNum - 1, USERS_PER_PAGE);
 		return userRepo.findAll(pageable);
 	}
+	
 
 	public List<Role>listRoles() {
 		return (List<Role>) roleRepo.findAll();
@@ -41,8 +46,27 @@ public class UserService {
 
 
 	public User save(User user) {
-		// TODO Auto-generated method stub
+		boolean isUpdatingUser = (user.getId() != null);
+		
+		if (isUpdatingUser) {
+			User existingUser = userRepo.findById(user.getId()).get();
+			
+			if (user.getPassword().isEmpty()) {
+				user.setPassword(existingUser.getPassword());
+			} else {
+				encodePassword(user);
+			}
+			
+		} else {
+			encodePassword(user);
+		}
+		
 		return userRepo.save(user);
+	}
+	
+	private void encodePassword(User user) { // encode = mã hóa
+		String encodePassword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(encodePassword);
 	}
 	
 	public boolean isEmailUnique(Integer id, String email) {

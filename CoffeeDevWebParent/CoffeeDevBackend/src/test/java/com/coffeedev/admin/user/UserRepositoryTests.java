@@ -118,5 +118,12 @@ public class UserRepositoryTests {
 
 		assertThat(listUsers.size()).isEqualTo(pageSize);
 	}
+	
+	@Test
+	public void testGetUserByEmail() {
+		String email = "minhnhat@gmail.com";
+		User user = repo.getUserByEmail(email);
+		assertThat(user).isNotNull();
+	}
 
 }
