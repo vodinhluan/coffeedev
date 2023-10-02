@@ -14,8 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.coffeedev.admin.FileUploadUtil;
+import com.coffeedev.admin.export.UserPDFExporter;
 import com.coffeedev.common.entity.Role;
 import com.coffeedev.common.entity.User;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -131,6 +134,13 @@ public class UserController {
 		model.addAttribute("listUsers", listUsers);
 
 		return "users/users";
+	}
+	
+	@GetMapping("/users/export/pdf")
+	public void exportToPDF(HttpServletResponse response) throws IOException {
+		List<User> listUsers=service.listAll();
+		UserPDFExporter exporter= new UserPDFExporter();
+		exporter.export(listUsers, response);
 	}
 	
 }
