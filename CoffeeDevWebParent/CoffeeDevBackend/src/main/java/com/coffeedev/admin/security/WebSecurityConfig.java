@@ -45,6 +45,7 @@ public class WebSecurityConfig {
 
 		.authenticated()
 		.requestMatchers("/users/**").hasAuthority("Admin")
+		.requestMatchers("/categories/**").hasAnyAuthority("Admin", "Staff")
 
 		.and()
 		.authorizeRequests().requestMatchers("/users")

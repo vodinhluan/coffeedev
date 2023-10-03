@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: page_head('Categories - COFFEE DEV ADMIN')" />
+
+<body>
+	<div class="container-fluid">
+		<div th:replace="navigation :: menu"></div>
+
+		<div>
+			<h1>Manage Categories</h1>
+			<a th:href="@{/categories/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
+			&nbsp;|&nbsp;
+			<a th:href="@{/categories/export/pdf}" class="fas fa-file-pdf fa-2x icon-dark mr-2"></a>
+		</div>
+		<div th:if="${message != null}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>
+
+		<div>
+			<form th:action="@{/categories/page/1}" class="form-inline m-3">
+				<input type="hidden" name="sortField" th:value="${sortField}" />
+				<input type="hidden" name="sortDir" th:value="${sortDir}" />
+				Filter:&nbsp;
+				<input type="search" name="keyword" th:value="${keyword}" class="form-control-inline"
+					style="width: 200px; height: 30px;" required />
+
+				<button type="submit" class="btn btn-primary mb-2"><i class="fa-solid fa-magnifying-glass"></i></button>
+
+				<button type="button" class="btn btn-secondary mb-2" onclick="clearFilter()"><i
+						class="fa-solid fa-eraser"></i></button>
+
+			</form>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table">
+				<thead class="table-dark">
+					<tr>
+						<th>ID</th>
+						<th>Category Image</th>
+						<th>Category Name</th>
+						<th>Enabled</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="cat : ${listCategories}">
+						<td>[[${cat.id}]]</td>
+						<td>
+							<img th:src="@{${cat.imagePath}}" width="100px" />
+						</td>
+						<td>[[${cat.name}]]</td>
+						<td>
+							<div th:replace="fragments :: category_status" />
+						</td>
+						<td>
+							<div th:replace="fragments :: category_actions" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+		<div th:replace="fragments :: footer"></div>
+	</div>
+
+</body>
+
+</html>
