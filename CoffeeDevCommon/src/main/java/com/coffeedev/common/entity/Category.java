@@ -146,8 +146,30 @@ public class Category {
 
 	@Transient
 	public String getImagePath() {
+		if (this.id==null) return "/images/category-images.png";
 		return "/category-images/"+this.id+"/"+this.image;
 	}
+	
+	
+	
+	
+	// Delete Category
+		public boolean isHasChildren() {
+			return hasChildren;
+		}
+		
+		public void setHasChildren(boolean hasChildren) {
+			this.hasChildren = hasChildren;
+		}
+
+		@Transient
+		private boolean hasChildren;
+		
+		
+		@Override
+		public String toString() {
+			return this.name;
+		}
 
 
 }

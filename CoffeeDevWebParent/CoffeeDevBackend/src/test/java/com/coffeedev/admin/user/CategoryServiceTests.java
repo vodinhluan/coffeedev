@@ -25,8 +25,7 @@ public class CategoryServiceTests {
 	@Test
 	public void testCheckUniqueInNewModeReturnDuplicateName() {
 		Integer id = null;
-		String name = "Samsung";
-		String alias = "abc";
+		String name = "Nhat";
 
 		Category category = new Category(id, name);
 		Mockito.when(repo.findByName(name)).thenReturn(category);
