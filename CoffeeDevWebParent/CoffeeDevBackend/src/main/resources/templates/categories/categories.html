@@ -29,7 +29,6 @@
 
 				<button type="button" class="btn btn-secondary mb-2" onclick="clearFilter()"><i
 						class="fa-solid fa-eraser"></i></button>
-
 			</form>
 		</div>
 
@@ -40,8 +39,7 @@
 						<th>ID</th>
 						<th>Category Image</th>
 						<th>
-							<a class="text-white" th:href="@{'/categories?sortDir='+${reverseSortDir}}">Category
-								Name</a>
+							<a class="text-white" th:href="@{'/categories/page/' + ${pageNum} + '?sortDir=' + ${reverseSortDir}}">Category Name</a>
 							<span th:class="${reverseSortDir == 'desc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
 						</th>
 						<th>Enabled</th>
@@ -66,7 +64,9 @@
 			</table>
 		</div>
 
+<!--PAGINATION-->
 
+		<div th:replace="fragments :: pagination('/categories', 'top-level categories')"></div>
 		<div th:replace="fragments :: footer"></div>
 		<div class="modal fade text-center" id="Confirm-Modal">
 			<div class="modal-dialog">
