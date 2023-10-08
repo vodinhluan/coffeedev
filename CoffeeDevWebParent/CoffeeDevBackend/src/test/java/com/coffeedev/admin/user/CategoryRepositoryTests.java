@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 import com.coffeedev.admin.category.CategoryRepository;
@@ -92,7 +93,7 @@ public class CategoryRepositoryTests {
 	
 	@Test
 	public void testListRootCategories() {
-		List<Category> rootCategories = repo.findRootCategories();
+		List<Category> rootCategories = repo.findRootCategories(Sort.by("name").ascending());
 		rootCategories.forEach(cat -> System.out.println(cat.getName()));
 	}
 
@@ -103,6 +104,13 @@ public class CategoryRepositoryTests {
 
 		assertThat(category).isNotNull();
 		assertThat(category.getName()).isEqualTo(name);
+	}
+	
+	@Test
+	public void testGetCategoryByName() {
+		String name = "SNACKS";
+		Category category = repo.getCategoryByName(name);
+		assertThat(category).isNotNull();
 	}
 
 }
