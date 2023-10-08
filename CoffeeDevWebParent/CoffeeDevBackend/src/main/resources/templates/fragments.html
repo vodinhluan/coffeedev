@@ -5,9 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
 	<title>[[${title}]]</title>
-	  <link rel="icon" href=
-"https://www.pngmart.com/files/1/Coffee-Logo-PNG-Image.png"
-          type="image/x-icon">
+	<link rel="icon" href="https://www.pngmart.com/files/1/Coffee-Logo-PNG-Image.png" type="image/x-icon">
 	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
 	<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
 	<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
@@ -33,8 +31,8 @@
 
 	<a th:fragment="page_link(pageNum, label)" class="page-link"
 		th:href="@{'/users/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">[[${label}]]</a>
-		
-	
+
+
 	<!--filter-->
 	<div th:fragment="search_form(moduleURL)">
 		<form th:action="@{${moduleURL}}" class="form-inline">
@@ -48,7 +46,7 @@
 					class="fa-solid fa-eraser"></i></button>
 		</form>
 	</div>
-	
+
 	<!--Status Category-->
 	<div th:fragment="category_status" th:remove="tag">
 		<a th:if="${cat.enabled == true}" class="fa-solid fa-circle-check fa-2x icon-green"
@@ -59,23 +57,21 @@
 		<a th:if="${cat.enabled == false}" class="fa-solid fa-circle fa-2x fa-2x icon-dark"
 			style="text-decoration: none" th:href="@{'/categories/' + ${cat.id} + '/enabled/true'}"
 			title="Enable this category">
-		</a>		
-	</div>				
+		</a>
+	</div>
 
 	<div th:fragment="category_actions" th:remove="tag">
-		<a class="fas fa-edit fa-2x icon-blue" 
-			th:href="@{'/categories/edit/' + ${cat.id}}"
-			style="text-decoration: none"
-			title="Edit this category">
+		<a class="fas fa-edit fa-2x icon-blue" th:href="@{'/categories/edit/' + ${cat.id}}"
+			style="text-decoration: none" title="Edit this category">
 		</a>
-		&nbsp; 
-		<a class="fas fa-trash fa-2x icon-purple link-delete" 
-			th:href="@{'/categories/delete/' + ${cat.id}}"
-			style="text-decoration: none"
-			th:catId="${cat.id}"
-			title="Delete this category">
-		</a>	
-	</div>	
+		&nbsp;
+		<th:block th:if="${cat.hasChildren == false}">
+			<a class="fas fa-trash fa-2x icon-purple link-delete" th:href="@{'/categories/delete/' + ${cat.id}}"
+				style="text-decoration: none" th:catId="${cat.id}" title="Delete this category">
+			</a>
+		</th:block>
+
+	</div>
 </body>
 
 </html>

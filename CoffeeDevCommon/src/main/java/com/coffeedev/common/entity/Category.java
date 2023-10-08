@@ -87,6 +87,8 @@ public class Category {
 		copyCategory.setName(category.getName());
 		copyCategory.setImage(category.getImage());
 		copyCategory.setEnabled(category.isEnabled());
+		copyCategory.setHasChildren(category.getChildren().size() > 0);
+
 		return copyCategory;
 	}
 

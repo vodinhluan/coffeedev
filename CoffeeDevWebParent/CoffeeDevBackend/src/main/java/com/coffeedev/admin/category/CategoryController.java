@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.coffeedev.admin.FileUploadUtil;
 import com.coffeedev.common.entity.Category;
 
@@ -96,16 +97,19 @@ public class CategoryController {
 	}	
 
 	@GetMapping("/categories/delete/{id}")
-	public String deleteCategory(@PathVariable(name = "id") Integer id,
+	public String deleteCategory(@PathVariable(name = "id") Integer id, 
 			Model model,
 			RedirectAttributes redirectAttributes) { // path variable
 		try {
 			service.delete(id);
-	 		redirectAttributes.addFlashAttribute("message", 
-	 				"Category với ID " + id + " đã xóa thành công");
-		} catch(CategoryNotFoundException ex) {
-	 		redirectAttributes.addFlashAttribute("message", ex.getMessage());
-		}
+			String categoryDir = "../category-images/" + id;
+			FileUploadUtil.removeDir(categoryDir);
+
+			redirectAttributes.addFlashAttribute("message", 
+					"Loại sản phẩm với ID " + id + " đã được xóa thành công");
+		} catch (CategoryNotFoundException ex) {
+			redirectAttributes.addFlashAttribute("message", ex.getMessage());
+		} 
  		return "redirect:/categories";
 	}
 
@@ -113,8 +117,8 @@ public class CategoryController {
 	public String updateCategoryEnabledStatus(@PathVariable("id") Integer id,
 			@PathVariable("status") boolean enabled, RedirectAttributes redirectAttributes) {
 		service.updateCategoryEnabledStatus(id, enabled);
-		String status = enabled ? "enabled" : "disabled";
-		String message = "The category ID " + id + " has been " + status;
+		String status = enabled ? "kích hoạt" : "vô hiệu hóa";
+		String message = "Loại sản phẩm với ID " + id + " đã " + status;
 		redirectAttributes.addFlashAttribute("message", message);
 
 		return "redirect:/categories";
