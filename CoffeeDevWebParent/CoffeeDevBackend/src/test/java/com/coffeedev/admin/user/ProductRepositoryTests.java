@@ -83,9 +83,9 @@ public class ProductRepositoryTests {
 	public void testSaveProductWithImage() {
 		Integer productId = 1;
 		Product product = repo.findById(productId).get();
-		product.setPhoto("main_image.png");
+		product.setPhoto("product-images.png");
 		Product savedProduct = repo.save(product);
-		assertThat(savedProduct.getPhoto()).isEqualTo("main_image.png");
+		assertThat(savedProduct.getPhoto()).isEqualTo("product-images.png");
 	}
 	
 	
