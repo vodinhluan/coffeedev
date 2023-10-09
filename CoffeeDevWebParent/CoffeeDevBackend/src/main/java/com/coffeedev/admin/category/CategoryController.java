@@ -38,7 +38,7 @@ public class CategoryController {
 		}
 
 		CategoryPageInfo pageInfo = new CategoryPageInfo();
-		List<Category> listCategories = service.listByPage(pageInfo, pageNum,sortDir,keyword);
+		List<Category> listCategories = service.listByPage(pageInfo, pageNum, sortDir, keyword);
 
 
 		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
@@ -47,21 +47,13 @@ public class CategoryController {
 		model.addAttribute("totalElements", pageInfo.getTotalElements());
 		model.addAttribute("currentPage", pageNum);
 		model.addAttribute("listCategories", listCategories);
-		model.addAttribute("reverseSortDir", reverseSortDir);
-
-
+		model.addAttribute("reverseSortDir", reverseSortDir);		
+		model.addAttribute("sortField", "name");
+		model.addAttribute("sortDir",sortDir);
+		model.addAttribute("keyword",keyword);
 		return "categories/categories";		
 	}
 
-//	@GetMapping("/categories/{id}/enabled/{status}")
-//	public String updateCategoryEnabledStatus(@PathVariable("id") Integer id,
-//			@PathVariable("status") boolean enabled, RedirectAttributes redirectAttributes) {
-//		service.updateCategoryEnabledStatus(id, enabled);
-//		String status = enabled ? "enabled" : "disabled";
-//		String message = "The category ID " + id + " has been " + status;
-//		redirectAttributes.addFlashAttribute("message", message);
-//		return "redirect:/categories";
-//	}
 
 	@GetMapping("/categories/new")
 	public String newCategory(Model model) {
@@ -84,7 +76,7 @@ public class CategoryController {
 		String uploadDir = "../category-images/" + savedCategory.getId();
 		FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 
-		ra.addFlashAttribute("message", "The category has been saved successfully.");
+		ra.addFlashAttribute("message", "Loại sản phẩm được lưu thành công!");
 		return "redirect:/categories";
 	}
 
