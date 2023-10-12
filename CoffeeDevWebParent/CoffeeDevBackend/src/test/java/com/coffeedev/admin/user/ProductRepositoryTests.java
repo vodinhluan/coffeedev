@@ -36,8 +36,7 @@ public class ProductRepositoryTests {
 		productTest.setPrice(25.000);
 		productTest.setCreateTime(new Date());
 		productTest.setEnabled(true);
-		productTest.setPhoto("4");
-		productTest.setSize("S");
+		productTest.setImage("4");
 		productTest.setCategory(cate);
 
 		Product savedProduct = repo.save(productTest);
@@ -83,9 +82,9 @@ public class ProductRepositoryTests {
 	public void testSaveProductWithImage() {
 		Integer productId = 1;
 		Product product = repo.findById(productId).get();
-		product.setPhoto("product-images.png");
+		product.setImage("product-images.png");
 		Product savedProduct = repo.save(product);
-		assertThat(savedProduct.getPhoto()).isEqualTo("product-images.png");
+		assertThat(savedProduct.getImage()).isEqualTo("product-images.png");
 	}
 	
 	

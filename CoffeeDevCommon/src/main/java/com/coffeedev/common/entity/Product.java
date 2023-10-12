@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -26,17 +27,15 @@ public class Product {
 	@Column(length = 512, nullable = false)
 	private String description;
 
-	@Column(length = 64, nullable = false)
-	private String size;
 
-	@Column(nullable = false, updatable = false)
+	@Column(updatable = false)
 	private Date createTime;
 
 	@Column(nullable = false)
 	private Double price;
 
 	@Column(length = 64)
-	public String photo;
+	public String image;
 
 	public boolean enabled;
 
@@ -86,12 +85,13 @@ public class Product {
 		this.price = price;
 	}
 
-	public String getPhoto() {
-		return photo;
+
+	public String getImage() {
+		return image;
 	}
 
-	public void setPhoto(String photo) {
-		this.photo = photo;
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public boolean isEnabled() {
@@ -109,14 +109,6 @@ public class Product {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-
-	public String getSize() {
-		return size;
-	}
-
-	public void setSize(String size) {
-		this.size = size;
-	} 
 	
 
 	public Date getCreateTime() {
@@ -127,14 +119,16 @@ public class Product {
 		this.createTime = createTime;
 	}
 	
+	 @PrePersist
+	    protected void onCreate() {
+	        createTime = new Date();
+	    }
 	
 
-	@Transient
-	public String getPhotosImagePath() {
-		if (id == null || photo == null)
-			return "/images/product-images.png";
-
-		return "/product-photos/" + this.id + "/" + this.photo;
-	}
+	 @Transient
+		public String getImagePath() {
+			if (this.id==null) return "/images/product-images.png";
+			return "/product-images/"+this.id+"/"+this.image;
+		}
 
 }

@@ -35,7 +35,7 @@ public class RoleRepositoryTests {
 	@Test
 	public void testCreateRestRole()
 	{
-		Role roleStaffPerson = new Role("Staff", "manage product price, "
+		Role roleStaffPerson = new Role("SalePerson", "manage product price, "
 				+ "customers, shipping, orders and sales report");
 
 	
@@ -45,6 +45,8 @@ public class RoleRepositoryTests {
 
 		repo.saveAll(List.of(roleStaffPerson, roleShipper));
 	}		
+	
+
 
 
 }

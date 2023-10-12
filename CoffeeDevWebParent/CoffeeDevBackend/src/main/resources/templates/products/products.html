@@ -20,64 +20,63 @@
 			<div th:if="${message != null}" class="alert alert-success text-center">
 				[[${message}]]
 			</div>
-			
+
 			<div th:replace="fragments::search_form('/products/page/1')"></div>
 
 			<div class="table-responsive">
-			<table class="table" style="background-color: rgb(200, 150, 94);">
-				<thead class="table-primary">
-					<th>Product ID</th>
-					<th>
-						Photo
-					</th>
-					<th>Name</th>
-					<th>Size</th>
-					<th>Price</th>
-					<th>Category</th>
-					<th>Create Time</th>
-					<th style="text-align: center;">Enabled</th>
-					<th></th>
-				</thead>
-				<tbody>
-					<tr th:each="product : ${listProducts}">
-						<td>[[${product.id}]]</td>
-						<td>
-							<span th:if="${product.photo == null}" class="fas fa-portrait fa-3x icon-silver"></span>
-							<!--<img th:if="${product.photo != null}" th:src="@{${product.photosImagePath}}"
-								style="width: 100px" />-->
-						</td>
-						<td>[[${product.name}]]</td>
-						<td>[[${product.size}]]</td>
-						<td th:text="${product.price + '00VND'}"></td>
-						<td>[[${product.category}]]</td>
-						<td>[[${product.createTime}]]</td>
-						<td>
-							<a th:if="${product.enabled == true}" class="fa-solid fa-circle-check fa-2x icon-green"
-								style="text-decoration: none; display: flex; justify-content: center;"
-								th:href="@{'/products/' + ${product.id} + '/enabled/false'}" title="Disable This product"></a>
+				<table class="table" style="background-color: rgb(200, 150, 94);">
+					<thead class="table-primary">
+						<th>Product ID</th>
+						<th>
+							Photo
+						</th>
+						<th>Name</th>
+						<th>Price</th>
+						<th>Category</th>
+						<th>Create Time</th>
+						<th style="text-align: center;">Enabled</th>
+						<th></th>
+					</thead>
+					<tbody>
+						<tr th:each="product : ${listProducts}">
+							<td>[[${product.id}]]</td>
+							<td>
+								<img th:src="@{${product.imagePath}}" width="100px" />
+							</td>
+							<td>[[${product.name}]]</td>
+							<td th:text="${product.price + '00VND'}"></td>
+							<td>[[${product.category}]]</td>
+							<td>[[${product.createTime}]]</td>
+							<td>
+								<a th:if="${product.enabled == true}" class="fa-solid fa-circle-check fa-2x icon-green"
+									style="text-decoration: none; display: flex; justify-content: center;"
+									th:href="@{'/products/' + ${product.id} + '/enabled/false'}"
+									title="Disable This product"></a>
 
-							<a th:if="${product.enabled == false}" class="fa-solid fa-circle fa-2x fa-2x icon-dark"
-								style="text-decoration: none; display: flex; justify-content: center;"
-								th:href="@{'/products/' + ${product.id} + '/enabled/true'}" title="Enable This product"></a>
-						</td>
+								<a th:if="${product.enabled == false}" class="fa-solid fa-circle fa-2x fa-2x icon-dark"
+									style="text-decoration: none; display: flex; justify-content: center;"
+									th:href="@{'/products/' + ${product.id} + '/enabled/true'}"
+									title="Enable This product"></a>
+							</td>
 
-						<!--edit and delete-->
-						<td>
-							<a class="fas fa-edit fa-2x icon-blue" style="text-decoration: none"
-								th:href="@{'/products/edit/' + ${product.id}}" title="Edit this product"></a>
-							&nbsp;
-							<a class="fas fa-trash fa-2x icon-purple link-delete"
-								th:href="@{'/products/delete/' + ${product.id}}" th:productId="${product.id}"
-								title="Delete this product"></a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+							<!--edit and delete-->
+							<td>
+								<a class="fas fa-edit fa-2x icon-blue" style="text-decoration: none"
+									th:href="@{'/products/edit/' + ${product.id}}" title="Edit this product"></a>
+								&nbsp;
+								<a class="fas fa-trash fa-2x icon-purple link-delete"
+									th:href="@{'/products/delete/' + ${product.id}}" th:productId="${product.id}"
+									title="Delete this product"></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div>
+				<p>CoffeeDev Control Panel - Copyright &copy; CoffeeDev</p>
+			</div>
 		</div>
-
-		<div>
-			<p>CoffeeDev Control Panel - Copyright &copy; CoffeeDev</p>
-		</div>
-	</div>
 </body>
+
 </html>
