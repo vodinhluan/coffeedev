@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.coffeedev.common.entity.Product;
 
+import jakarta.transaction.Transactional;
+
 @Repository
 public interface ProductRepository extends PagingAndSortingRepository<Product, Integer>, 
 	CrudRepository<Product, Integer> {
@@ -27,6 +29,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	// enabled
 	@Query("UPDATE Product p SET p.enabled = ?2 WHERE p.id = ?1")
 	@Modifying
+	@Transactional
 	public void updateEnabledStatus(Integer id, boolean enabled);
 	
 	

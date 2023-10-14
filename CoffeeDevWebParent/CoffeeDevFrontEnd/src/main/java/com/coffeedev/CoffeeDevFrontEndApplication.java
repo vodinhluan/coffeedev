@@ -1,4 +1,4 @@
-package com.coffeedev.site;
+package com.coffeedev;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
