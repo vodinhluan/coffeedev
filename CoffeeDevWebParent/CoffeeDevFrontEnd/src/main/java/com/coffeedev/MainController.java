@@ -55,6 +55,11 @@ public class MainController {
 		return "product-single";
 	}
 	
+	@GetMapping("/login.html")
+	public String viewLogin() {
+		return "login";
+	}
+	
 	
 	
 }

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Trang Đăng Nhập</title>
+	<!-- Sử dụng Bootstrap với màu chủ đề liên quan đến coffee -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="icon" href="https://www.pngmart.com/files/1/Coffee-Logo-PNG-Image.png" type="image/x-icon">
+
+	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet">
+
+	<link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+	<link rel="stylesheet" href="css/animate.css">
+
+	<link rel="stylesheet" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="css/magnific-popup.css">
+
+	<link rel="stylesheet" href="css/aos.css">
+
+	<link rel="stylesheet" href="css/ionicons.min.css">
+
+	<link rel="stylesheet" href="css/bootstrap-datepicker.css">
+	<link rel="stylesheet" href="css/jquery.timepicker.css">
+
+
+	<link rel="stylesheet" href="css/flaticon.css">
+	<link rel="stylesheet" href="css/icomoon.css">
+	<link rel="stylesheet" href="css/style.css">
+	<style>
+		body {
+			background-color: #ffeecc;
+			/* Màu nền liên quan đến coffee */
+		}
+
+		.container-login {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			text-align: center;
+			/* Căn giữa nội dung theo chiều ngang */
+			width: 500px;
+			/* Điều chỉnh chiều rộng của phần container-login */
+			background-color: #fff;
+			/* Màu nền của container */
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgb(105, 78, 32);
+			/* Đổ bóng */
+		}
+
+		#login-form {
+			max-width: 400px;
+			/* Điều chỉnh độ rộng của form */
+			margin: 0 auto;
+			/* Căn giữa form theo chiều ngang */
+		}
+	</style>
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+		<div class="container">
+			<a class="navbar-brand" href="index.html">Coffee<small>Dev</small></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+				aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="oi oi-menu"></span> Menu
+			</button>
+			<div class="collapse navbar-collapse" id="ftco-nav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
+					<li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="room.html" id="dropdown04" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">Shop</a>
+						<div class="dropdown-menu" aria-labelledby="dropdown04">
+							<a class="dropdown-item" href="shop.html">Shop</a>
+							<a class="dropdown-item" href="product-single.html">Single Product</a>
+							<a class="dropdown-item" href="room.html">Cart</a>
+							<a class="dropdown-item" href="checkout.html">Checkout</a>
+						</div>
+					</li>
+					<li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+					<li class="nav-item cart"><a href="cart.html" class="nav-link"><span
+								class="icon icon-shopping_cart"></span><span
+								class="bag d-flex justify-content-center align-items-center"><small>1</small></span></a>
+					</li>
+					<li class="nav-item"><a href="login.html" class="nav-link">Đăng Ký/Đăng Nhập</a></li>
+
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container-login">
+		<h1 class="mt-5" style="color: saddlebrown;">Đăng Nhập</h1>
+
+		<!-- Thông báo thành công và thất bại dưới dạng bảng thông báo Bootstrap -->
+		<div id="success-alert" class="alert alert-success" style="display: none;">
+			Đăng nhập thành công! Chào mừng bạn <span id="user-name"></span>.
+		</div>
+
+		<div id="error-alert" class="alert alert-danger" style="display: none;">
+			Đăng nhập thất bại! Vui lòng kiểm tra tên đăng nhập và mật khẩu.
+		</div>
+
+		<!-- Form đăng nhập -->
+		<form id="login-form">
+			<label for="username">Tên đăng nhập:</label>
+			<input type="text" id="username" name="username" required style="margin-left: 40px;" size="40px"><br><br>
+
+			<label for="password">Mật khẩu:</label>
+			<input type="password" id="password" name="password" required style="margin-left: 40px;" size="40px"><br><br>
+
+			<button type="submit">Đăng Nhập</button>
+		</form>
+
+		<!-- Liên kết đăng ký -->
+		<p class="mt-3">Nếu chưa có tài khoản, <a href="register.html">đăng ký tại đây</a>.</p>
+	</div>
+
+	<script>
+		// Lấy form và các phần tử thông báo
+		const loginForm = document.getElementById("login-form");
+		const successAlert = document.getElementById("success-alert");
+		const errorAlert = document.getElementById("error-alert");
+		const userNameSpan = document.getElementById("user-name");
+
+		// Xử lý sự kiện đăng nhập
+		loginForm.addEventListener("submit", function (event) {
+			event.preventDefault();
+
+			// Lấy giá trị từ form
+			const username = document.getElementById("username").value;
+			const password = document.getElementById("password").value;
+
+			// Kiểm tra tài khoản giả
+			if (username === "leomessi@gmail.com" && password === "leomessi123") {
+				// Hiển thị thông báo thành công
+				successAlert.style.display = "block";
+				errorAlert.style.display = "none";
+				userNameSpan.innerText = username;
+
+				// Tùy chỉnh hành vi chuyển hướng sau khi đăng nhập thành công
+				setTimeout(function () {
+					// Chuyển hướng về trang chủ và truyền tên đăng nhập
+					window.location.href = "index.html?user=" + username;
+				}, 2000); // Đợi 2 giây trước khi chuyển hướng
+			} else {
+				// Hiển thị thông báo thất bại
+				successAlert.style.display = "none";
+				errorAlert.style.display = "block";
+			}
+		});
+		
+		
+		// Xử lý phần đăng nhập thành công -> lưu tên trên thanh nav
+		
+	</script>
+</body>
+
+</html>
