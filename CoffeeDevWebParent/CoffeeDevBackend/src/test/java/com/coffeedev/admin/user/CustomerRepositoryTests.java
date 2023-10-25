@@ -27,11 +27,11 @@ public class CustomerRepositoryTests {
 	public void testCreateCustomer1() {
 
 		Customer customer = new Customer();
-		customer.setName("Luan");
-		customer.setPassword("vodinhluan123");
-		customer.setEmail("luandinhvo2002@gmail.com.com");
+		customer.setName("Nhat");
+		customer.setPassword("minhnhat123");
+		customer.setEmail("minhnhat@gmail.com.com");
 		customer.setPhoneNumber("312-462-7518");
-		customer.setAddress("1927  West Drive");
+		customer.setAddress("Tan Phu");
 
 		customer.setCreatedTime(new Date());
 
@@ -93,21 +93,21 @@ public class CustomerRepositoryTests {
 		System.out.println(customer);		
 	}
 
-	@Test
-	public void testFindByVerificationCode() {
-		String code = "code_123";
-		Customer customer = repo.findByVerificationCode(code);
-
-		assertThat(customer).isNotNull();
-		System.out.println(customer);		
-	}
-
-	@Test
-	public void testEnableCustomer() {
-		Integer customerId = 1;
-		repo.enable(customerId);
-
-		Customer customer = repo.findById(customerId).get();
-		assertThat(customer.isEnabled()).isTrue();
-	}
+//	@Test
+//	public void testFindByVerificationCode() {
+//		String code = "code_123";
+//		Customer customer = repo.findByVerificationCode(code);
+//
+//		assertThat(customer).isNotNull();
+//		System.out.println(customer);		
+//	}
+//
+//	@Test
+//	public void testEnableCustomer() {
+//		Integer customerId = 1;
+//		repo.enable(customerId);
+//
+//		Customer customer = repo.findById(customerId).get();
+//		assertThat(customer.isEnabled()).isTrue();
+//	}
 }

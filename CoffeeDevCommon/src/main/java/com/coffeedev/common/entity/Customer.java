@@ -4,15 +4,17 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "customers")
 public class Customer {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -39,6 +41,13 @@ public class Customer {
 
 	@Column(name = "created_time")
 	private Date createdTime;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "authentication_type", length = 10)
+	private AuthenticationType authenticationType;
+	
+	@Column(name = "reset_password_token", length = 30)
+	private String resetPasswordToken;
 
 	public Customer() {
 	}
@@ -114,10 +123,32 @@ public class Customer {
 	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
 	}
+	
+	public AuthenticationType getAuthenticationType() {
+		return authenticationType;
+	}
+
+	public void setAuthenticationType(AuthenticationType authenticationType) {
+		this.authenticationType = authenticationType;
+	}
+
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
+	}
+
 
 	@Override
 	public String toString() {
 		return "Customer [id=" + id + ", email=" + email + ", Name=" + name + "]";
 	}
+	
+	 @PrePersist
+	    protected void onCreate() {
+	        createdTime = new Date();
+	    }
 
 }
