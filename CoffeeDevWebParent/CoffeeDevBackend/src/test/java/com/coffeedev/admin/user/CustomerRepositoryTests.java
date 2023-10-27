@@ -7,13 +7,13 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import com.coffeedev.admin.customer.CustomerRepository;
 import com.coffeedev.common.entity.Customer;
+import com.coffeedev.admin.customer.CustomerRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -25,13 +25,12 @@ public class CustomerRepositoryTests {
 
 	@Test
 	public void testCreateCustomer1() {
-
 		Customer customer = new Customer();
-		customer.setName("Nhat");
-		customer.setPassword("minhnhat123");
-		customer.setEmail("minhnhat@gmail.com.com");
+		customer.setName("Nguyen");
+		customer.setPassword("khoinguyen1234");
+		customer.setEmail("kietbuoi456@gmail.com");
 		customer.setPhoneNumber("312-462-7518");
-		customer.setAddress("Tan Phu");
+		customer.setAddress("Quan 7");
 
 		customer.setCreatedTime(new Date());
 
@@ -42,7 +41,6 @@ public class CustomerRepositoryTests {
 	}
 
 	
-
 	@Test
 	public void testListCustomers() {
 		Iterable<Customer> customers = repo.findAll();
@@ -66,7 +64,7 @@ public class CustomerRepositoryTests {
 
 	@Test
 	public void testGetCustomer() {
-		Integer customerId = 2;
+		Integer customerId = 1;
 		Optional<Customer> findById = repo.findById(customerId);
 
 		assertThat(findById).isPresent();

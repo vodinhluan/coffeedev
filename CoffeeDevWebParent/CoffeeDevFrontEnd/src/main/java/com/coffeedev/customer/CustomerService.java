@@ -1,8 +1,11 @@
 package com.coffeedev.customer;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +14,8 @@ import com.coffeedev.common.entity.Customer;
 import com.coffeedev.common.exception.CustomerNotFoundException;
 
 import net.bytebuddy.utility.RandomString;
-
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -20,15 +24,14 @@ public class CustomerService {
 
 	@Autowired private CustomerRepository customerRepo;
 	@Autowired PasswordEncoder passwordEncoder;
-	
-	
+	@Autowired JavaMailSender mailSender;
 	
 	public boolean isEmailUnique(String email) {
 		Customer customer = customerRepo.findByEmail(email);
 		return customer == null;
 	}
 	
-	public void registerCustomer(Customer customer) {
+	public Customer registerCustomer(Customer customer) {
 		encodePassword(customer);
 		customer.setEnabled(false);
 		customer.setCreatedTime(new Date());
@@ -37,8 +40,35 @@ public class CustomerService {
 		String randomCode = RandomString.make(64);
 		customer.setVerificationCode(randomCode);
 		
-		customerRepo.save(customer);
+		return customerRepo.save(customer);
 		
+	}
+	
+	public void sendVerificationEmail(Customer customer, String siteURL) throws UnsupportedEncodingException, MessagingException {
+		String subject = "Please verify your registration";
+		String senderName ="CoffeeDev";
+		String mailContent = "<p>Dear "+ customer.getName() + ", </p>";
+		mailContent += "<p>Please click the linkn below to verify to your registration";
+		String verifyURL = siteURL + "/verify?code=" + customer.getVerificationCode();
+		
+		mailContent += "<h3><a href=\"" + verifyURL +"\">VERIFY </a></h3>";
+		mailContent += "<p>Thank you<br> CoffeeDev Team</p>";
+		
+		MimeMessage message = mailSender.createMimeMessage();
+	    MimeMessageHelper helper = new MimeMessageHelper(message);
+	     
+	    helper.setFrom("marcoluan2002@gmail.com", senderName);
+	    helper.setTo(customer.getEmail());
+	    helper.setSubject(subject);
+	     
+//	    mailSender = mailSender.replace("[[name]]", customer.getName());
+//	    String verifyURL = siteURL + "/verify?code=" + customer.getVerificationCode();
+//	     
+//	    mailSender = mailSender.replace("[[URL]]", verifyURL);
+//	     
+	    helper.setText(mailContent, true);
+	     
+	    mailSender.send(message);
 	}
 	
 	public Customer getCustomerByEmail(String email) {
