@@ -60,12 +60,7 @@ public class CustomerService {
 	    helper.setFrom("marcoluan2002@gmail.com", senderName);
 	    helper.setTo(customer.getEmail());
 	    helper.setSubject(subject);
-	     
-//	    mailSender = mailSender.replace("[[name]]", customer.getName());
-//	    String verifyURL = siteURL + "/verify?code=" + customer.getVerificationCode();
-//	     
-//	    mailSender = mailSender.replace("[[URL]]", verifyURL);
-//	     
+	        
 	    helper.setText(mailContent, true);
 	     
 	    mailSender.send(message);
@@ -97,15 +92,14 @@ public class CustomerService {
 		}
 	}
 	
-	public void addNewCustomerUponOAuthLogin(String name, String email, String countryCode,
-			AuthenticationType authenticationType) {
+	public void addNewCustomerUponOAuthLogin(String name, String email) {
 		Customer customer = new Customer();
 		customer.setEmail(email);
 		setName(name, customer);
 		
 		customer.setEnabled(true);
 		customer.setCreatedTime(new Date());
-		customer.setAuthenticationType(authenticationType);
+		customer.setAuthenticationType(AuthenticationType.GOOGLE);
 		customer.setPassword("");
 		customer.setAddress("");
 		customer.setPhoneNumber("");		

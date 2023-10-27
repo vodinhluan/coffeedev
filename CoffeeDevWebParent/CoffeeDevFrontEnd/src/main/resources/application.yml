@@ -1,0 +1,39 @@
+server:
+  port: 80
+  servlet:
+    context-path: /coffeedev
+spring:
+  datasource:
+    password: Vodinhluan2002
+    url: jdbc:mysql://localhost:3306/coffeedevdb
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show-sql: false
+  mail:
+    host: smtp.gmail.com
+    password: brnt mcgc ilvk djed
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    username: "marcoluan2002@gmail.com"
+    
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 521157945744-fpvpltufr0q1bsm2e00l2an7vabojhpc.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+            - email
+            - profile
