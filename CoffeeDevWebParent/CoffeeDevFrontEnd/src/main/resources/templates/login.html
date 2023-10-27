@@ -60,6 +60,8 @@
 			margin: 0 auto;
 			/* Căn giữa form theo chiều ngang */
 		}
+
+		
 	</style>
 </head>
 
@@ -109,15 +111,28 @@
 			Đăng nhập thất bại! Vui lòng kiểm tra tên đăng nhập và mật khẩu.
 		</div>
 
-		<!-- Form đăng nhập -->
-		<form id="login-form">
-			<label for="username">Tên đăng nhập:</label>
-			<input type="text" id="username" name="username" required style="margin-left: 40px;" size="40px"><br><br>
+		<form th:action="@{/login}" method="post" style="max-width: 350px; margin: 0 auto">
+			<div th:if="${param.error}">
+				<p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+			</div>
+			<div th:if="${param.logout}">
+				<p class="text-warning">You have been logged out.</p>
+			</div>
 
-			<label for="password">Mật khẩu:</label>
-			<input type="password" id="password" name="password" required style="margin-left: 40px;" size="40px"><br><br>
-
-			<button type="submit">Đăng Nhập</button>
+			<div class="border border-secondary rounded p-3" style="background-color: bisque;">
+				<p>
+					<input type="email" name="email" class="form-control" placeholder="E-mail" required />
+				</p>
+				<p>
+					<input type="password" name="password" class="form-control" placeholder="Password" required />
+				</p>
+				<p>
+					<input type="checkbox" name="remember-me" />&nbsp;Remember Me
+				</p>
+				<p>
+					<input type="submit" value="Login" class="btn btn-primary" />
+				</p>
+			</div>
 		</form>
 
 		<!-- Liên kết đăng ký -->
@@ -157,10 +172,10 @@
 				errorAlert.style.display = "block";
 			}
 		});
-		
-		
+
+
 		// Xử lý phần đăng nhập thành công -> lưu tên trên thanh nav
-		
+
 	</script>
 </body>
 

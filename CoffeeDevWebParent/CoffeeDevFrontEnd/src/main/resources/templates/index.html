@@ -32,6 +32,11 @@
 </head>
 
 <body>
+	<th:block sec:authorize="isAuthenticated()">
+		<form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+			<input type="submit" value="Logout" />
+		</form>
+	</th:block>
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
 			<a class="navbar-brand" href="index.html">Coffee<small>Dev</small></a>
@@ -58,7 +63,15 @@
 								class="icon icon-shopping_cart"></span><span
 								class="bag d-flex justify-content-center align-items-center"><small>1</small></span></a>
 					</li>
-					<li class="nav-item"><a href="login.html" class="nav-link">Đăng Ký/Đăng Nhập</a></li>
+					<li class="nav-item" th:unless="${#authorization.expression('isAuthenticated()')}">
+						<a th:href="@{/login}" class="nav-link">Đăng Ký/Đăng Nhập</a>
+					</li>
+					<th:block sec:authorize="isAuthenticated()">
+						<li class="nav-item">
+							<a class="nav-link" href="javascript: document.logoutForm.submit()">Logout</a>
+						</li>
+					</th:block>
+
 
 				</ul>
 			</div>
@@ -134,9 +147,9 @@
 				</div>
 				<div>
 					<p>Trên con phố nhỏ, quán cà phê "CoffeeDev" là một ngôi nhà
-						 cho những người đam mê cà phê và công nghệ. 
-						 Với không gian hiện đại và cà phê chất lượng cao, 
-						 quán là nơi lý tưởng để kết hợp niềm đam mê với công việc và thư giãn.</p>
+						cho những người đam mê cà phê và công nghệ.
+						Với không gian hiện đại và cà phê chất lượng cao,
+						quán là nơi lý tưởng để kết hợp niềm đam mê với công việc và thư giãn.</p>
 				</div>
 			</div>
 		</div>
@@ -152,7 +165,8 @@
 						</div>
 						<div class="media-body">
 							<h3 class="heading">Dễ dàng đặt hàng</h3>
-							<p>Chúng tôi cam kết cung cấp trải nghiệm đơn giản và thuận tiện, giúp bạn dễ dàng lựa chọn và đặt hàng mà không gặp bất kỳ khó khăn nào.</p>
+							<p>Chúng tôi cam kết cung cấp trải nghiệm đơn giản và thuận tiện, giúp bạn dễ dàng lựa chọn
+								và đặt hàng mà không gặp bất kỳ khó khăn nào.</p>
 						</div>
 					</div>
 				</div>
@@ -163,8 +177,10 @@
 						</div>
 						<div class="media-body">
 							<h3 class="heading">Giao hàng nhanh</h3>
-							<p>Với dịch vụ "Giao hàng nhanh," chúng tôi cam kết đưa sản phẩm đến tay bạn một cách nhanh chóng và hiệu quả. 
-								Đội ngũ giao hàng của chúng tôi hoạt động với tốc độ và chuyên nghiệp để đảm bảo bạn nhận được đơn hàng trong thời gian ngắn nhất có thể, 
+							<p>Với dịch vụ "Giao hàng nhanh," chúng tôi cam kết đưa sản phẩm đến tay bạn một cách nhanh
+								chóng và hiệu quả.
+								Đội ngũ giao hàng của chúng tôi hoạt động với tốc độ và chuyên nghiệp để đảm bảo bạn
+								nhận được đơn hàng trong thời gian ngắn nhất có thể,
 								để bạn có thể tận hưởng sản phẩm mà mình mong đợi mà không phải chờ đợi lâu.</p>
 						</div>
 					</div>
@@ -176,11 +192,12 @@
 						</div>
 						<div class="media-body">
 							<h3 class="heading">Chất lượng Coffee</h3>
-							<p>Chất lượng cà phê là sứ mệnh tận cùng của chúng tôi. 
-								Chúng tôi tự hào cung cấp những hạt cà phê độc đáo và tinh tế, 
-								được lựa chọn và chế biến với sự tâm huyết. 
-								Mỗi tách cà phê tại quán chúng tôi không chỉ là một cốc thức uống, 
-								mà còn là một hành trình của sự tinh tế, hương vị đặc biệt và đảm bảo sự hài lòng tối đa của khách hàng.</p>
+							<p>Chất lượng cà phê là sứ mệnh tận cùng của chúng tôi.
+								Chúng tôi tự hào cung cấp những hạt cà phê độc đáo và tinh tế,
+								được lựa chọn và chế biến với sự tâm huyết.
+								Mỗi tách cà phê tại quán chúng tôi không chỉ là một cốc thức uống,
+								mà còn là một hành trình của sự tinh tế, hương vị đặc biệt và đảm bảo sự hài lòng tối đa
+								của khách hàng.</p>
 						</div>
 					</div>
 				</div>
@@ -195,10 +212,11 @@
 					<div class="heading-section text-md-right ftco-animate">
 						<span class="subheading">Khám phá</span>
 						<h2 class="mb-4">Menu</h2>
-						<p class="mb-4">Hãy bắt đầu một cuộc hành trình vị giác và khám phá menu đa dạng của chúng tôi. 
-							Với sự kết hợp độc đáo của hương vị và sáng tạo, menu của chúng tôi sẽ đưa bạn vào một cuộc phiêu lưu đầy thú vị,
-							 từ những tách cà phê truyền thống đến những sáng tạo mới lạ. 
-							 Đánh thức vị giác và khám phá thế giới hương vị tại quán chúng tôi!</p>
+						<p class="mb-4">Hãy bắt đầu một cuộc hành trình vị giác và khám phá menu đa dạng của chúng tôi.
+							Với sự kết hợp độc đáo của hương vị và sáng tạo, menu của chúng tôi sẽ đưa bạn vào một cuộc
+							phiêu lưu đầy thú vị,
+							từ những tách cà phê truyền thống đến những sáng tạo mới lạ.
+							Đánh thức vị giác và khám phá thế giới hương vị tại quán chúng tôi!</p>
 						<p><a href="#" class="btn btn-primary btn-outline-primary px-4 py-3">View Full Menu</a></p>
 					</div>
 				</div>
@@ -285,12 +303,13 @@
 				<div class="col-md-7 heading-section ftco-animate text-center">
 					<span class="subheading">Discover</span>
 					<h2 class="mb-4">Best Coffee Sellers</h2>
-					<p>"Best Coffee Seller" không chỉ là người bán cà phê hàng đầu, 
-						mà còn là nguồn cảm hứng cho mọi đam mê về cà phê. 
-						Chúng tôi tự hào về việc mang đến cho khách hàng những trải nghiệm cà phê tuyệt vời nhất, 
-						với hương vị độc đáo và chất lượng không giới hạn. 
-						Đến với chúng tôi, bạn sẽ khám phá một thế giới cà phê đỉnh cao, 
-						nơi mà sự kết hợp giữa nghệ thuật pha chế và đam mê về hạt cà phê đem lại những trải nghiệm không thể quên.</p>
+					<p>"Best Coffee Seller" không chỉ là người bán cà phê hàng đầu,
+						mà còn là nguồn cảm hứng cho mọi đam mê về cà phê.
+						Chúng tôi tự hào về việc mang đến cho khách hàng những trải nghiệm cà phê tuyệt vời nhất,
+						với hương vị độc đáo và chất lượng không giới hạn.
+						Đến với chúng tôi, bạn sẽ khám phá một thế giới cà phê đỉnh cao,
+						nơi mà sự kết hợp giữa nghệ thuật pha chế và đam mê về hạt cà phê đem lại những trải nghiệm
+						không thể quên.</p>
 				</div>
 			</div>
 			<div class="row">
@@ -381,7 +400,7 @@
 		</div>
 	</section>
 
-	
+
 
 	<section class="ftco-section img" id="ftco-testimony" style="background-image: url(images/bg_1.jpg);"
 		data-stellar-background-ratio="0.5">
@@ -391,7 +410,8 @@
 				<div class="col-md-7 heading-section text-center ftco-animate">
 					<span class="subheading">Testimony</span>
 					<h2 class="mb-4">Customers Says</h2>
-					<p>Khám phá các hương vị cà phê mới lạ tại CoffeeDev là một trải nghiệm tuyệt vời. Hương thơm và chất lượng không giới hạn!</p>
+					<p>Khám phá các hương vị cà phê mới lạ tại CoffeeDev là một trải nghiệm tuyệt vời. Hương thơm và
+						chất lượng không giới hạn!</p>
 				</div>
 			</div>
 		</div>
@@ -400,7 +420,8 @@
 				<div class="col-lg align-self-sm-end ftco-animate">
 					<div class="testimony">
 						<blockquote>
-							<p>&ldquo;Tôi đã thật sự ấn tượng với không gian sáng sủa và tiện nghi tại CoffeeDev. Đây là nơi tuyệt vời để học hỏi và làm việc.&rdquo;</p>
+							<p>&ldquo;Tôi đã thật sự ấn tượng với không gian sáng sủa và tiện nghi tại CoffeeDev. Đây là
+								nơi tuyệt vời để học hỏi và làm việc.&rdquo;</p>
 						</blockquote>
 						<div class="author d-flex mt-4">
 							<div class="image mr-3 align-self-center">
@@ -414,7 +435,9 @@
 				<div class="col-lg align-self-sm-end">
 					<div class="testimony overlay">
 						<blockquote>
-							<p>&ldquo;Sau khi thưởng thức một cốc cà phê tại CoffeeDev, tôi đã cảm thấy trí tưởng tượng của mình được kích thích và tôi đã viết ra một ý tưởng mới cho dự án của mình.&rdquo;</p>
+							<p>&ldquo;Sau khi thưởng thức một cốc cà phê tại CoffeeDev, tôi đã cảm thấy trí tưởng tượng
+								của mình được kích thích và tôi đã viết ra một ý tưởng mới cho dự án của mình.&rdquo;
+							</p>
 						</blockquote>
 						<div class="author d-flex mt-4">
 							<div class="image mr-3 align-self-center">
@@ -428,7 +451,8 @@
 				<div class="col-lg align-self-sm-end ftco-animate">
 					<div class="testimony">
 						<blockquote>
-							<p>&ldquo;Tôi yêu không gian thư giãn tại quán này. Ngồi vào một góc, thưởng thức cà phê và đọc sách thật sự là một cách tuyệt vời để thư giãn.;</p>
+							<p>&ldquo;Tôi yêu không gian thư giãn tại quán này. Ngồi vào một góc, thưởng thức cà phê và
+								đọc sách thật sự là một cách tuyệt vời để thư giãn.;</p>
 						</blockquote>
 						<div class="author d-flex mt-4">
 							<div class="image mr-3 align-self-center">
@@ -442,7 +466,8 @@
 				<div class="col-lg align-self-sm-end">
 					<div class="testimony overlay">
 						<blockquote>
-							<p>&ldquo;CoffeeDev là nơi tuyệt vời để gặp gỡ bạn bè mới và cũ, người có cùng đam mê về công nghệ. Tôi đã kết bạn với rất nhiều người thú vị tại đây..&rdquo;</p>
+							<p>&ldquo;CoffeeDev là nơi tuyệt vời để gặp gỡ bạn bè mới và cũ, người có cùng đam mê về
+								công nghệ. Tôi đã kết bạn với rất nhiều người thú vị tại đây..&rdquo;</p>
 						</blockquote>
 						<div class="author d-flex mt-4">
 							<div class="image mr-3 align-self-center">
@@ -487,17 +512,20 @@
 						</ul>
 					</div>
 				</div>
-				
-				
+
+
 				<div class="col-lg-3 col-md-6 mb-5 mb-md-5">
 					<div class="ftco-footer-widget mb-4">
 						<h2 class="ftco-heading-2">Chi nhánh</h2>
 						<div class="block-23 mb-3">
 							<ul>
-								<li><span class="icon icon-map-marker"></span><span class="text">123 Đường An Dương Vương, phường 15, Quận 5</span></li>
-								<li><span class="icon icon-map-marker"></span><span class="text">46 Đường Lê Thúc Hoạch, phường 08, Quận Tân Phú</span></li>
+								<li><span class="icon icon-map-marker"></span><span class="text">123 Đường An Dương
+										Vương, phường 15, Quận 5</span></li>
+								<li><span class="icon icon-map-marker"></span><span class="text">46 Đường Lê Thúc Hoạch,
+										phường 08, Quận Tân Phú</span></li>
 
-								<li><a href="#"><span class="icon icon-phone"></span><span class="text">+84 123456789</span></a></li>
+								<li><a href="#"><span class="icon icon-phone"></span><span class="text">+84
+											123456789</span></a></li>
 								<li><a href="#"><span class="icon icon-envelope"></span><span
 											class="text">hotrokhachhang@coffeedev.com</span></a></li>
 							</ul>
