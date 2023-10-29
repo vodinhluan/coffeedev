@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.coffeedev.common.entity.Customer;
+import com.coffeedev.oauth.CustomerOAuth2User;
 import com.coffeedev.security.CustomerUserDetails;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -41,55 +42,77 @@ public class CustomerController {
 		return "register/register_success";
 	}
 
-//	private void sendVerificationEmail(HttpServletRequest request, Customer customer)
-//			throws UnsupportedEncodingException, MessagingException {
-//		EmailSettingBag emailSettings = settingService.getEmailSettings();
-//		JavaMailSenderImpl mailSender = Utility.prepareMailSender(emailSettings);
-//
-//		String toAddress = customer.getEmail();
-//		String subject = emailSettings.getCustomerVerifySubject();
-//		String content = emailSettings.getCustomerVerifyContent();
-//
-//		MimeMessage message = mailSender.createMimeMessage();
-//		MimeMessageHelper helper = new MimeMessageHelper(message);
-//
-//		helper.setFrom(emailSettings.getFromAddress(), emailSettings.getSenderName());
-//		helper.setTo(toAddress);
-//		helper.setSubject(subject);
-//
-//		content = content.replace("[[name]]", customer.getName());
-//
-//		String verifyURL = Utility.getSiteURL(request) + "/verify?code=" + customer.getVerificationCode();
-//
-//		content = content.replace("[[URL]]", verifyURL);
-//
-//		helper.setText(content, true);
-//
-//		mailSender.send(message);
-//
-//		System.out.println("to Address: " + toAddress);
-//		System.out.println("Verify URL: " + verifyURL);
-//	}
-//
+
 	@GetMapping("/verify")
 	public String verifyAccount(String code, Model model) {
 		boolean verified = customerService.verify(code);
 
 		return "register/" + (verified ? "verify_success" : "verify_fail");
 	}
-//
-//
-//
-//	private CustomerUserDetails getCustomerUserDetailsObject(Object principal) {
-//		CustomerUserDetails userDetails = null;
-//		if (principal instanceof UsernamePasswordAuthenticationToken) {
-//			UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) principal;
-//			userDetails = (CustomerUserDetails) token.getPrincipal();
-//		} else if (principal instanceof RememberMeAuthenticationToken) {
-//			RememberMeAuthenticationToken token = (RememberMeAuthenticationToken) principal;
-//			userDetails = (CustomerUserDetails) token.getPrincipal();
-//		}
-//
-//		return userDetails;
-//	}
+	
+	@GetMapping("/account_details")
+	public String viewAccountDetails(Model model, HttpServletRequest request) {
+		String email = getEmailOfAuthenticatedCustomer(request);
+		Customer customer = customerService.getCustomerByEmail(email);
+		model.addAttribute("customer", customer);
+		return "customer/account_form";
+	}
+
+	private String getEmailOfAuthenticatedCustomer(HttpServletRequest request) {
+		Object principal = request.getUserPrincipal();
+		String customerEmail = null;
+
+		if (principal instanceof UsernamePasswordAuthenticationToken 
+				|| principal instanceof RememberMeAuthenticationToken) {
+			customerEmail = request.getUserPrincipal().getName();
+		} else if (principal instanceof OAuth2AuthenticationToken) {
+			OAuth2AuthenticationToken oauth2Token = (OAuth2AuthenticationToken) principal;
+			CustomerOAuth2User oauth2User = (CustomerOAuth2User) oauth2Token.getPrincipal();
+			customerEmail = oauth2User.getEmail();
+		}
+
+		return customerEmail;
+	}
+
+	@PostMapping("/update_account_details")
+	public String updateAccountDetails(Model model, Customer customer, RedirectAttributes ra,
+			HttpServletRequest request) {
+		customerService.update(customer);
+		ra.addFlashAttribute("message", "Your account details have been updated.");
+
+		updateNameForAuthenticatedCustomer(customer, request);
+
+		return "redirect:/account_details";
+	}
+
+	private void updateNameForAuthenticatedCustomer(Customer customer, HttpServletRequest request) {
+		Object principal = request.getUserPrincipal();
+
+		if (principal instanceof UsernamePasswordAuthenticationToken 
+				|| principal instanceof RememberMeAuthenticationToken) {
+			CustomerUserDetails userDetails = getCustomerUserDetailsObject(principal);
+			Customer authenticatedCustomer = userDetails.getCustomer();
+			authenticatedCustomer.setName(customer.getName());
+
+		} else if (principal instanceof OAuth2AuthenticationToken) {
+			OAuth2AuthenticationToken oauth2Token = (OAuth2AuthenticationToken) principal;
+			CustomerOAuth2User oauth2User = (CustomerOAuth2User) oauth2Token.getPrincipal();
+			String fullName = customer.getName();
+			oauth2User.setFullName(fullName);
+		}		
+	}
+
+	private CustomerUserDetails getCustomerUserDetailsObject(Object principal) {
+		CustomerUserDetails userDetails = null;
+		if (principal instanceof UsernamePasswordAuthenticationToken) {
+			UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) principal;
+			userDetails = (CustomerUserDetails) token.getPrincipal();
+		} else if (principal instanceof RememberMeAuthenticationToken) {
+			RememberMeAuthenticationToken token = (RememberMeAuthenticationToken) principal;
+			userDetails = (CustomerUserDetails) token.getPrincipal();
+		}
+
+		return userDetails;
+	}
+
 }
