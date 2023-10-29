@@ -50,6 +50,11 @@ public class Customer {
 	private String resetPasswordToken;
 
 	public Customer() {
+		
+	}
+	
+	public Customer(Integer id) {
+		this.id = id;
 	}
 
 	public Integer getId() {

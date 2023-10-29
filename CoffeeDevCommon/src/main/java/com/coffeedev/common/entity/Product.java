@@ -47,6 +47,11 @@ public class Product {
 	public Product() {
 		
 	}
+	
+	public Product(Integer id) {
+		this.id = id;
+	}
+
 
 	public Product(Integer id, String name) {
 		this.id = id;
