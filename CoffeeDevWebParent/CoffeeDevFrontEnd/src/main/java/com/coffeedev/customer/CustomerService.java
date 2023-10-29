@@ -66,6 +66,30 @@ public class CustomerService {
 	    mailSender.send(message);
 	}
 	
+	public void getEmailSettings(Customer customer, String siteURL) throws UnsupportedEncodingException, MessagingException {
+		String subject = "Reset Your Password";
+		String senderName ="CoffeeDev";
+		String content = "<p>Hello,</p>"
+				+ "<p>You have requested to reset your password.</p>"
+				+ "Click the link below to change your password:</p>"
+				+ "<p><a href=\"" + siteURL + "\">Change my password</a></p>"
+				+ "<br>"
+				+ "<p>Ignore this email if you do remember your password, "
+				+ "or you have not made the request.</p>";
+		String verifyURL = siteURL + "/verify?code=" + customer.getVerificationCode();
+		MimeMessage message = mailSender.createMimeMessage();
+	    MimeMessageHelper helper = new MimeMessageHelper(message);
+	     
+	    helper.setFrom("marcoluan2002@gmail.com", senderName);
+	    helper.setTo(customer.getEmail());
+	    helper.setSubject(subject);
+	        
+	    helper.setText(content, true);
+	    mailSender.send(message);
+
+
+	}
+	
 	public Customer getCustomerByEmail(String email) {
 		return customerRepo.findByEmail(email);
 	}
