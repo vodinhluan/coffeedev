@@ -27,7 +27,7 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 
-	@GetMapping("/register.html")
+	@GetMapping("/register")
 	public String viewLogin(Model model) {
 		model.addAttribute("customer", new Customer());
 		return "register/register";

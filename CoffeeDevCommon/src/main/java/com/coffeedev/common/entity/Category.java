@@ -1,6 +1,7 @@
 package com.coffeedev.common.entity;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Transient;
@@ -38,6 +39,19 @@ public class Category {
 	@OneToMany(mappedBy="parent")
 	private Set<Category> children = new HashSet<Category>();
 	
+	@OneToMany(mappedBy = "category")
+	private List<Product> products;
+	
+	
+	
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+
 	public Category() {
 
 	}

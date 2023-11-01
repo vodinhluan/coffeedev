@@ -31,7 +31,7 @@
 <body>
 	<div class="container-fluid text-center">
 
-		<div>&nbsp;</div>
+		<div th:replace="navigation :: menu"></div>
 
 		<div th:if="${title != null}">
 			<h2>[[${title}]]</h2>

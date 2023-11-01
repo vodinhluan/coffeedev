@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="icon" href="https://www.pngmart.com/files/1/Coffee-Logo-PNG-Image.png" type="image/x-icon">
 
@@ -30,9 +29,23 @@
 	<link rel="stylesheet" href="css/style.css">
 
 <body>
-	<div class="container-fluid">
-		<div>&nbsp;</div>
+	<div th:fragment="quantity_control(quantityValue, productId)">
+	<nav>
+		<ul class="pagination">
+			<li class="page-item">
+				<a class="page-link linkMinus" th:pid="${productId}" href=""><b>-</b></a>
+			</li>
+			<li class="page-item">
+				<input type="text" th:value="${quantityValue}" th:id="'quantity' + ${productId}" 
+					onkeydown="return false;" 
+					class="form-control text-center" style="width: 55px" />
+			</li>			
+			<li class="page-item">
+				<a class="page-link linkPlus" th:pid="${productId}" href=""><b>+</b></a>
+			</li>			
+		</ul>
+	</nav>
+</div>
+</body>
 
-		<div class="text-center">
-			<h2>CUCU RELLA</h2>
-		</div>
+</html>
