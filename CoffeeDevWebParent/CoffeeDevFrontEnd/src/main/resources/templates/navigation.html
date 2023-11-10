@@ -17,9 +17,13 @@
 							<a class="nav-link dropdown-toggle" th:href="@{/room}" id="dropdown04"
 								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</a>
 							<div class="dropdown-menu" aria-labelledby="dropdown04">
-								<a class="dropdown-item" th:href="@{/coffee}">Coffee</a>
-								<a class="dropdown-item" th:href="@{/trasua}">MILK TEA</a>
-								<a class="dropdown-item" th:href="@{/snack}">Snacks</a>
+								<a class="dropdown-item" th:href="@{/c/coffee}">Coffee</a>
+								<a class="dropdown-item" th:href="@{/c/milktea}">MILK TEA</a>
+								<a class="dropdown-item" th:href="@{/c/snacks}">Snacks</a>
+										<!--<a class="dropdown-item" 
+											th:href="@{'/'+${cat.name}}"
+											th:text="${cat.name}">
+										</a>-->
 							</div>
 							
 						<li class="nav-item dropdown">

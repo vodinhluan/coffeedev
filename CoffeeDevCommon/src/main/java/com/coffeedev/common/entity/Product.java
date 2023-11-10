@@ -23,6 +23,9 @@ public class Product {
 
 	@Column(length = 128, nullable = false, unique = true)
 	private String name;
+	
+	@Column(unique = true, length = 255, nullable = false)
+	private String alias;
 
 	@Column(length = 512, nullable = false)
 	private String description;
@@ -72,6 +75,15 @@ public class Product {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
 	public String getDescription() {

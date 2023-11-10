@@ -1,6 +1,7 @@
 package com.coffeedev.product;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,7 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.coffeedev.category.CategoryNotFoundException;
 import com.coffeedev.category.CategoryService;
 import com.coffeedev.common.entity.Category;
+import com.coffeedev.common.entity.Customer;
 import com.coffeedev.common.entity.Product;
+import com.coffeedev.common.exception.ProductNotFoundException;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class ProductController {
@@ -20,7 +25,7 @@ public class ProductController {
 	@Autowired private ProductService productService;
 
 
-	@GetMapping("/{name}")
+	@GetMapping("/c/{name}")
 	public String viewCategoryByPage(@PathVariable("name") String name, Model model) throws CategoryNotFoundException {
 	    Category category = categoryService.getCategory(name);
 	    if (category == null) {
@@ -43,17 +48,15 @@ public class ProductController {
 	        return "index";
 	    }
 	
-	
-	
-	@GetMapping("/trasua")
-	public String viewTraSua(Model model) {
-	        return "product/milktea";
-	    }
-	
-	@GetMapping("/snack")
-	public String viewSnack(Model model) {
-	        return "product/snack";
-	    }
-	
+	@GetMapping("/product_detail/{alias}")
+	public String viewProductDetail(@PathVariable("alias") String alias, Model model) throws ProductNotFoundException {
+		 Optional<Product> product = productService.getProductByAlias(alias);
+		    if (product.isEmpty()) {
+		        return "error/404"; // Handle the case where the product is not found
+		    }
+
+		    model.addAttribute("product", product.get());
+		    return "product/product_detail";
+	}
 	
 }

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: page_head('Chi Tiết')">
+<body>
+	<th:block sec:authorize="isAuthenticated()">
+		<form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+			<input type="submit" value="Logout" />
+		</form>
+	</th:block>
+	<div th:replace="navigation :: menu"></div>
+
+	<!--DETAIL-->
+	<section class="ftco-section">
+		<div class="container">
+			<div class="col-sm">
+				<div>
+					<img th:src="@{${product.imagePath}}" class="img-fluid" index="0" />
+				</div>
+				<div>
+					<h2>[[${product.name}]]</h2>
+				</div>
+
+			</div>
+
+		</div>
+		</div>
+	</section>
+
+
+
+	<!-- loader -->
+	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+			<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+			<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+				stroke="#F96D00" />
+		</svg></div>
+
+
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/jquery.easing.1.3.js}"></script>
+	<script th:src="@{/js/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/js/jquery.stellar.min.js}"></script>
+	<script th:src="@{/js/owl.carousel.min.js}"></script>
+	<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+	<script th:src="@{/js/aos.js}"></script>
+	<script th:src="@{/js/jquery.animateNumber.min.js}"></script>
+	<script th:src="@{/js/bootstrap-datepicker.js}"></script>
+	<script th:src="@{/js/jquery.timepicker.min.js}"></script>
+	<script th:src="@{/js/scrollax.min.js}"></script>
+	<script th:src="@{/js/google-map.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+
+
+</body>
+
+</html>

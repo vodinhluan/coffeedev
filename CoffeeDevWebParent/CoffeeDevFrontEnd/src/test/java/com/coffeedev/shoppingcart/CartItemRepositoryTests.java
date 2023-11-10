@@ -25,7 +25,7 @@ public class CartItemRepositoryTests {
 
 	@Test
 	public void testSaveItem() {
-		Integer customerId = 1;
+		Integer customerId = 2;
 		Integer productId = 1;
 
 		Customer customer = entityManager.find(Customer.class, customerId);
@@ -43,8 +43,8 @@ public class CartItemRepositoryTests {
 
 	@Test
 	public void testSave2Items() {
-		Integer customerId = 10;
-		Integer productId = 10;
+		Integer customerId = 12;
+		Integer productId = 5;
 
 		Customer customer = entityManager.find(Customer.class, customerId);
 		Product product = entityManager.find(Product.class, productId);
@@ -56,7 +56,7 @@ public class CartItemRepositoryTests {
 
 		CartItem item2 = new CartItem();
 		item2.setCustomer(new Customer(customerId));
-		item2.setProduct(new Product(8));
+		item2.setProduct(new Product(12));
 		item2.setQuantity(3);
 
 		Iterable<CartItem> iterable = repo.saveAll(List.of(item1, item2));
@@ -66,7 +66,7 @@ public class CartItemRepositoryTests {
 
 	@Test
 	public void testFindByCustomer() {
-		Integer customerId = 10;
+		Integer customerId = 12;
 		List<CartItem> listItems = repo.findByCustomer(new Customer(customerId));
 
 		listItems.forEach(System.out::println);
@@ -76,7 +76,7 @@ public class CartItemRepositoryTests {
 
 	@Test
 	public void testFindByCustomerAndProduct() {
-		Integer customerId = 1;
+		Integer customerId = 2;
 		Integer productId = 1;
 
 		CartItem item = repo.findByCustomerAndProduct(new Customer(customerId), new Product(productId));
@@ -88,7 +88,7 @@ public class CartItemRepositoryTests {
 
 	@Test
 	public void testUpdateQuantity() {
-		Integer customerId = 1;
+		Integer customerId = 2;
 		Integer productId = 1;
 		Integer quantity = 4;
 
@@ -101,8 +101,8 @@ public class CartItemRepositoryTests {
 
 	@Test
 	public void testDeleteByCustomerAndProduct() {
-		Integer customerId = 10;
-		Integer productId = 10;
+		Integer customerId = 12;
+		Integer productId = 5;
 
 		repo.deleteByCustomerAndProduct(customerId, productId);
 

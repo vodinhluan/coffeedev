@@ -31,8 +31,6 @@ public class UserController {
 	
 	@GetMapping("/users")	
 	public String listFirstPage(Model model) {
-//		List<User> listUsers = service.listAll();
-// 		model.addAttribute("listUsers", listUsers);
 		return listByPage(1, model, "name", "desc", null);
 	}
 	

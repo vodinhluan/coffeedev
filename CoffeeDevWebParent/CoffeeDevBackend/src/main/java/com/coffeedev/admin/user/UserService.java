@@ -68,26 +68,21 @@ public class UserService {
 		return userRepo.save(user);
 	}
 	
-	private void encodePassword(User user) { // encode = mã hóa
+	private void encodePassword(User user) { 
 		String encodePassword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(encodePassword);
 	}
 	
 	public boolean isEmailUnique(Integer id, String email) {
-		User userByEmail =  userRepo.getUserByEmail(email); // lấy user trong db
+		User userByEmail =  userRepo.getUserByEmail(email); 
 		
-		if (userByEmail == null) return true; // nếu user không có trong db -> true 
-		// nếu có user trong db -> chạy phía dưới
-		boolean isCreatingNew = (id == null); 
-		// xét user đó :
-		// không có id trong db (id == null) -> true : tạo mới user
-		// có id -> false : edit
+		if (userByEmail == null) return true; 
+				boolean isCreatingNew = (id == null); 
 		
 		if (isCreatingNew) {
-			if (userByEmail != null) return false;  //có đang tạo mới ? xét trong db, nếu != rỗng -> false
-		//	else return true;
+			if (userByEmail != null) return false; 
 		} else {
-			if(!userByEmail.getId().equals(id)) { // id trong db != id url
+			if(!userByEmail.getId().equals(id)) { 
 				return false;
 			}
 		}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head th:replace="fragments :: page_head('Customers - COFFEE DEV ADMIN')">
+
+
+<body>
+	<div class="container-fluid">
+		<div>
+			<div th:replace="navigation :: menu"></div>
+
+			&nbsp;
+			<div th:if="${message != null}" class="alert alert-success text-center">
+				[[${message}]]
+			</div>
+
+			<form th:action="@{/customers/save}" method="post" style="max-width: 700px; margin: 0 auto"
+			enctype="multipart/form-data" th:object="${customer}" onsubmit="return checkEmailUnique(this);">
+			<input type="hidden" th:field="*{id}" />
+
+			<div class="border border-secondary rounded p-3">
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">E-mail:</label>
+					<div class="col-sm-8">
+						<input type="text" th:field="*{email}" class="form-control" readonly="readonly" />
+					</div>
+				</div>
+
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Name:</label>
+					<div class="col-sm-8">
+						<input type="text" th:field="*{name}" class="form-control" required="required" maxlength="45"
+							minlength="2" readonly="readonly" />
+					</div>
+				</div>
+
+
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Phone Number:</label>
+					<div class="col-sm-8">
+						<input type="text" th:field="*{phoneNumber}" class="form-control" required="required"
+							maxlength="15" minlength="8" readonly="readonly" />
+					</div>
+				</div>
+
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Address:</label>
+					<div class="col-sm-8">
+						<input type="text" th:field="*{address}" class="form-control" required="required" maxlength="64"
+							minlength="3" readonly="readonly" />
+					</div>
+				</div>
+				
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Create Time:</label>
+					<div class="col-sm-8">
+						<input type="text" th:field="*{createdTime}" class="form-control" required="required" maxlength="64"
+							minlength="3" readonly="readonly" />
+					</div>
+				</div>
+				
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Enable:</label>
+					<div class="col-sm-8">
+						<input type="text" th:field="*{enabled}" class="form-control" required="required" maxlength="64"
+							minlength="3" readonly="readonly" />
+					</div>
+				</div>
+
+
+
+				<div class="text-center m-2">
+					<input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel" />
+				</div>
+			</div>
+		</form>
+
+</body>
+
+</html>
