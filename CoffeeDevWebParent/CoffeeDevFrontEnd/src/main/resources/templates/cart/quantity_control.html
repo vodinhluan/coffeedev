@@ -1,35 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="icon" href="https://www.pngmart.com/files/1/Coffee-Logo-PNG-Image.png" type="image/x-icon">
-
-	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet">
-
-	<link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
-	<link rel="stylesheet" href="css/animate.css">
-
-	<link rel="stylesheet" href="css/owl.carousel.min.css">
-	<link rel="stylesheet" href="css/owl.theme.default.min.css">
-	<link rel="stylesheet" href="css/magnific-popup.css">
-
-	<link rel="stylesheet" href="css/aos.css">
-
-	<link rel="stylesheet" href="css/ionicons.min.css">
-
-	<link rel="stylesheet" href="css/bootstrap-datepicker.css">
-	<link rel="stylesheet" href="css/jquery.timepicker.css">
-
-
-	<link rel="stylesheet" href="css/flaticon.css">
-	<link rel="stylesheet" href="css/icomoon.css">
-	<link rel="stylesheet" href="css/style.css">
-
 <body>
-	<div th:fragment="quantity_control(quantityValue, productId)">
+<div th:fragment="quantity_control(quantityValue, productId)">
 	<nav>
 		<ul class="pagination">
 			<li class="page-item">
@@ -38,7 +10,7 @@
 			<li class="page-item">
 				<input type="text" th:value="${quantityValue}" th:id="'quantity' + ${productId}" 
 					onkeydown="return false;" 
-					class="form-control text-center" style="width: 55px" />
+					class="form-control text-center" style="width: 50px; height:200px"/>
 			</li>			
 			<li class="page-item">
 				<a class="page-link linkPlus" th:pid="${productId}" href=""><b>+</b></a>
@@ -47,5 +19,4 @@
 	</nav>
 </div>
 </body>
-
 </html>

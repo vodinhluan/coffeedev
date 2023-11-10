@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="fragments :: page_head('Chi Tiết')">
+
 <body>
 	<th:block sec:authorize="isAuthenticated()">
 		<form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
@@ -10,31 +11,49 @@
 	</th:block>
 	<div th:replace="navigation :: menu"></div>
 
-	<!--DETAIL-->
+	<!-- DETAIL -->
 	<section class="ftco-section">
 		<div class="container">
-			<div class="col-sm">
-				<div>
-					<img th:src="@{${product.imagePath}}" class="img-fluid" index="0" />
-				</div>
-				<div>
-					<h2>[[${product.name}]]</h2>
+			<div class="row">
+				<!-- Left Section - Product Image -->
+				<div class="col-md-6 style=" style="margin-top: 50px;">
+					<img th:src="@{${product.imagePath}}" width="450px" height="550px" />
 				</div>
 
+				<!-- Right Section - Product Details -->
+				<div class="col-md-6" style="margin-top: 100px;">
+					<h2 th:text="${product.name}"></h2>
+					<div th:utext="${product.description}"></div>
+					<h1 th:text="${product.price + '00Đ'}" style="color: coral;"></h1>
+
+					<!-- Quantity Buttons -->
+					<div class="input-group mt-3" style="width: 120px;">
+						<span class="input-group-prepend">
+							<button class="btn btn-outline-secondary" type="button" id="minusButton"
+								style="color: floralwhite; width: 40px; font-size: large;">-</button>
+						</span>
+						<input type="text" class="form-control text-center" th:value="1" id="quantityInput" style="color:floralwhite; font-size: large;"readonly />
+						<span class="input-group-append">
+							<button class="btn btn-outline-secondary" type="button" id="plusButton"
+								style="color: floralwhite; width: 40px; font-size: large;">+</button>
+						</span>
+					</div>
+
+					<!-- Add to Cart Button -->
+					<button class="btn btn-primary mt-3" style="margin-left: 10px;" onclick="addToCart()">Add to Cart</button>
+				</div>
 			</div>
-
-		</div>
 		</div>
 	</section>
 
-
-
 	<!-- loader -->
-	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+	<div id="ftco-loader" class="show fullscreen">
+		<svg class="circular" width="48px" height="48px">
 			<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
 			<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
 				stroke="#F96D00" />
-		</svg></div>
+		</svg>
+	</div>
 
 
 	<script th:src="@{/js/jquery.min.js}"></script>
@@ -53,6 +72,7 @@
 	<script th:src="@{/js/scrollax.min.js}"></script>
 	<script th:src="@{/js/google-map.js}"></script>
 	<script th:src="@{/js/main.js}"></script>
+	<script th:src="@{/js/quantity_control.js}"></script>
 
 
 </body>
