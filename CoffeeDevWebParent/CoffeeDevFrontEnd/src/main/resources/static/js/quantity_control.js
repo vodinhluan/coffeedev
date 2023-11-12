@@ -37,3 +37,8 @@ $(document).ready(function() {
 		
 	});	
 });
+
+function updateQuantityDisplay(productId, quantity) {
+    // Find the quantity input and update its value
+    $("#quantity" + productId).val(quantity);
+}
