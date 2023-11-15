@@ -1,8 +1,12 @@
 package com.coffeedev.shoppingcart;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coffeedev.common.entity.Customer;
@@ -56,4 +60,20 @@ public class ShoppingCartRestController {
 			return "You must login to change quantity of product.";
 		}	
 	}
+	
+	@DeleteMapping("/cart/remove/{productId}")
+ 	public String removeProduct(@PathVariable("productId") Integer productId,
+ 			HttpServletRequest request) {
+		System.out.println("ABCXYZ");
+ 		try {
+ 			Customer customer = getAuthenticatedCustomer(request);
+ 			cartService.removeProduct(productId, customer);
+ 			System.out.println("Xoa san pham thanh cong");
+ 			return "The product has been removed from your shopping cart.";
+
+ 		} catch (CustomerNotFoundException e) {
+ 			System.out.println("Khong xoa san pham thanh cong");
+ 			return "You must login to remove product.";
+ 		}
+ 	}
 }

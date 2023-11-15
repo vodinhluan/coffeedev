@@ -25,48 +25,60 @@
 							<div th:replace="cart/quantity_control :: quantity_control(${cartItem.quantity}, ${cartItem.product.id})"></div>
 						</div>
 						
-						 <div class="col-md-2" th:utext="Delete" style="margin-top: 90px; margin-left: 5px;">
-					</div>
+						
+						
+						<a class="linkRemove" style="margin-top: 90px; margin-left: 5px; 
+						background-color: rgb(253, 45, 42); color: whitesmoke; width:50px; height: 30px"
+							th:href="@{'/cart/remove/' + ${cartItem.product.id}}">Delete</a>
 				</div>
 			</div>
 		</div>
 
 		<!-- Right Section - Add Product and Total -->
-		<div class="col-md-4">
+		<div class="col-md-4" th:if="${not #lists.isEmpty(cartItems)}">
 			<div>
 				<h3 class="mt-4">Tổng Tiền: [[${estimatedTotal}]]00Đ</h3>
 			</div>
+			<div class="button"
+				style="background-color: antiquewhite; width: 100px; height: 30px; text-align: center; color: red; margin-left: 100px">
+				Thanh Toan
+			</div>
 		</div>
+<div class="col-md-4" th:if="${#lists.isEmpty(cartItems)}">
+</div>
+
 	</div>
 	</div>
 	<script type="text/javascript">
 	contextPath = "[[@{/}]]";
 	var csrfHeaderName = "[[${_csrf.headerName}]]";
 	var csrfValue = "[[${_csrf.token}]]";
+	
+
+
+		
 	</script>
-	<script type="text/javascript" th:src="@{/js/jquery.number.min.js}"></script>
-	<script type="text/javascript" th:src="@{/js/shopping_cart.js}"></script>
+	
+	<script src="/coffeedev/js/jquery.min.js"></script>
+	<script src="/coffeedev/js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="/coffeedev/js/popper.min.js"></script>
+	<script src="/coffeedev/js/bootstrap.min.js"></script>
+	<script src="/coffeedev/js/jquery.easing.1.3.js"></script>
+	<script src="/coffeedev/js/jquery.waypoints.min.js"></script>
+	<script src="/coffeedev/js/jquery.stellar.min.js"></script>
+	<script src="/coffeedev/js/owl.carousel.min.js"></script>
+	<script src="/coffeedev/js/jquery.magnific-popup.min.js"></script>
+	<script src="/coffeedev/js/aos.js"></script>
+	<script src="/coffeedev/js/jquery.animateNumber.min.js"></script>
+	<script src="/coffeedev/js/bootstrap-datepicker.js"></script>
+	<script src="/coffeedev/js/jquery.timepicker.min.js"></script>
+	<script src="/coffeedev/js/scrollax.min.js"></script>
+	<script src="/coffeedev/js/main.js"></script>
+	<script src="/coffeedev/js/quantity_control.js"></script>
+	<script src="/coffeedev/js/add_to_cart.js"></script>
+	<script src="/coffeedev/js/common_modal.js"></script>
+	<script src="/coffeedev/js/shopping_cart.js"></script>
 
-
-
-	<script th:src="@{/js/jquery.min.js}"></script>
-	<script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
-	<script th:src="@{/js/popper.min.js}"></script>
-	<script th:src="@{/js/bootstrap.min.js}"></script>
-	<script th:src="@{/js/jquery.easing.1.3.js}"></script>
-	<script th:src="@{/js/jquery.waypoints.min.js}"></script>
-	<script th:src="@{/js/jquery.stellar.min.js}"></script>
-	<script th:src="@{/js/owl.carousel.min.js}"></script>
-	<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
-	<script th:src="@{/js/aos.js}"></script>
-	<script th:src="@{/js/jquery.animateNumber.min.js}"></script>
-	<script th:src="@{/js/bootstrap-datepicker.js}"></script>
-	<script th:src="@{/js/jquery.timepicker.min.js}"></script>
-	<script th:src="@{/js/scrollax.min.js}"></script>
-	<script th:src="@{/js/main.js}"></script>
-	<script th:src="@{/js/quantity_control.js}"></script>
-	<script th:src="@{/js/add_to_cart.js}"></script>
-	<script th:src="@{/js/common_modal.js}"></script>
 
 </body>
 
