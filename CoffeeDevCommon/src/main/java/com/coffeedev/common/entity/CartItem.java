@@ -25,6 +25,9 @@ public class CartItem {
 	private Product product;
 
 	private int quantity;
+	
+	@Transient
+	private float shippingCost;
 
 	public CartItem() {
 	}
@@ -71,6 +74,15 @@ public class CartItem {
 	public float getSubtotal() {
 		System.out.println("Ket qua thanh toan la: " + (float) (product.getPrice() * quantity) );
 		return (float) (product.getPrice() * quantity);
+	}
+	
+	@Transient
+	public float getShippingCost() {
+		return shippingCost;
+	}
+
+	public void setShippingCost(float shippingCost) {
+		this.shippingCost = shippingCost;
 	}
 
 

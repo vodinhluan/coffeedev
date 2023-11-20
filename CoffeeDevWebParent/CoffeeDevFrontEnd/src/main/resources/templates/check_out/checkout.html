@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: page_head('Thanh Toán')">
+
+<body>
+
+	<div class="container">
+		<div th:replace="navigation :: menu"></div>
+
+		<h1 style="text-align: center; margin-top: 100px;">XÁC NHẬN ĐƠN HÀNG</h1>
+		
+		<div class="container">	
+        <form style="margin-bottom: 100px;" th:object="${customer}">
+            <div class="mb-3">
+                <label for="hoTen" class="form-label">Họ tên</label>
+                <input type="text" th:field="*{name}" class="form-control" id="hoTen" name="hoTen" required>
+            </div>
+            <div class="mb-3">
+                <label for="soDienThoai" class="form-label">Số điện thoại</label>
+                <input type="tel" th:field="*{phoneNumber}" class="form-control" id="soDienThoai" name="soDienThoai" required>
+            </div>
+            <div class="mb-3">
+                <label for="diaChi" class="form-label">Địa chỉ</label>
+                <input type="text" th:field="*{address}" class="form-control" id="diaChi" name="diaChi" required>
+            </div>
+            <div class="mb-3">
+                <select class="form-select" id="quan" name="quan" required>
+                    <option value="">Chọn quận</option>
+                    <option th:each="district : ${districts}" th:value="${district.name}" th:text="${district.name}"></option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="thanhPho" class="form-label">Thành phố</label>
+                <input type="text" class="form-control" id="thanhPho" name="thanhPho" value="Thành phố Hồ Chí Minh" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="ghiChu" class="form-label">Ghi chú</label>
+                <textarea class="form-control" id="ghiChu" name="ghiChu"></textarea>
+            </div>
+            
+            <div class="mb-3">
+				<select class="form-select" id="paymentMethod" name="paymentMethod" required>
+					<option value="">Chọn hình thức thanh toán</option>
+					<option value="bankTransfer">Thanh toán bằng chuyển khoản</option>
+					<option value="payAtDelivery">Thanh toán tại điểm giao hàng (COD)</option>
+				</select>
+			</div>
+            
+            <button type="submit" class="btn btn-primary">Thanh toán</button>
+        </form>
+    </div>
+
+		
+
+	</div>
+	
+	
+	
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/jquery.easing.1.3.js}"></script>
+	<script th:src="@{/js/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/js/jquery.stellar.min.js}"></script>
+	<script th:src="@{/js/owl.carousel.min.js}"></script>
+	<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+	<script th:src="@{/js/aos.js}"></script>
+	<script th:src="@{/js/jquery.animateNumber.min.js}"></script>
+	<script th:src="@{/js/bootstrap-datepicker.js}"></script>
+	<script th:src="@{/js/jquery.timepicker.min.js}"></script>
+	<script th:src="@{/js/scrollax.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<script th:src="@{/js/quantity_control.js}"></script>
+	<script th:src="@{/js/add_to_cart.js}"></script>
+	<script th:src="@{/js/common_modal.js}"></script>
+
+
+</body>
+
+</html>
