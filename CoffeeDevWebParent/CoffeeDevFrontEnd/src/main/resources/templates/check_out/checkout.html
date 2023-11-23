@@ -5,58 +5,100 @@
 
 <body>
 
-	<div class="container">
+	<div class="container-fluid" style="margin-top: 150px;">
 		<div th:replace="navigation :: menu"></div>
-
-		<h1 style="text-align: center; margin-top: 100px;">XÁC NHẬN ĐƠN HÀNG</h1>
-		
-		<div class="container">	
-        <form style="margin-bottom: 100px;" th:object="${customer}">
-            <div class="mb-3">
-                <label for="hoTen" class="form-label">Họ tên</label>
-                <input type="text" th:field="*{name}" class="form-control" id="hoTen" name="hoTen" required>
-            </div>
-            <div class="mb-3">
-                <label for="soDienThoai" class="form-label">Số điện thoại</label>
-                <input type="tel" th:field="*{phoneNumber}" class="form-control" id="soDienThoai" name="soDienThoai" required>
-            </div>
-            <div class="mb-3">
-                <label for="diaChi" class="form-label">Địa chỉ</label>
-                <input type="text" th:field="*{address}" class="form-control" id="diaChi" name="diaChi" required>
-            </div>
-            <div class="mb-3">
-                <select class="form-select" id="quan" name="quan" required>
-                    <option value="">Chọn quận</option>
-                    <option th:each="district : ${districts}" th:value="${district.name}" th:text="${district.name}"></option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="thanhPho" class="form-label">Thành phố</label>
-                <input type="text" class="form-control" id="thanhPho" name="thanhPho" value="Thành phố Hồ Chí Minh" readonly>
-            </div>
-            <div class="mb-3">
-                <label for="ghiChu" class="form-label">Ghi chú</label>
-                <textarea class="form-control" id="ghiChu" name="ghiChu"></textarea>
-            </div>
-            
-            <div class="mb-3">
-				<select class="form-select" id="paymentMethod" name="paymentMethod" required>
-					<option value="">Chọn hình thức thanh toán</option>
-					<option value="bankTransfer">Thanh toán bằng chuyển khoản</option>
-					<option value="payAtDelivery">Thanh toán tại điểm giao hàng (COD)</option>
-				</select>
+	
+		<div class="container mt-5">
+			<h1 style="text-align: center; color: orange">GIỎ HÀNG CỦA BẠN</h1>
+	
+			<div th:object="${customer}" class="border border-secondary rounded p-3">
+				<table class="table table-striped text-center">
+					<thead>
+						<tr>
+							<th class="product-name">Sản phẩm</th>
+							<th class="quantity">Số lượng</th>
+							<th class="unit-price">Giá</th>
+							<th class="total-price">Tổng cộng</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="cartItem : ${cartItems}">
+							<td class="product-name"><b>[[${cartItem.product.name}]]</b></td>
+							<td class="quantity">[[${cartItem.quantity}]]</td>
+							<td class="unit-price">[[${cartItem.product.price}]]00</td>
+							<td class="total-price">[[${cartItem.quantity} * ${cartItem.product.price}]]000</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="3" class="text-right" style="font-size: 28px; font-weight: bold;">Tổng tiền:</td>
+							<td id="total" style="font-size: 28px; font-weight: bold;">[[${estimatedTotal}]]00</td>
+						</tr>
+					</tfoot>
+				</table>
 			</div>
-            
-            <button type="submit" class="btn btn-primary">Thanh toán</button>
-        </form>
-    </div>
+		</div>
+	</div>
 
-		
+
+
+			<h1 style="text-align: center; margin-top: 100px; color:orange">XÁC NHẬN ĐƠN HÀNG</h1>
+
+			<div class="container">
+				<form style="margin-bottom: 100px;" th:object="${customer}">
+					<div class="mb-3">
+						<label for="hoTen" class="form-label">Họ tên</label>
+						<input type="text" th:field="*{name}" class="form-control" id="hoTen" name="hoTen" required>
+					</div>
+					<div class="mb-3">
+						<label for="soDienThoai" class="form-label">Số điện thoại</label>
+						<input type="tel" th:field="*{phoneNumber}" class="form-control" id="soDienThoai"
+							name="soDienThoai" required>
+					</div>
+					<div class="mb-3">
+						<label for="diaChi" class="form-label">Địa chỉ</label>
+						<input type="text" th:field="*{address}" class="form-control" id="diaChi" name="diaChi"
+							required>
+					</div>
+					<div class="mb-3">
+						<select class="form-select" id="quan" name="quan" required>
+							<option value="">Chọn quận</option>
+							<option th:each="district : ${districts}" th:value="${district.name}"
+								th:text="${district.name}"></option>
+						</select>
+					</div>
+					<div class="mb-3">
+						<label for="thanhPho" class="form-label">Thành phố</label>
+						<input type="text" class="form-control" id="thanhPho" name="thanhPho"
+							value="Thành phố Hồ Chí Minh" readonly>
+					</div>
+					<div class="mb-3">
+						<label for="ghiChu" class="form-label">Ghi chú</label>
+						<textarea class="form-control" id="ghiChu" name="ghiChu"></textarea>
+					</div>
+
+					<div class="mb-3">
+						<select class="form-select" id="paymentMethod" name="paymentMethod" required>
+							<option value="">Chọn hình thức thanh toán</option>
+							<option value="bankTransfer">Thanh toán bằng chuyển khoản</option>
+							<option value="payAtDelivery">Thanh toán tại điểm giao hàng (COD)</option>
+						</select>
+					</div>
+
+					<a th:href="@{/checkout/checkout_success}" type="submit" class="btn btn-primary">Thanh toán</A>
+					
+				</form>
+			</div>
+
+
+		</div>
+
+
 
 	</div>
-	
-	
-	
+
+
+
 	<script th:src="@{/js/jquery.min.js}"></script>
 	<script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
 	<script th:src="@{/js/popper.min.js}"></script>
