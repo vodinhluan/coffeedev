@@ -19,12 +19,14 @@ function decreaseQuantity(link) {
 	productId = link.attr("pid");
 	quantityInput = $("#quantity" + productId);
 	newQuantity = parseInt(quantityInput.val()) - 1;
+	console.log(newQuantity);
+
 
 	if (newQuantity > 0) {
 		quantityInput.val(newQuantity);
 		updateQuantity(productId, newQuantity);
 	} else {
-		showWarningModal('Minimum quantity is 1');
+		alert('Xóa sản phẩm nhé');
 	}
 }
 
@@ -32,10 +34,11 @@ function increaseQuantity(link) {
 	productId = link.attr("pid");
 	quantityInput = $("#quantity" + productId);
 	newQuantity = parseInt(quantityInput.val()) + 1;
+	console.log(newQuantity);
 
 	quantityInput.val(newQuantity);
 	updateQuantity(productId, newQuantity);
-	
+
 }
 
 function updateQuantity(productId, quantity) {
@@ -56,7 +59,7 @@ function updateQuantity(productId, quantity) {
 }
 
 function updateSubtotal(updatedSubtotal, productId) {
-	formattedSubtotal = $.number(updatedSubtotal, 2);
+	formattedSubtotal = updatedSubtotal.toLocaleString('en-US', {minimumFractionDigits: 1});
 	$("#subtotal" + productId).text(formattedSubtotal);
 }
 
@@ -102,7 +105,7 @@ function removeProduct(link) {
         window.location.href = "/coffeedev/cart";
 
     }).fail(function() {
-        showErrorModal("Error while removing product.");
+        alert("Error while removing product.");
     });
 }
 

@@ -101,8 +101,8 @@ public class CartItemRepositoryTests {
 
 	@Test
 	public void testDeleteByCustomerAndProduct() {
-		Integer customerId = 12;
-		Integer productId = 5;
+		Integer customerId = 29;
+		Integer productId = 1;
 
 		repo.deleteByCustomerAndProduct(customerId, productId);
 

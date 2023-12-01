@@ -22,43 +22,43 @@
 						<div class="col-md-3">
 							<h4 th:text="${cartItem.product.name}"></h4>
 							<h4 th:text="${cartItem.product.price}+'00Đ'"></h4>
-							<div th:replace="cart/quantity_control :: quantity_control(${cartItem.quantity}, ${cartItem.product.id})"></div>
+							<div
+								th:replace="cart/quantity_control :: quantity_control(${cartItem.quantity}, ${cartItem.product.id})">
+							</div>
 						</div>
-						
-						
-						
-						<a class="linkRemove" style="margin-top: 90px; margin-left: 5px; 
+
+
+
+						<!--a class="linkRemove" style="margin-top: 90px; margin-left: 5px; 
 						background-color: rgb(253, 45, 42); color: whitesmoke; width:50px; height: 30px"
-							th:href="@{'/cart/remove/' + ${cartItem.product.id}}">Delete</a>
+							th:href="@{'/cart/remove/' + ${cartItem.product.id}}">Delete</a>-->
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<!-- Right Section - Add Product and Total -->
-		<div class="col-md-4" th:if="${not #lists.isEmpty(cartItems)}">
-			<div>
-				<h3 class="mt-4">Tổng Tiền: [[${estimatedTotal}]]00Đ</h3>
+			<!-- Right Section - Add Product and Total -->
+			<div class="col-md-4" th:if="${not #lists.isEmpty(cartItems)}">
+				<div>
+					<h3 class="mt-4">Tổng Tiền: [[${estimatedTotal}]]00Đ</h3>
+					<a th:href="@{'/checkout'}" style="font-size: 30px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: orangered;">
+					 Thanh Toán
+					</a>
+				</div>
+				
 			</div>
-			<div class="button"
-				style="background-color: antiquewhite; width: 100px; height: 30px; text-align: center; color: red; margin-left: 100px;">
-				THANH TOÁN
+			<div class="col-md-4" th:if="${#lists.isEmpty(cartItems)}">
 			</div>
-		</div>
-<div class="col-md-4" th:if="${#lists.isEmpty(cartItems)}">
-</div>
 
-	</div>
+		</div>
 	</div>
 	<script type="text/javascript">
-	contextPath = "[[@{/}]]";
-	var csrfHeaderName = "[[${_csrf.headerName}]]";
-	var csrfValue = "[[${_csrf.token}]]";
-	
+		contextPath = "[[@{/}]]";
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";
 
 
-		
 	</script>
-	
+
 	<script th:src="@{/js/jquery.min.js}"></script>
 	<script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
 	<script th:src="@{/js/popper.min.js}"></script>
@@ -74,9 +74,10 @@
 	<script th:src="@{/js/jquery.timepicker.min.js}"></script>
 	<script th:src="@{/js/scrollax.min.js}"></script>
 	<script th:src="@{/js/main.js}"></script>
-	<script th:src="@{/js/quantity_control.js}"></script>
 	<script th:src="@{/js/add_to_cart.js}"></script>
 	<script th:src="@{/js/common_modal.js}"></script>
+	<script th:src="@{/js/quantity_control.js}"></script>
+
 
 
 </body>
