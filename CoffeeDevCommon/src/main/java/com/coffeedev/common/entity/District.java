@@ -17,6 +17,9 @@ public class District extends IdBasedEntity {
 	@Column(nullable = false, length = 5)
 	private String code;
 	
+	@Column(nullable = false)
+	private Double price;
+	
 	
 
 	public District() {
@@ -57,6 +60,16 @@ public class District extends IdBasedEntity {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+	
+	
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 	@Override

@@ -33,6 +33,9 @@ public class Order {
 	@Column(name = "address", length = 64)
 	private String address;
 	
+	@Column(nullable = false)
+	private String district;
+	
 	private Date orderTime;
 	private float shippingCost;
 	private float productCost;
@@ -82,6 +85,16 @@ public class Order {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	
+	
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
 	}
 
 	public Date getOrderTime() {

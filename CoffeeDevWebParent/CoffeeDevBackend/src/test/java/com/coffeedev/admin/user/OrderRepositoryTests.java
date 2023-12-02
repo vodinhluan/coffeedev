@@ -38,7 +38,7 @@ public class OrderRepositoryTests {
 		mainOrder.setName(customer.getName());
 		mainOrder.setPhoneNumber(customer.getPhoneNumber());;
 		mainOrder.setAddress(customer.getAddress());
-
+//		mainOrder.setDistrict(customer.getDistrict());
 		mainOrder.setShippingCost(10);
 		mainOrder.setSubtotal(product.getPrice());
 		mainOrder.setTotal(product.getPrice()+10);

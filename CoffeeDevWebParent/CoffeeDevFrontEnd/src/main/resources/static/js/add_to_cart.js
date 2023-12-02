@@ -16,9 +16,9 @@ function addToCart() {
 		}
 	}).done(function(response) {
 		console.log("thanh cong", response);
-		showModalDialog("Shopping Cart", response);
+		alert("Shopping Cart", response);
 	}).fail(function() {
 		console.log("that bai", response);
-		showErrorModal("Error while adding product to shopping cart.");
+		alert("Error while adding product to shopping cart.");
 	});
 }
