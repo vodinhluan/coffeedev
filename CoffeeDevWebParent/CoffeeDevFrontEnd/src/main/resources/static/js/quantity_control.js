@@ -104,7 +104,6 @@ function updateTotal() {
 		formattedTotal = $.number(total, 2);
 		$("#total").text(formattedTotal);
 	}
-
 }
 
 function showEmptyShoppingCart() {

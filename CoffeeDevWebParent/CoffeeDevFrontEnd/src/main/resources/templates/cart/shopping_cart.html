@@ -33,7 +33,7 @@
 			<!-- Right Section - Add Product and Total -->
 			<div class="col-md-4" th:if="${not #lists.isEmpty(cartItems)}">
 				<div>
-					<h3 class="mt-4">Tổng Tiền: [[${estimatedTotal}]]00Đ</h3>
+					<h3 class="mt-4">Thành Tiền: [[${estimatedTotal}]]00Đ</h3>
 					<a th:href="@{'/checkout'}" style="font-size: 30px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: orangered;">
 					 Thanh Toán
 					</a>
@@ -49,8 +49,6 @@
 		contextPath = "[[@{/}]]";
 		var csrfHeaderName = "[[${_csrf.headerName}]]";
 		var csrfValue = "[[${_csrf.token}]]";
-
-
 	</script>
 
 	<script th:src="@{/js/jquery.min.js}"></script>
@@ -71,8 +69,6 @@
 	<script th:src="@{/js/add_to_cart.js}"></script>
 	<script th:src="@{/js/common_modal.js}"></script>
 	<script th:src="@{/js/quantity_control.js}"></script>
-
-
 
 </body>
 
