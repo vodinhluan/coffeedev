@@ -1,8 +1,7 @@
-package com.coffeedev.admin.user;
+package com.coffeedev.order;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
-import com.coffeedev.admin.order.OrderRepository;
 import com.coffeedev.common.entity.CartItem;
 import com.coffeedev.common.entity.Customer;
 import com.coffeedev.common.entity.District;
@@ -23,6 +21,7 @@ import com.coffeedev.common.entity.OrderDetail;
 import com.coffeedev.common.entity.OrderStatus;
 import com.coffeedev.common.entity.PaymentMethod;
 import com.coffeedev.common.entity.Product;
+import com.coffeedev.shoppingcart.CartItemRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace=Replace.NONE)
@@ -30,16 +29,24 @@ import com.coffeedev.common.entity.Product;
 public class OrderRepositoryTests {
 
 	@Autowired private OrderRepository repo;
+	@Autowired private CartItemRepository cartRepo;
 
 	@Autowired private TestEntityManager entityManager;
 
 	@Test
-	public void testCreateNewOrderWithSingleProduct() {
+	public void testCreateNewOrderWithMultipleProducts() {
 		Customer customer = entityManager.find(Customer.class, 29);
-		Product product = entityManager.find(Product.class, 16);
-		District district = entityManager.find(District.class, 16);
-		CartItem cart = entityManager.find(CartItem.class, 13);
+		Product product1 = entityManager.find(Product.class, 15);
+		Product product2 = entityManager.find(Product.class, 14);
 
+		District district = entityManager.find(District.class, 16);
+		CartItem cart = entityManager.find(CartItem.class, 33);
+		List<CartItem> cartItems = cartRepo.findByCustomer(customer);
+		float estimatedTotal = 0.0F;
+		for (CartItem item : cartItems) {
+			estimatedTotal += item.getSubtotal();
+		}
+		
 		Order mainOrder = new Order();
 		mainOrder.setCustomer(customer);
 		mainOrder.setName(customer.getName());
@@ -47,23 +54,44 @@ public class OrderRepositoryTests {
 		mainOrder.setPhoneNumber("0909123456");
 		mainOrder.setOrderTime(new Date());
 		mainOrder.setDistrict(district.getName()); 
-		mainOrder.setTotalCost(cart.getSubtotal()+cart.getShippingCost());
+		mainOrder.setTotalCost((double) (estimatedTotal+cart.getShippingCost()));
 		mainOrder.setPaymentMethod(PaymentMethod.COD);
 		mainOrder.setOrderStatus(OrderStatus.PICKED);
 		
-		OrderDetail orderDetail = new OrderDetail();
-		orderDetail.setProduct(product);
-		orderDetail.setOrder(mainOrder);
-		orderDetail.setProductCost(product.getPrice());
-		orderDetail.setShippingCost((double) 10);
-		orderDetail.setQuantity(2);
-		orderDetail.setSubtotalCost(product.getPrice());
+		OrderDetail orderDetail1 = new OrderDetail();
+		orderDetail1.setProduct(product1);
+		orderDetail1.setOrder(mainOrder);
+		orderDetail1.setProductCost(product1.getPrice());
+		orderDetail1.setQuantity(2);
+		orderDetail1.setSubtotalCost(product1.getPrice() * 2);
+		orderDetail1.setShippingCost((double) 10);
+
 		
-		mainOrder.getOrderDetails().add(orderDetail);
+		OrderDetail orderDetail2 = new OrderDetail();
+		orderDetail2.setProduct(product2);
+		orderDetail2.setOrder(mainOrder);
+		orderDetail2.setProductCost(product2.getPrice());
+		orderDetail2.setQuantity(3);
+		orderDetail2.setSubtotalCost(product2.getPrice());
+		orderDetail2.setShippingCost((double) 10);
+
+		
+		mainOrder.getOrderDetails().add(orderDetail1);
+		mainOrder.getOrderDetails().add(orderDetail2);
+
 		
 		Order savedOrder = repo.save(mainOrder);
 		
 		assertThat(savedOrder.getId()).isGreaterThan(0);		
+	}
+	
+	@Test
+	public void testListOrders() {
+		Iterable<Order> orders = repo.findAll();
+		
+		assertThat(orders).hasSizeGreaterThan(0);
+		
+		orders.forEach(System.out::println);
 	}
 	
 }

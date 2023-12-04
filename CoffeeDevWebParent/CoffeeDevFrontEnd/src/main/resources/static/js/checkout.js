@@ -103,8 +103,35 @@ function calculateTotalPrice() {
 	}
 }
 
-function thanhToan() {
+/*function thanhToan() {
 	alert("Thanh Toán Thành Công!");
-	window.location.href = 'http://localhost/coffeedev/'; 
+	var orderData = {
+	    name: $('#hoTen').val(),
+	    phoneNumber: $('#soDienThoai').val(),
+	    address: $('#diaChi').val(),
+	    district: $('#quan').val(),
+	    note: $('#ghiChu').val(),
+	    paymentMethod: $('#paymentMethod').val(),
+	    productCost: parseFloat($('#total').text()), 
+        shippingCost: parseFloat($('#shipping-price').text()), 
+        total: parseFloat($('#super-total-price').text()) 
+	};
 
-}
+    $.ajax({
+        type: 'POST',
+        url: '/coffeedev/api/orders/create',
+        contentType: 'application/json',
+        data: JSON.stringify(orderData),
+        success: function (response) {
+            console.log("hello");
+            console.log(response);
+        },
+        error: function (error) {
+            console.log("byebye");
+            console.error(error);
+        }
+    });
+}*/
+
+// checkout.js
+

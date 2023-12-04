@@ -33,15 +33,10 @@ public class Order {
 	@Column(name = "address", length = 64)
 	private String address;
 	
-	@Column(nullable = false)
-	private String district;
 	
+	private String district;
 	private Date orderTime;
-	private float shippingCost;
-	private float productCost;
-	private Double subtotal;
-	private Double total;
-	private Date deliverDate;
+	private Double totalCost;
 	
 	@Enumerated(EnumType.STRING)
 	private PaymentMethod paymentMethod;
@@ -105,48 +100,17 @@ public class Order {
 		this.orderTime = orderTime;
 	}
 
-	public float getShippingCost() {
-		return shippingCost;
+
+
+	public Double getTotalCost() {
+		return totalCost;
 	}
 
-	public void setShippingCost(float shippingCost) {
-		this.shippingCost = shippingCost;
-	}
-
-	public float getProductCost() {
-		return productCost;
-	}
-
-	public void setProductCost(float productCost) {
-		this.productCost = productCost;
-	}
-
-	public Double getSubtotal() {
-		return subtotal;
-	}
-
-	public void setSubtotal(Double subtotal) {
-		this.subtotal = subtotal;
+	public void setTotalCost(Double total) {
+		this.totalCost = total;
 	}
 
 
-
-	public Double getTotal() {
-		return total;
-	}
-
-	public void setTotal(Double total) {
-		this.total = total;
-	}
-
-
-	public Date getDeliverDate() {
-		return deliverDate;
-	}
-
-	public void setDeliverDate(Date deliverDate) {
-		this.deliverDate = deliverDate;
-	}
 
 	public PaymentMethod getPaymentMethod() {
 		return paymentMethod;
@@ -188,7 +152,7 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", subtotal=" + subtotal + ", paymentMethod=" + paymentMethod + ", orderStatus="
+		return "Order [id=" + id + ", paymentMethod=" + paymentMethod + ", orderStatus="
 				+ orderStatus + ", customer=" + customer + "]";
 	}
 	

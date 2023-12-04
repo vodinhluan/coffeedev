@@ -27,8 +27,10 @@
 						<tr>
 							<th>Order ID</th>
 							<th>Customer</th>
-							<th>Total</th>
 							<th>Address</th>
+							<th>District</th>
+							<th>Total</th>
+							<th>Order Time</th>
 							<th>Payment Method</th>
 							<th>Status</th>
 							<th></th>
@@ -37,11 +39,14 @@
 					<tbody>
 						<tr th:each="order : ${listOrders}">
 							<td>[[${order.id}]]</td>
-							<td><a class="linkCustomerDetail"
-									th:href="@{'/customers/detail/'+ ${order.customer.id}}">[[${order.customer.name}]]</a>
+							<td>[[${order.customer.name}]]
 							</td>
-							<td>[[${order.total}]]00</td>
+							<td>[[${order.phoneNumber}]]</td>
 							<td>[[${order.address}]]</td>
+							<td>[[${order.district}]]</td>
+							<td>
+								<div th:replace="fragments :: format_time(${order.orderTime})"></div>
+							</td>
 							<td>[[${order.paymentMethod}]]</td>
 							<td>[[${order.orderStatus}]]</td>
 
@@ -102,6 +107,7 @@
 					</li>
 				</ul>
 			</nav>
+		</div>
 
 
 

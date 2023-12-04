@@ -43,7 +43,6 @@ public class WebSecurityConfig{
 		http
 	    .authorizeRequests()
 		    .requestMatchers("/account_details", "/update_account_details","/cart","/checkout","/place_order").authenticated()
-
 	    .and()
 	    .formLogin()
 	    	.loginPage("/login")
@@ -82,7 +81,6 @@ public class WebSecurityConfig{
 
 		return authProvider;
 	}	
-
 	
 	
 }

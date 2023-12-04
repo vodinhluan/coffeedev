@@ -16,14 +16,15 @@ public class OrderDetail {
 	private Integer id;
 
 	private int quantity;
-	private float productCost;
-	private float shippingCost;
-	private Double unitPrice;
-	private Double subtotal;
+	private Double productCost;
+	private Double shippingCost;
+	private Double subtotalCost;
 
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
+	
+	
 	@ManyToOne
 	@JoinColumn(name = "order_id")
 	private Order order;
@@ -44,36 +45,28 @@ public class OrderDetail {
 		this.quantity = quantity;
 	}
 
-	public float getProductCost() {
+	public Double getProductCost() {
 		return productCost;
 	}
 
-	public void setProductCost(float productCost) {
+	public void setProductCost(Double productCost) {
 		this.productCost = productCost;
 	}
 
-	public float getShippingCost() {
+	public Double getShippingCost() {
 		return shippingCost;
 	}
 
-	public void setShippingCost(float shippingCost) {
+	public void setShippingCost(Double shippingCost) {
 		this.shippingCost = shippingCost;
 	}
 
-	public Double getUnitPrice() {
-		return unitPrice;
+	public Double getSubtotalCost() {
+		return subtotalCost;
 	}
 
-	public void setUnitPrice(Double unitPrice) {
-		this.unitPrice = unitPrice;
-	}
-
-	public Double getSubtotal() {
-		return subtotal;
-	}
-
-	public void setSubtotal(Double subtotal) {
-		this.subtotal = subtotal;
+	public void setSubtotalCost(Double subtotalCost) {
+		this.subtotalCost = subtotalCost;
 	}
 
 	public Product getProduct() {

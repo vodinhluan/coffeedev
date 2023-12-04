@@ -71,9 +71,9 @@ public class CartItem {
 	}
 	
 	@Transient
-	public float getSubtotal() {
-		System.out.println("Ket qua thanh toan la: " + (float) (product.getPrice() * quantity) );
-		return (float) (product.getPrice() * quantity);
+	public Double getSubtotal() {
+		System.out.println("Ket qua thanh toan la: " + (Double) (product.getPrice() * quantity) );
+		return (Double) (product.getPrice() * quantity);
 	}
 	
 	@Transient

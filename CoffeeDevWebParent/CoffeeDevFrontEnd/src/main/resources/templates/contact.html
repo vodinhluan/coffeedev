@@ -89,7 +89,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
+							<input type="submit" value="Send Message" class="btn btn-primary py-3 px-5" onclick="thankyou()">
 						</div>
 					</form>
 				</div>
@@ -153,6 +153,10 @@
 			// Lưu giá trị đánh giá vào biến hoặc gửi lên server nếu cần
 			// const ratingValue = star;
 			// Gửi ratingValue lên server để lưu vào cơ sở dữ liệu
+		}
+		
+		function thankyou() {
+			alert("Cám ơn bạn đã đánh giá.");
 		}
 	</script>
 	<script src="js/jquery.min.js"></script>
