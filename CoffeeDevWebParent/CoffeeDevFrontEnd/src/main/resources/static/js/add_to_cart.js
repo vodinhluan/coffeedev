@@ -16,9 +16,9 @@ function addToCart() {
 		}
 	}).done(function(response) {
 		console.log("thanh cong", response);
-		alert("Shopping Cart", response);
+		alert("THÊM VÀO GIỎ HÀNG THÀNH CÔNG", response);
 	}).fail(function() {
 		console.log("that bai", response);
-		alert("Error while adding product to shopping cart.");
+		alert("LỖI KHI THÊM SẢN PHẨM VÀO GIỎ HÀNG");
 	});
 }
