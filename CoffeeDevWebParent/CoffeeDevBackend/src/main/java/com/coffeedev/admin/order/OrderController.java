@@ -15,6 +15,7 @@ import com.coffeedev.admin.FileUploadUtil;
 import com.coffeedev.admin.product.ProductNotFoundException;
 import com.coffeedev.admin.product.ProductService;
 import com.coffeedev.common.entity.Order;
+import com.coffeedev.common.entity.OrderDetail;
 import com.coffeedev.common.entity.Product;
 
 @Controller
@@ -53,17 +54,22 @@ public class OrderController {
 	}
 	@GetMapping("/orders/detail/{id}")
 	public String viewProductDetails(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
-		try {
-			Order order = service.get(id);
-			model.addAttribute("order", order);
+	    try {
+	        Order order = service.get(id);
 
-			return "orders/order_detail_modal";
-		} catch (OrderNotFoundException e) {
-			ra.addFlashAttribute("message", e.getMessage());
-			return "redirect:/orders";
-		}
+	        // Lấy một order detail cụ thể (ở đây tôi giả sử lấy order detail đầu tiên)
+	        OrderDetail orderDetail = order.getOrderDetails().stream().findFirst().orElse(null);
+	        
+	        model.addAttribute("order", order);
+	        model.addAttribute("orderDetail", orderDetail);
 
+	        return "orders/order_detail_modal";
+	    } catch (OrderNotFoundException e) {
+	        ra.addFlashAttribute("message", e.getMessage());
+	        return "redirect:/orders";
+	    }
 	}
+
 	@GetMapping("/orders/delete/{id}")
 	public String deleteOrder(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes)
 			throws OrderNotFoundException {

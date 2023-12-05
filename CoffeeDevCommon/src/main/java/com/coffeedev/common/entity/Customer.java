@@ -9,6 +9,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
@@ -48,6 +50,11 @@ public class Customer {
 	
 	@Column(name = "reset_password_token", length = 30)
 	private String resetPasswordToken;
+	
+	@ManyToOne
+    @JoinColumn(name = "district_id")
+    private District district;
+
 
 	public Customer() {
 		
@@ -144,7 +151,15 @@ public class Customer {
 	public void setResetPasswordToken(String resetPasswordToken) {
 		this.resetPasswordToken = resetPasswordToken;
 	}
+	
 
+	public District getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(District district) {
+		this.district = district;
+	}
 
 	@Override
 	public String toString() {

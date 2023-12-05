@@ -13,4 +13,7 @@ public interface DistrictRepository extends CrudRepository<District, Integer> {
 	
 	@Query("SELECT d.price FROM District d WHERE d.name = :name")
 	Double findPriceByName(@Param("name") String name);
+	
+    District findByName(String name);
+
 }

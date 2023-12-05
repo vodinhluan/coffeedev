@@ -1,5 +1,6 @@
 package com.coffeedev.common.entity;
 
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -20,7 +21,8 @@ public class District extends IdBasedEntity {
 	@Column(nullable = false)
 	private Double price;
 	
-	
+	 @OneToMany(mappedBy = "district")
+	 private List<Customer> customers;
 
 	public District() {
 		
@@ -62,14 +64,22 @@ public class District extends IdBasedEntity {
 		this.code = code;
 	}
 	
-	
-
 	public Double getPrice() {
 		return price;
 	}
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+	
+	
+
+	public List<Customer> getCustomers() {
+		return customers;
+	}
+
+	public void setCustomers(List<Customer> customers) {
+		this.customers = customers;
 	}
 
 	@Override

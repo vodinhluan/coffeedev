@@ -14,7 +14,7 @@ import com.coffeedev.common.entity.Order;
 @Service
 public class OrderService {
 
-	static final int ORDER_PER_PAGE = 4;
+	static final int ORDER_PER_PAGE = 10;
 	@Autowired private OrderRepository repo;
 
 	public Page<Order> listByPage(int pageNum, String sortField, String sortDir, String keyword) {

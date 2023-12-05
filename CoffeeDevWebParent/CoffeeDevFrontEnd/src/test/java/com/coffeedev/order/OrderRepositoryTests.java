@@ -35,12 +35,14 @@ public class OrderRepositoryTests {
 
 	@Test
 	public void testCreateNewOrderWithMultipleProducts() {
-		Customer customer = entityManager.find(Customer.class, 29);
-		Product product1 = entityManager.find(Product.class, 15);
-		Product product2 = entityManager.find(Product.class, 14);
+		Customer customer = entityManager.find(Customer.class, 27);
+		Product product1 = entityManager.find(Product.class, 16);
+		Product product2 = entityManager.find(Product.class, 1);
+		Product product3 = entityManager.find(Product.class, 14);
 
-		District district = entityManager.find(District.class, 16);
-		CartItem cart = entityManager.find(CartItem.class, 33);
+
+		District district = entityManager.find(District.class, 3);
+		CartItem cart = entityManager.find(CartItem.class, 35);
 		List<CartItem> cartItems = cartRepo.findByCustomer(customer);
 		float estimatedTotal = 0.0F;
 		for (CartItem item : cartItems) {
@@ -51,7 +53,7 @@ public class OrderRepositoryTests {
 		mainOrder.setCustomer(customer);
 		mainOrder.setName(customer.getName());
 		mainOrder.setAddress(customer.getAddress());
-		mainOrder.setPhoneNumber("0909123456");
+		mainOrder.setPhoneNumber("0876546331");
 		mainOrder.setOrderTime(new Date());
 		mainOrder.setDistrict(district.getName()); 
 		mainOrder.setTotalCost((double) (estimatedTotal+cart.getShippingCost()));
@@ -74,10 +76,19 @@ public class OrderRepositoryTests {
 		orderDetail2.setQuantity(3);
 		orderDetail2.setSubtotalCost(product2.getPrice());
 		orderDetail2.setShippingCost((double) 10);
+		
+		OrderDetail orderDetail3 = new OrderDetail();
+		orderDetail3.setProduct(product3);
+		orderDetail3.setOrder(mainOrder);
+		orderDetail3.setProductCost(product3.getPrice());
+		orderDetail3.setQuantity(2);
+		orderDetail3.setSubtotalCost(product3.getPrice());
+		orderDetail3.setShippingCost((double) 10);
 
 		
 		mainOrder.getOrderDetails().add(orderDetail1);
 		mainOrder.getOrderDetails().add(orderDetail2);
+		mainOrder.getOrderDetails().add(orderDetail3);
 
 		
 		Order savedOrder = repo.save(mainOrder);

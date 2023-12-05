@@ -19,6 +19,9 @@ public class OrderDetail {
 	private Double productCost;
 	private Double shippingCost;
 	private Double subtotalCost;
+	private Double totalSubTotalCost;
+	private Double totalCost;
+
 
 	@ManyToOne
 	@JoinColumn(name = "product_id")
@@ -68,6 +71,23 @@ public class OrderDetail {
 	public void setSubtotalCost(Double subtotalCost) {
 		this.subtotalCost = subtotalCost;
 	}
+	
+	
+	public Double getTotalSubTotalCost() {
+		return totalSubTotalCost;
+	}
+
+	public void setTotalSubTotalCost(Double totalSubTotalCost) {
+		this.totalSubTotalCost = totalSubTotalCost;
+	}
+
+	public Double getTotalCost() {
+		return totalCost;
+	}
+
+	public void setTotalCost(Double totalCost) {
+		this.totalCost = totalCost;
+	}
 
 	public Product getProduct() {
 		return product;
@@ -84,5 +104,7 @@ public class OrderDetail {
 	public void setOrder(Order order) {
 		this.order = order;
 	}
+	
+	
 
 }

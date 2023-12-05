@@ -58,7 +58,7 @@
 	<h1 style="text-align: center; margin-top: 100px; color:orange">XÁC NHẬN ĐƠN HÀNG</h1>
 
 	<div class="container">
-		<form style="margin-bottom: 100px;" th:object="${customer}" th:action="@{/place_order}" method="post">
+		<form style="margin-bottom: 100px;" th:object="${customer}" th:action="@{/checkout/submit}" method="post">
 			<div class="mb-3">
 				<label for="hoTen" class="form-label">Họ tên</label>
 				<input type="text" th:field="*{name}" class="form-control" id="hoTen" name="hoTen" required>
@@ -107,7 +107,8 @@
 					<label for="accountNumber" class="form-label">Số tài khoản: 123456 ACB</label>
 				</div>
 			</div>
-				
+			
+
 			<button type="submit" class="btn btn-primary">Thanh toán</A>
 		</form>
 	</div>

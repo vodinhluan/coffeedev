@@ -36,7 +36,7 @@ public class Order {
 	
 	private String district;
 	private Date orderTime;
-	private Double totalCost;
+	private Double totalCost; // tien trong gio hang
 	
 	@Enumerated(EnumType.STRING)
 	private PaymentMethod paymentMethod;
