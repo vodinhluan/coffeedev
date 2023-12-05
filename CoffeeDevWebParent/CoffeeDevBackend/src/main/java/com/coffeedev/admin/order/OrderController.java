@@ -57,7 +57,6 @@ public class OrderController {
 	    try {
 	        Order order = service.get(id);
 
-	        // Lấy một order detail cụ thể (ở đây tôi giả sử lấy order detail đầu tiên)
 	        OrderDetail orderDetail = order.getOrderDetails().stream().findFirst().orElse(null);
 	        
 	        model.addAttribute("order", order);

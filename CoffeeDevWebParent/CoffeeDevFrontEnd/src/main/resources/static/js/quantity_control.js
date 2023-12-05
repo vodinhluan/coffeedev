@@ -85,8 +85,8 @@ function deleteProduct(productId) {
 }
 
 function updateSubtotal(updatedSubtotal, productId) {
-	formattedSubtotal = updatedSubtotal.toLocaleString('en-US', { minimumFractionDigits: 1 });
-	$("#subtotal" + productId).text(formattedSubtotal);
+	//formattedSubtotal = updatedSubtotal.toLocaleString('en-US', { minimumFractionDigits: 1 });
+	$("#subtotal" + productId).text(updatedSubtotal + '00');
 }
 
 function updateTotal() {

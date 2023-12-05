@@ -87,6 +87,8 @@ public class CheckoutController {
 		
 	    orderService.processOrder(existingCustomer, district, selectedPaymentMethod,
 	    		cartItems);
+		cartService.deleteByCustomer(existingCustomer);
+
 	    return "check_out/checkout_success";
 	}
 
