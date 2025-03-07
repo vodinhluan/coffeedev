@@ -3,41 +3,57 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
+	
 	<parent>
 		<groupId>com.coffeedev</groupId>
 		<artifactId>CoffeeDevWebParent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>CoffeeDevBackEnd</artifactId>
-	<name>CoffeeDevBackEnd</name>
-	<description>parent spring web project</description>
+	<artifactId>CoffeeDevBackend</artifactId>
+	<packaging>jar</packaging>
+	<name>CoffeeDevBackend</name>
+	<description>Spring Boot Backend for CoffeeDev</description>
 
 	<properties>
 		<java.version>17</java.version>
 	</properties>
 
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>
-			<groupId>net.sf.supercsv</groupId>
-			<artifactId>super-csv</artifactId>
-			<version>2.4.0</version>
+			<groupId>com.coffeedev</groupId>
+			<artifactId>CoffeeDevCommon</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
+		<!-- Swagger UI -->
 		<dependency>
-			<groupId>com.github.librepdf</groupId>
-			<artifactId>openpdf</artifactId>
-			<version>1.3.8</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.2.0</version>
 		</dependency>
-
-
 	</dependencies>
 
 	<build>
@@ -45,8 +61,10 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.coffeedev.admin.CoffeeDevBackEndApplication</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

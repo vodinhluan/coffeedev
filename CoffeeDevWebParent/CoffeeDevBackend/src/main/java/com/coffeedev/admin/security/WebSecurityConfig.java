@@ -1,20 +1,44 @@
 package com.coffeedev.admin.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.coffeedev.admin.security.jwt.JwtAuthenticationFilter;
+import com.coffeedev.admin.security.jwt.JwtAuthenticationEntryPoint;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class WebSecurityConfig {
+	
+	@Autowired
+	private JwtAuthenticationEntryPoint unauthorizedHandler;
+	
+	@Autowired
+	private CoffeeDevDetailsService userDetailsService;
+	
+	@Bean
+	public JwtAuthenticationFilter authenticationJwtTokenFilter() {
+		return new JwtAuthenticationFilter();
+	}
 	
 	@Bean
 	public UserDetailsService userDetailsService() {
@@ -26,45 +50,58 @@ public class WebSecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 	
+	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 		authProvider.setUserDetailsService(userDetailsService());
 		authProvider.setPasswordEncoder(passwordEncoder());
 		return authProvider;		
 	}
-
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(authenticationProvider());
+	
+	@Bean
+	public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+		return http.getSharedObject(AuthenticationManagerBuilder.class)
+				.userDetailsService(userDetailsService)
+				.passwordEncoder(passwordEncoder())
+				.and()
+				.build();
 	}
-
+	
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+		configuration.setAllowedHeaders(Arrays.asList("*"));
+		configuration.setAllowCredentials(true);
+		
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-		.authorizeRequests().requestMatchers("/")
-
-		.authenticated()
-		.requestMatchers("/users/**").hasAuthority("Admin")
-		.requestMatchers("/categories/**").hasAnyAuthority("Admin", "SalePerson", "Shipper")
-		.requestMatchers("/products/**").hasAnyAuthority("Admin", "SalePerson", "Shipper")
-        .requestMatchers("/customers/**","/orders/**").hasAnyAuthority("Admin")
+			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+			.csrf(csrf -> csrf.disable())
+			.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.authorizeHttpRequests(auth -> 
+				auth.requestMatchers("/api/auth/**").permitAll()
+					.requestMatchers("/api/public/**").permitAll()
+					.requestMatchers("/user-photos/**", "/images/**", "/js/**", "/webjars/**").permitAll()
+					.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+					.requestMatchers("/api/users/**").hasAuthority("Admin")
+					.requestMatchers("/api/categories/**").hasAnyAuthority("Admin", "SalePerson", "Shipper")
+					.requestMatchers("/api/products/**").hasAnyAuthority("Admin", "SalePerson", "Shipper")
+					.requestMatchers("/api/customers/**", "/api/orders/**").hasAnyAuthority("Admin")
+					.anyRequest().authenticated()
+			);
 		
-
-
-
-		.and()
-		.authorizeRequests().requestMatchers("/users")
-		.authenticated()
-
-		.and()
-		.formLogin()
-			.loginPage("/login")
-			.usernameParameter("email")
-			.permitAll()
- 			.and().logout().permitAll()
-			.and().rememberMe().key("AbcDefgHijKlmnOpqrs_1234567890")
-			.tokenValiditySeconds(7 * 24 * 60 * 60);
+		http.authenticationProvider(authenticationProvider());
+		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		
 		return http.build();
-		}
-
+	}
 }

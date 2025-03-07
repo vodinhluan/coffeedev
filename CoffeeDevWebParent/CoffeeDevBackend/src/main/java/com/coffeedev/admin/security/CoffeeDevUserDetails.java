@@ -80,4 +80,16 @@ public class CoffeeDevUserDetails implements UserDetails {
 		this.user.setId(id);
 	}
 
+	public Integer getId() {
+		return user.getId();
+	}
+
+	public void setFirstName(String firstName) {
+		this.user.setName(firstName);
+	}
+	
+	public boolean hasRole(String roleName) {
+		return user.hasRole(roleName);
+	}
+
 }

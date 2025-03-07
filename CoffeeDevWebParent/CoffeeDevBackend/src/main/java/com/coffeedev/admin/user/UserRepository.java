@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.coffeedev.common.entity.User;
+
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User, Integer>, 
 	CrudRepository<User, Integer> {
@@ -22,10 +23,12 @@ public interface UserRepository extends PagingAndSortingRepository<User, Integer
 	@Query("SELECT u FROM User u WHERE CONCAT(u.id, ' ', u.email, ' ', u.name) LIKE %?1%")
 	public Page<User> findAll(String keyword, Pageable pageable);
 
-
 	@Query("UPDATE User u SET u.enabled = ?2 WHERE u.id = ?1")
 	@Modifying
 	public void updateEnabledStatus(Integer id, boolean enabled);
+
+	@Query("SELECT u FROM User u WHERE u.email = :email")
+	public User findByEmail(@Param("email") String email);
 }
 
 
