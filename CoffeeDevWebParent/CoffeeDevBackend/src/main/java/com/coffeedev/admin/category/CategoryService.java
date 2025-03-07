@@ -14,11 +14,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.coffeedev.common.entity.Category;
 import com.coffeedev.common.entity.User;
-
+import com.coffeedev.admin.category.CategoryNotFoundException;
 
 @Service
+@Transactional
 public class CategoryService {
 	public static final int ROOT_CATEGORIES_PER_PAGE = 4;
 	
@@ -151,7 +153,7 @@ public class CategoryService {
 		try {
 			return repo.findById(id).get();
 		} catch (NoSuchElementException ex) {
-			throw new CategoryNotFoundException("Could not find any category with ID "+ id);
+			throw new CategoryNotFoundException("Không thể tìm thấy danh mục nào với ID: " + id);
 		}
 	}
 	
@@ -159,7 +161,7 @@ public class CategoryService {
 	public void delete(Integer id) throws CategoryNotFoundException {
 		Long countById =  repo.countById(id);
 		if (countById == null || countById == 0) {
-			throw new CategoryNotFoundException("Could not find any category with ID "+ id);
+			throw new CategoryNotFoundException("Không thể tìm thấy danh mục nào với ID: " + id);
 		}
 		repo.deleteById(id);
 	}
@@ -208,7 +210,10 @@ public class CategoryService {
 			return sortedChildren;
 		}
 		
-	
-
+		// Thêm phương thức listAll() để lấy tất cả danh mục
+		public List<Category> listAll() {
+			return repo.findAll(); // fix in repo
+		}
+		
 }
 

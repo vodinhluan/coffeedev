@@ -27,7 +27,7 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	public Page<Category> findRootCategories(Pageable pageable);
 	
 	@Query("SELECT c FROM Category c WHERE c.name LIKE %?1%")
-	public Page<Category> search(String keyword, Pageable pagebale);
+	public Page<Category> search(String keyword, Pageable pageable);
 
 // update enabled status
 	@Query("UPDATE Category c SET c.enabled = ?2 WHERE c.id = ?1")
@@ -44,6 +44,13 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	@Query("SELECT c FROM Category c WHERE c.name = :name")
 	public Category getCategoryByName(@Param("name") String name);
 	
-	
+
+// Thêm phương thức mới để lấy tất cả categories
+  @Query("SELECT c FROM Category c ORDER BY c.name ASC")
+  public List<Category> findAll();
+
+// Thêm phương thức để lấy tất cả categories với sắp xếp
+    @Query("SELECT c FROM Category c")
+    public List<Category> findAllCategories(Sort sort);
 
 }
