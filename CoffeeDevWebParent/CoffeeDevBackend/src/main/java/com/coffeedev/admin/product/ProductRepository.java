@@ -4,34 +4,27 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.coffeedev.common.entity.Product;
 
-import jakarta.transaction.Transactional;
-
 @Repository
-public interface ProductRepository extends PagingAndSortingRepository<Product, Integer>, 
-	CrudRepository<Product, Integer> {
-	
-	@Query("SELECT p FROM Product p WHERE p.name = :name")
-	public Product getProductByName(@Param("name") String name);
+public interface ProductRepository extends JpaRepository<Product, Integer> {
+    
+    // Find product by name
+    @Query("SELECT p FROM Product p WHERE LOWER(p.name) = LOWER(:name)")
+    Product getProductByName(@Param("name") String name);
 
-	public Long countById(Integer id);
+    // Count by ID
+    Long countById(Integer id);
 
-	@Query("SELECT p FROM Product p WHERE CONCAT(p.id, ' ', p.name) LIKE %?1%")
-	public Page<Product> findAll(String keyword, Pageable pageable);
+    // Full-text search with case-insensitive matching
+    @Query("SELECT p FROM Product p WHERE LOWER(CONCAT(p.id, ' ', p.name)) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    Page<Product> findAll(@Param("keyword") String keyword, Pageable pageable);
 
-	// ?1: Đại diện cho tham số đầu tiên, tức là id của người dùng (Integer id).
-	// ?2: Đại diện cho tham số thứ hai, tức là enabled - giá trị mới cho thuộc tính
-	// enabled
-	@Query("UPDATE Product p SET p.enabled = ?2 WHERE p.id = ?1")
-	@Modifying
-	@Transactional
-	public void updateEnabledStatus(Integer id, boolean enabled);
-	
-	
-	
+    // Update enabled status
+    @Modifying
+    @Query("UPDATE Product p SET p.enabled = :enabled WHERE p.id = :id")
+    void updateEnabledStatus(@Param("id") Integer id, @Param("enabled") boolean enabled);
 }

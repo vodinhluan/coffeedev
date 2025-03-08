@@ -23,13 +23,12 @@ public class Product {
 
 	@Column(length = 128, nullable = false, unique = true)
 	private String name;
-	
+
 	@Column(unique = true, length = 255, nullable = false)
 	private String alias;
 
 	@Column(length = 512, nullable = false)
 	private String description;
-
 
 	@Column(updatable = false)
 	private Date createTime;
@@ -45,16 +44,14 @@ public class Product {
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;
-	
-	
+
 	public Product() {
-		
+
 	}
-	
+
 	public Product(Integer id) {
 		this.id = id;
 	}
-
 
 	public Product(Integer id, String name) {
 		this.id = id;
@@ -76,7 +73,6 @@ public class Product {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 
 	public String getAlias() {
 		return alias;
@@ -102,7 +98,6 @@ public class Product {
 		this.price = price;
 	}
 
-
 	public String getImage() {
 		return image;
 	}
@@ -126,7 +121,6 @@ public class Product {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-	
 
 	public Date getCreateTime() {
 		return createTime;
@@ -135,17 +129,17 @@ public class Product {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	
-	 @PrePersist
-	    protected void onCreate() {
-	        createTime = new Date();
-	    }
-	
 
-	 @Transient
-		public String getImagePath() {
-			if (this.id==null) return "/images/product-images.png";
-			return "/product-images/"+this.id+"/"+this.image;
-		}
+	@PrePersist
+	protected void onCreate() {
+		createTime = new Date();
+	}
+
+	@Transient
+	public String getImagePath() {
+		if (this.id == null)
+			return "/images/product-images.png";
+		return "/product-images/" + this.id + "/" + this.image;
+	}
 
 }
