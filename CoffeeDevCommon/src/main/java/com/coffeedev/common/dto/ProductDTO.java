@@ -10,7 +10,6 @@ public class ProductDTO {
     private boolean enabled;
     private Integer categoryId;
 
-    // ✅ Constructor with all fields
     public ProductDTO(Integer id, String name, String alias, String description, Double price, String image, boolean enabled, Integer categoryId) {
         this.id = id;
         this.name = name;
@@ -22,10 +21,8 @@ public class ProductDTO {
         this.categoryId = categoryId;
     }
 
-    // ✅ Default constructor (required for frameworks like Jackson)
     public ProductDTO() {}
 
-    // ✅ Getters and Setters
     public Integer getId() {
         return id;
     }
