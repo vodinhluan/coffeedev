@@ -22,12 +22,10 @@ public class OrderDetail {
 	private Double totalSubTotalCost;
 	private Double totalCost;
 
-
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
-	
-	
+
 	@ManyToOne
 	@JoinColumn(name = "order_id")
 	private Order order;
@@ -71,8 +69,7 @@ public class OrderDetail {
 	public void setSubtotalCost(Double subtotalCost) {
 		this.subtotalCost = subtotalCost;
 	}
-	
-	
+
 	public Double getTotalSubTotalCost() {
 		return totalSubTotalCost;
 	}
@@ -104,7 +101,5 @@ public class OrderDetail {
 	public void setOrder(Order order) {
 		this.order = order;
 	}
-	
-	
 
 }

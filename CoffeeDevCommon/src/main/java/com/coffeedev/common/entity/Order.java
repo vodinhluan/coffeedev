@@ -23,32 +23,31 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(length=45, nullable=false, name ="name")
+
+	@Column(length = 45, nullable = false, name = "name")
 	private String name;
-	
+
 	@Column(name = "phone_number", nullable = false, length = 15)
 	private String phoneNumber;
 
 	@Column(name = "address", length = 64)
 	private String address;
-	
-	
+
 	private String district;
 	private Date orderTime;
 	private Double totalCost; // tien trong gio hang
-	
+
 	@Enumerated(EnumType.STRING)
 	private PaymentMethod paymentMethod;
 	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus;
-	
+
 	@ManyToOne
-	@JoinColumn(name ="customer_id")
+	@JoinColumn(name = "customer_id")
 	private Customer customer;
-	
-	@OneToMany(mappedBy ="order", cascade= CascadeType.ALL)
-	private Set<OrderDetail> orderDetails =new HashSet<>();
+
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	private Set<OrderDetail> orderDetails = new HashSet<>();
 
 	public Integer getId() {
 		return id;
@@ -81,8 +80,6 @@ public class Order {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
-	
 
 	public String getDistrict() {
 		return district;
@@ -100,8 +97,6 @@ public class Order {
 		this.orderTime = orderTime;
 	}
 
-
-
 	public Double getTotalCost() {
 		return totalCost;
 	}
@@ -109,8 +104,6 @@ public class Order {
 	public void setTotalCost(Double total) {
 		this.totalCost = total;
 	}
-
-
 
 	public PaymentMethod getPaymentMethod() {
 		return paymentMethod;
@@ -143,7 +136,7 @@ public class Order {
 	public void setOrderDetails(Set<OrderDetail> orderDetails) {
 		this.orderDetails = orderDetails;
 	}
-	
+
 	public void copyAddressFromCustomer() {
 		setName(customer.getName());
 		setPhoneNumber(customer.getPhoneNumber());
@@ -155,5 +148,5 @@ public class Order {
 		return "Order [id=" + id + ", paymentMethod=" + paymentMethod + ", orderStatus="
 				+ orderStatus + ", customer=" + customer + "]";
 	}
-	
+
 }
