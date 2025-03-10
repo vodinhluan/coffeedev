@@ -1,5 +1,6 @@
 package com.coffeedev.admin.customer;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.coffeedev.admin.paging.PagingAndSortingHelper;
+// import com.coffeedev.admin.paging.PagingAndSortingHelper;
 import com.coffeedev.common.entity.Customer;
 import com.coffeedev.common.exception.CustomerNotFoundException;
 
@@ -22,6 +22,10 @@ public class CustomerService {
 
 	@Autowired private CustomerRepository customerRepo;
 	@Autowired private PasswordEncoder passwordEncoder;
+
+	public List<Customer>listAll() {
+		return (List<Customer>) customerRepo.findAll();
+	}
 
 	public Page<Customer> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
 		Sort sort = Sort.by(sortField);
