@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate(); // 🛠 Hook để điều hướng
+
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +28,8 @@ const Login = () => {
       console.log('Data: ', data, data.token);
       localStorage.setItem("token", data.token);
       alert("Đăng nhập thành công!");
-      
+      navigate("/dashboard"); // ✅ Chuyển hướng sau khi đăng nhập
+
       // Chuyển hướng hoặc cập nhật state đăng nhập tại đây
     } catch (error) {
       if (error instanceof Error) {
