@@ -69,7 +69,7 @@ public class CoffeeDevUserDetails implements UserDetails {
 	}
 	
 	public String getFullname() {
-		return "Xin chào "+this.user.getName();
+		return this.user.getName();
 	}
 	
 	public void setName(String name) {

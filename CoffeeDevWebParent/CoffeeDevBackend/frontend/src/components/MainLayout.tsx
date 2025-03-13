@@ -20,7 +20,7 @@ const MainLayout = () => {
         {/* Button Toggle, nằm trong div để nó cũng bị đẩy theo */}
         <button
           className="md:hidden p-2 text-white bg-[#8b5e3c] fixed top-4 left-4 z-50 transition-all duration-300"
-          style={{ left: isSidebarOpen ? "13rem" : "1rem" }} // Dịch button theo Sidebar
+          style={{ left: isSidebarOpen ? "13rem" : "1rem" }} 
           onClick={toggleSidebar}
         >
           ☰

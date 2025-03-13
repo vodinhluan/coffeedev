@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { authState, userState } from "../state";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // 🛠 Hook để điều hướng
-
-
+  const navigate = useNavigate();
+  const setAuth = useSetRecoilState(authState);
+  const setUser = useSetRecoilState(userState);
+ 
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,12 +28,15 @@ const Login = () => {
       }
 
       const data = await response.json();
-      console.log('Data: ', data, data.token);
-      localStorage.setItem("token", data.token);
-      alert("Đăng nhập thành công!");
-      navigate("/dashboard"); // ✅ Chuyển hướng sau khi đăng nhập
+      console.log("user data:", data.user.name);
 
-      // Chuyển hướng hoặc cập nhật state đăng nhập tại đây
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("username", data.user.name);
+      setUser({ name: data.user.name, token: data.token });
+      setAuth(true); // ✅ Cập nhật trạng thái đăng nhập
+
+      alert("Đăng nhập thành công!");
+      navigate("/dashboard");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
