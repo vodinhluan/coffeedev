@@ -40,7 +40,6 @@ const Sidebar = ({ isOpen, toggleSidebar }: { isOpen: boolean; toggleSidebar: ()
               className={({ isActive }) =>
                 `block p-2 rounded transition ${isActive ? "bg-[#70432b] font-bold" : "hover:bg-[#70432b]"}`
               }
-              onClick={toggleSidebar}
             >
               {label}
             </NavLink>

@@ -12,7 +12,7 @@ public class CustomerDTO {
     private Date createdTime;
     private String authenticationType;
     private Integer districtId;
-    private String districtName; // Thêm để tiện hiển thị UI
+    private String districtName; 
 
     // Getters và Setters
     public Integer getId() {
