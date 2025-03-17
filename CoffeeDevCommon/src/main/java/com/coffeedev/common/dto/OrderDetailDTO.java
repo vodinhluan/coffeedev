@@ -9,8 +9,8 @@ public class OrderDetailDTO {
     private Double shippingCost;
     private Double subtotalCost;
     private Double totalCost;
-    private Integer productId; // Avoid returning full Product entity
-    private String productName; // For UI display
+    private Integer productId; 
+    private String productName; 
 
     // Constructors, Getters, and Setters
 
