@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { authState } from "../state";
 import Login from "../components/Login";
@@ -11,6 +11,7 @@ import CategoriesPage from "../pages/category/CategoriesPage";
 import CustomersPage from "../pages/customer/CustomersPage";
 import ProtectedRoute from "./ProtectedRoute";
 import UserDetailPage from "../pages/user/UserDetailPage";
+import NotFoundPage from "../pages/errors/NotFoundPage";
 
 const AppRoutes = () => {
   const isAuthenticated = useRecoilValue(authState);
@@ -19,6 +20,8 @@ const AppRoutes = () => {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        {/* Redirect from / to /login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route
           path="/"
           element={
@@ -34,9 +37,8 @@ const AppRoutes = () => {
           <Route path="customers" element={<CustomersPage />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="/users/:id" element={<UserDetailPage />} />
-
         </Route>
-        <Route path="*" element={<h1>404 Not Found</h1>} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );

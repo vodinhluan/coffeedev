@@ -27,7 +27,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: { isOpen: boolean; toggleSidebar: ()
       <h3 className="text-balance font-serif mb-6">Xin Chào, {name}!</h3>
       <ul>
         {[
-          { to: "/", label: "🏠 Dashboard" },
+          { to: "/dashboard", label: "🏠 Dashboard" },
           { to: "/orders", label: "📦 Orders" },
           { to: "/products", label: "☕ Products" },
           { to: "/categories", label: "📂 Categories" },
