@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminTable from "../../components/AdminTable";
+import Pagination from "../../components/Pagination";
 import { User } from "../../type/User";
 import useFetchData from "../../useFetchData";
 
@@ -33,6 +34,10 @@ const UsersPage = () => {
     );
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -62,24 +67,12 @@ const UsersPage = () => {
             onDelete={handleDelete} 
           />
 
-          {/* Pagination Controls */}
-          <div className="flex justify-center mt-4 space-x-2">
-            <button
-              className={`px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <span className="px-4 py-2 bg-gray-200 rounded">{currentPage} / {totalPages}</span>
-            <button
-              className={`px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 ${currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""}`}
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
+          {/* Use the Pagination component */}
+          <Pagination 
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </>
       ) : (
         <div>No users found.</div>

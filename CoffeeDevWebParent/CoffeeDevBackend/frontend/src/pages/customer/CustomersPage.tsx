@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AdminTable from "../../components/AdminTable";
 import useFetchData from "../../useFetchData";
 import { Customer } from "../../type/Customer";
+import Pagination from "../../components/Pagination";
 
 const CustomersPage = () => {
   const { data: customers = [], loading, error, setData } = useFetchData<Customer[]>(
@@ -28,6 +29,10 @@ const CustomersPage = () => {
     setData((prevCustomers: Customer[] | null) => 
       prevCustomers ? prevCustomers.filter((c) => c.id !== customer.id) : []
     );
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -59,23 +64,11 @@ const CustomersPage = () => {
           />
 
           {/* Pagination Controls */}
-          <div className="flex justify-center mt-4 space-x-2">
-            <button
-              className={`px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <span className="px-4 py-2 bg-gray-200 rounded">{currentPage} / {totalPages}</span>
-            <button
-              className={`px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 ${currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""}`}
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
+          <Pagination 
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </>
       ) : (
         <div>No customers found.</div>
