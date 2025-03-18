@@ -190,19 +190,26 @@ public class UserRestController {
     }
 
     private User convertToEntity(UserDTO userDTO) {
-        User user = modelMapper.map(userDTO, User.class);
+        User user = new User();
+        user.setId(userDTO.getId());
+        user.setName(userDTO.getName());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        user.setPhoto(userDTO.getPhoto());
+        user.setEnabled(userDTO.isEnabled());
 
-        // Chuyển đổi tên role thành đối tượng Role
-        if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
-            List<Role> roles = service.listRoles();
-            for (String roleName : userDTO.getRoles()) {
-                roles.stream()
-                        .filter(role -> role.getName().equals(roleName))
-                        .findFirst()
-                        .ifPresent(user::addRole);
+        // ✅ Fix: Lấy danh sách Role từ DB thay vì nhận trực tiếp từ Request Body
+        Set<Role> roles = new HashSet<>();
+        for (String roleName : userDTO.getRoles()) {
+            Role role = roleRepository.findByName(roleName);
+            if (role == null) {
+                throw new RuntimeException("Role not found: " + roleName);
             }
+            roles.add(role);
         }
+        user.setRoles(roles);
 
         return user;
     }
+
 }
