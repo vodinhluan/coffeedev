@@ -90,6 +90,7 @@ public class WebSecurityConfig {
 			.authorizeHttpRequests(auth -> 
 				auth.requestMatchers("/api/auth/**").permitAll()
 					.requestMatchers("/api/public/**").permitAll()
+					.requestMatchers("/api/upload/**").permitAll()
 					.requestMatchers("/user-photos/**", "/images/**", "/js/**", "/webjars/**").permitAll()
 					.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 					.requestMatchers("/api/users/**").hasAuthority("Admin")

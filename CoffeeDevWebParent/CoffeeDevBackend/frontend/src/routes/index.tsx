@@ -12,6 +12,7 @@ import CustomersPage from "../pages/customer/CustomersPage";
 import ProtectedRoute from "./ProtectedRoute";
 import UserDetailPage from "../pages/user/UserDetailPage";
 import NotFoundPage from "../pages/errors/NotFoundPage";
+import CreateUserPage from "../pages/user/CreateUserPage";
 
 const AppRoutes = () => {
   const isAuthenticated = useRecoilValue(authState);
@@ -35,8 +36,10 @@ const AppRoutes = () => {
           <Route path="products" element={<ProductsPage />} />
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="customers" element={<CustomersPage />} />
+
           <Route path="users" element={<UsersPage />} />
           <Route path="/users/:id" element={<UserDetailPage />} />
+          <Route path="create-user" element={<CreateUserPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

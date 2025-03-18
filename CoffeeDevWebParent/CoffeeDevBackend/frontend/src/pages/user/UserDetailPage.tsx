@@ -60,7 +60,7 @@ const UserDetailPage = () => {
                     <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Edit User</h1>
 
                     <div className="flex items-center justify-center mb-6">
-                        <img src={formData.photo || "https://via.placeholder.com/100"} alt="User Avatar" className="w-24 h-24 rounded-full shadow-md" />
+                        <img src={formData.photo || "../../../public/avatar_default.png"} alt="User Avatar" className="w-24 h-24 rounded-full shadow-md" />
                     </div>
 
                     <div className="grid grid-cols-2 gap-6">

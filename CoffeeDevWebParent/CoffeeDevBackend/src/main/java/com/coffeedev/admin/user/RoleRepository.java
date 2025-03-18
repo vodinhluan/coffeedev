@@ -8,4 +8,7 @@ import com.coffeedev.common.entity.Role;
 @Repository
 public interface RoleRepository extends CrudRepository<Role, Integer> {
 
+    // write findByName(role.getName());
+    Role findByName(String name);
+
 }

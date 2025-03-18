@@ -1,7 +1,9 @@
 package com.coffeedev.admin.user;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import com.coffeedev.common.entity.Role;
 import com.coffeedev.common.entity.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import jakarta.transaction.Transactional;
+
 @Service
 @Transactional
 
@@ -24,93 +27,110 @@ public class UserService {
 
 	@Autowired
 	private RoleRepository roleRepo;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public List<User>listAll() {
+	public List<User> listAll() {
 		return (List<User>) userRepo.findAll();
 	}
-	
-	
+
 	public Page<User> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
 		Sort sort = Sort.by(sortField);
-		sort = sortDir.equals("asc") ? sort.ascending():sort.descending();
+		sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
 		Pageable pageable = PageRequest.of(pageNum - 1, USERS_PER_PAGE, sort);
 		if (keyword != null) {
 			return userRepo.findAll(keyword, pageable);
 		}
 		return userRepo.findAll(pageable);
 	}
-	
 
-	public List<Role>listRoles() {
+	public List<Role> listRoles() {
 		return (List<Role>) roleRepo.findAll();
 	}
 
+	// write function createUser
+	@Transactional
+	public User createUser(User user) {
+		// Lấy Role từ DB nếu chưa được thực hiện ở Controller
+		if (user.getRoles() != null) {
+			Set<Role> roles = new HashSet<>();
+			for (Role role : user.getRoles()) {
+				Role existingRole = roleRepo.findByName(role.getName());
+				if (existingRole != null) {
+					roles.add(existingRole);
+				} else {
+					// Hoặc throw exception nếu role không tồn tại
+					throw new RuntimeException("Role không tồn tại: " + role.getName());
+				}
+			}
+			user.setRoles(roles);
+		}
+
+		return userRepo.save(user);
+	}
 
 	public User save(User user) {
 		boolean isUpdatingUser = (user.getId() != null);
-		
+
 		if (isUpdatingUser) {
 			User existingUser = userRepo.findById(user.getId()).get();
-			
+
 			if (user.getPassword().isEmpty()) {
 				user.setPassword(existingUser.getPassword());
 			} else {
 				encodePassword(user);
 			}
-			
+
 		} else {
 			encodePassword(user);
 		}
-		
+
 		return userRepo.save(user);
 	}
-	
-	private void encodePassword(User user) { 
+
+	private void encodePassword(User user) {
 		String encodePassword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(encodePassword);
 	}
-	
+
 	public boolean isEmailUnique(Integer id, String email) {
-		User userByEmail =  userRepo.getUserByEmail(email); 
-		
-		if (userByEmail == null) return true; 
-				boolean isCreatingNew = (id == null); 
-		
+		User userByEmail = userRepo.getUserByEmail(email);
+
+		if (userByEmail == null)
+			return true;
+		boolean isCreatingNew = (id == null);
+
 		if (isCreatingNew) {
-			if (userByEmail != null) return false; 
+			if (userByEmail != null)
+				return false;
 		} else {
-			if(!userByEmail.getId().equals(id)) { 
+			if (!userByEmail.getId().equals(id)) {
 				return false;
 			}
 		}
-		return true;		
+		return true;
 	}
-	
+
 	public User get(Integer id) throws UserNotFoundException {
 		try {
 			return userRepo.findById(id).get();
 		} catch (NoSuchElementException ex) {
-			throw new UserNotFoundException("Không tìm thấy user nào với id: "+ id);
+			throw new UserNotFoundException("Không tìm thấy user nào với id: " + id);
 		}
 	}
-	
+
 	public void delete(Integer id) throws UserNotFoundException {
-		Long countById =  userRepo.countById(id);
+		Long countById = userRepo.countById(id);
 		if (countById == null || countById == 0) {
-			throw new UserNotFoundException("Không tìm thấy user nào với id: "+ id);
+			throw new UserNotFoundException("Không tìm thấy user nào với id: " + id);
 		}
-		
+
 		userRepo.deleteById(id);
 	}
-	
+
 	public void updateUserEnabledStatus(Integer id, boolean enabled) {
 		userRepo.updateEnabledStatus(id, enabled);
 	}
-	
-	
-	
-	
+
 }
