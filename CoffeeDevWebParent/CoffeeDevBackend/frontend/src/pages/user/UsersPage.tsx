@@ -29,7 +29,7 @@ const UsersPage = () => {
 
   const handleDelete = (user: User) => {
     console.log("Delete user: ", user);
-    setData((prevUsers: User[] | null) => 
+    setData((prevUsers: User[] | null) =>
       prevUsers ? prevUsers.filter((u) => u.id !== user.id) : []
     );
   };
@@ -55,22 +55,40 @@ const UsersPage = () => {
 
       {currentUsers.length > 0 ? (
         <>
-          <AdminTable<User> 
-            data={currentUsers} 
+          <AdminTable<User>
+            data={currentUsers}
             columns={[
               { header: "ID", accessor: "id" },
               { header: "Name", accessor: "name" },
               { header: "Email", accessor: "email" },
-              { header: "Photo", accessor: "photo" },
+              {
+                header: "Photo",
+                accessor: "photo",
+                cell: (row) => {
+                  console.log("Hello");
+                  console.log("Photo URL:", row.photo); // ✅ Giờ sẽ log đúng
+                  return (
+                    <img
+                      src={row.photo ? row.photo : "/avatar_default.png"}
+                      alt={row.name}
+                      className="w-16 h-16 rounded-full object-cover"
+                    />
+                  );
+                },
+              },
+              
+
+
               { header: "Status", accessor: "enabled" },
               { header: "Roles", accessor: "roles" },
-            ]} 
-            onEdit={handleEdit} 
-            onDelete={handleDelete} 
+            ]}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
           />
 
+
           {/* Use the Pagination component */}
-          <Pagination 
+          <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}

@@ -1,7 +1,9 @@
+import { JSX } from "react";
 
 interface Column<T> {
   header: string;
   accessor: keyof T;
+  cell?: (row: T) => JSX.Element;
 }
 
 interface AdminTableProps<T extends { id: number }> {
@@ -35,14 +37,16 @@ const AdminTable = <T extends { id: number }>({
             <tr key={item.id} className="hover:bg-gray-100">
               {columns.map((col) => (
                 <td key={String(col.accessor)} className="px-4 py-2 border-b">
-                  {/* ✅ Fix: Properly handle different data types */}
-                  {typeof item[col.accessor] === "boolean"
-                    ? item[col.accessor] 
-                      ? "✅ Active" 
-                      : "❌ Inactive"
-                    : item[col.accessor]?.toString() ?? "N/A"}
+                  {col.cell
+                    ? col.cell(item)
+                    : typeof item[col.accessor] === "boolean"
+                      ? item[col.accessor]
+                        ? "✅ Active"
+                        : "❌ Inactive"
+                      : item[col.accessor]?.toString() ?? "N/A"}
                 </td>
               ))}
+
               <td className="px-4 py-2 border-b">
                 <button
                   className="mr-2 text-blue-500 hover:text-blue-700"

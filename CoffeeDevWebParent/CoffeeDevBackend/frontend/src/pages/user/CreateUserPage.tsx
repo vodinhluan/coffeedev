@@ -22,7 +22,7 @@ const CreateUserPage: React.FC = () => {
     confirmPassword: "",
     photo: "",
     enabled: true,
-    roles: ["USER"],
+    roles: ["Admin"],
   });
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -119,30 +119,30 @@ const CreateUserPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-
+  
     const token = localStorage.getItem("token");
     if (!token) {
       alert("You are not authenticated. Please login first.");
       navigate("/login");
       return;
     }
-
+  
     try {
-      
-      // Nếu có ảnh được chọn, upload lên Cloudinary trước khi submit form
+      let uploadedUrl = formData.photo; // Giữ nguyên nếu có sẵn
+  
       if (selectedFile) {
-        const uploadedUrl = await uploadImage();
-        if (!uploadedUrl) return console.log('error image');
-        
-        setFormData(prev => ({ ...prev, photo: uploadedUrl }));
+        uploadedUrl = await uploadImage(); // Upload ảnh và lấy URL
+        if (!uploadedUrl) return console.log("Error uploading image.");
       }
-
+  
       const userData = {
         ...formData,
-        photo: formData.photo, 
-        roles: formData.roles.map(role => ({ name: role })),
+        photo: uploadedUrl, // Gán URL ảnh vào formData
+        roles: formData.roles, // Giữ roles là mảng string
       };
-
+  
+      console.log("userData gửi đi:", userData);
+  
       const response = await fetch("http://localhost:8082/CoffeeDev/api/users", {
         method: "POST",
         headers: {
@@ -151,9 +151,10 @@ const CreateUserPage: React.FC = () => {
         },
         body: JSON.stringify(userData),
       });
-
-      if (!response.ok) throw new Error(`Failed to create user: ${response.statusText}`);
-
+  
+      if (!response.ok)
+        throw new Error(`Failed to create user: ${response.statusText}`);
+  
       alert("User created successfully!");
       navigate("/users");
     } catch (error) {
@@ -161,6 +162,7 @@ const CreateUserPage: React.FC = () => {
       alert("Failed to create user. Please try again.");
     }
   };
+  
 
   return (
     <div className="max-w-4xl mx-auto p-6">
