@@ -27,12 +27,35 @@ const UsersPage = () => {
     navigate(`/users/${user.id}`);
   };
 
-  const handleDelete = (user: User) => {
-    console.log("Delete user: ", user);
-    setData((prevUsers: User[] | null) =>
-      prevUsers ? prevUsers.filter((u) => u.id !== user.id) : []
-    );
+  const handleDelete = async (user: User) => {
+    if (!window.confirm(`Bạn có chắc muốn xóa user ${user.name}?`)) return;
+  
+    try {
+      const token = localStorage.getItem("token"); // Lấy token từ localStorage (hoặc context)
+      if (!token) throw new Error("Token không tồn tại!");
+  
+      const response = await fetch(`http://localhost:8082/CoffeeDev/api/users/${user.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) throw new Error("Xóa user thất bại!");
+  
+      // Xóa user khỏi danh sách state nếu API xóa thành công
+      setData((prevUsers: User[] | null) =>
+        prevUsers ? prevUsers.filter((u) => u.id !== user.id) : []
+      );
+  
+      alert(`User ${user.name} đã bị xóa!`);
+    } catch (error) {
+      console.error("Lỗi khi xóa user:", error);
+      alert("Không thể xóa user. Vui lòng thử lại!");
+    }
   };
+  
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

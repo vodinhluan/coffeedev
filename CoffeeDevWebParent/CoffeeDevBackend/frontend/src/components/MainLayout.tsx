@@ -13,21 +13,21 @@ const MainLayout = () => {
 
       {/* Nội dung chính + Button toggle nằm cùng một khối để đẩy nhau */}
       <div
-        className={`flex-1 transition-all duration-300 ${
+        className={`flex-1 h-screen overflow-hidden transition-all duration-300 ${
           isSidebarOpen ? "ml-64" : "ml-0"
         }`}
       >
-        {/* Button Toggle, nằm trong div để nó cũng bị đẩy theo */}
+        {/* Button Toggle */}
         <button
           className="md:hidden p-2 text-white bg-[#8b5e3c] fixed top-4 left-4 z-50 transition-all duration-300"
-          style={{ left: isSidebarOpen ? "13rem" : "1rem" }} 
+          style={{ left: isSidebarOpen ? "13rem" : "1rem" }}
           onClick={toggleSidebar}
         >
           ☰
         </button>
 
         {/* Nội dung trang */}
-        <div className="p-4 pl-16">
+        <div className="p-4 pl-16 h-full overflow-y-auto">
           <Outlet />
         </div>
       </div>
@@ -36,3 +36,4 @@ const MainLayout = () => {
 };
 
 export default MainLayout;
+
