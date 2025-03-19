@@ -12,16 +12,18 @@ import com.coffeedev.common.entity.User;
 @Service
 public class CoffeeDevDetailsService implements UserDetailsService {
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByEmail(username);
-		if (user == null) {
-			throw new UsernameNotFoundException("Không tìm thấy user có email: " + username);
-		}
-		return new CoffeeDevUserDetails(user);
-	}
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
+        System.out.println("DEBUG: Loaded user email: " + user.getEmail());
+        System.out.println("DEBUG: Loaded user password: " + user.getPassword()); 
+
+        return new CoffeeDevUserDetails(user);
+    }
 }
+
