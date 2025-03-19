@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUpload, FaUser, FaEnvelope, FaLock } from "react-icons/fa";
+import { useImageUpload } from "../../utils/imageUpload";
 
 interface FormData {
   name: string;
@@ -14,7 +15,6 @@ interface FormData {
 
 const CreateUserPage: React.FC = () => {
   const navigate = useNavigate();
-  const [isUploading, setIsUploading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -25,8 +25,15 @@ const CreateUserPage: React.FC = () => {
     roles: ["Admin"],
   });
   const [errors, setErrors] = useState<Partial<FormData>>({});
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null); 
+  
+  // Use the image upload hook
+  const { 
+    photoPreview, 
+    isUploading, 
+    handleFileChange, 
+    uploadImage, 
+    resetImage 
+  } = useImageUpload();
 
   // Available roles
   const availableRoles = ["Admin", "User", "SalePerson", "Shipper"];
@@ -51,66 +58,26 @@ const CreateUserPage: React.FC = () => {
     });
   };
 
-   // Handle file selection
-   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file); // Lưu file để upload sau
-      const reader = new FileReader();
-      reader.onloadend = () => setPhotoPreview(reader.result as string);
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // Upload ảnh lên Cloudinary (chỉ gọi khi nhấn Submit)
-  const uploadImage = async () => {
-    if (!selectedFile) return null;
-
-    setIsUploading(true);
-    const uploadFormData = new FormData();
-    uploadFormData.append("file", selectedFile);
-
-    try {
-      const response = await fetch("http://localhost:8082/CoffeeDev/api/upload", {
-        method: "POST",
-        mode: "cors", // Ensure CORS is enabled
-        body: uploadFormData,
-      });
-
-      if (!response.ok) throw new Error("Upload failed");
-
-      const data = await response.json();
-      console.log('data: ', data);
-      return data.url; // Trả về URL ảnh trên Cloudinary
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      alert("Failed to upload image. Please try again.");
-      return null;
-    } finally {
-      setIsUploading(false);
-    }
-  };
   const validate = (): boolean => {
     const newErrors: Partial<FormData> = {};
-    
+
     if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Email is invalid";
     }
-    
+
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
     }
-    
+
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
-    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -119,30 +86,31 @@ const CreateUserPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-  
+
     const token = localStorage.getItem("token");
     if (!token) {
       alert("You are not authenticated. Please login first.");
       navigate("/login");
       return;
     }
-  
+
     try {
-      let uploadedUrl = formData.photo; // Giữ nguyên nếu có sẵn
-  
-      if (selectedFile) {
-        uploadedUrl = await uploadImage(); // Upload ảnh và lấy URL
+      let uploadedUrl = formData.photo; // Keep existing if available
+
+      // Only upload if there's a new file selected
+      if (photoPreview && !uploadedUrl) {
+        uploadedUrl = (await uploadImage()) || ""; 
         if (!uploadedUrl) return console.log("Error uploading image.");
       }
-  
+
       const userData = {
         ...formData,
-        photo: uploadedUrl, // Gán URL ảnh vào formData
-        roles: formData.roles, // Giữ roles là mảng string
+        photo: uploadedUrl, // Assign image URL to formData
+        roles: formData.roles, // Keep roles as string array
       };
-  
-      console.log("userData gửi đi:", userData);
-  
+
+      console.log("userData being sent:", userData);
+
       const response = await fetch("http://localhost:8082/CoffeeDev/api/users", {
         method: "POST",
         headers: {
@@ -151,10 +119,10 @@ const CreateUserPage: React.FC = () => {
         },
         body: JSON.stringify(userData),
       });
-  
+
       if (!response.ok)
         throw new Error(`Failed to create user: ${response.statusText}`);
-  
+
       alert("User created successfully!");
       navigate("/users");
     } catch (error) {
@@ -162,20 +130,19 @@ const CreateUserPage: React.FC = () => {
       alert("Failed to create user. Please try again.");
     }
   };
-  
 
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Create New User</h1>
-        <button 
-          onClick={() => navigate("/users")} 
+        <button
+          onClick={() => navigate("/users")}
           className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors text-gray-700"
         >
           Back to Users
         </button>
       </div>
-      
+
       <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
         <div className="grid md:grid-cols-2 gap-6">
           {/* Left Column */}
@@ -194,15 +161,14 @@ const CreateUserPage: React.FC = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className={`w-full pl-10 pr-3 py-2 border ${
-                    errors.name ? "border-red-500" : "border-gray-300"
-                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                  className={`w-full pl-10 pr-3 py-2 border ${errors.name ? "border-red-500" : "border-gray-300"
+                    } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   placeholder="John Doe"
                 />
               </div>
               {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
             </div>
-            
+
             {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -217,15 +183,14 @@ const CreateUserPage: React.FC = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={`w-full pl-10 pr-3 py-2 border ${
-                    errors.email ? "border-red-500" : "border-gray-300"
-                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                  className={`w-full pl-10 pr-3 py-2 border ${errors.email ? "border-red-500" : "border-gray-300"
+                    } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   placeholder="example@email.com"
                 />
               </div>
               {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
             </div>
-            
+
             {/* Password */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -240,15 +205,14 @@ const CreateUserPage: React.FC = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className={`w-full pl-10 pr-3 py-2 border ${
-                    errors.password ? "border-red-500" : "border-gray-300"
-                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                  className={`w-full pl-10 pr-3 py-2 border ${errors.password ? "border-red-500" : "border-gray-300"
+                    } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   placeholder="••••••••"
                 />
               </div>
               {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
             </div>
-            
+
             {/* Confirm Password */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -263,9 +227,8 @@ const CreateUserPage: React.FC = () => {
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className={`w-full pl-10 pr-3 py-2 border ${
-                    errors.confirmPassword ? "border-red-500" : "border-gray-300"
-                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                  className={`w-full pl-10 pr-3 py-2 border ${errors.confirmPassword ? "border-red-500" : "border-gray-300"
+                    } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   placeholder="••••••••"
                 />
               </div>
@@ -274,7 +237,7 @@ const CreateUserPage: React.FC = () => {
               )}
             </div>
           </div>
-          
+
           {/* Right Column */}
           <div className="space-y-6">
             {/* Profile Photo */}
@@ -302,11 +265,10 @@ const CreateUserPage: React.FC = () => {
                   />
                   <label
                     htmlFor="photo-upload"
-                    className={`inline-block px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium ${
-                      isUploading
+                    className={`inline-block px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium ${isUploading
                         ? "bg-gray-300 text-gray-500 cursor-wait"
                         : "bg-white text-gray-700 hover:bg-gray-50 cursor-pointer"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center">
                       <FaUpload className="mr-2" />
@@ -318,7 +280,7 @@ const CreateUserPage: React.FC = () => {
                       type="button"
                       className="mt-2 text-sm text-red-600 hover:text-red-800"
                       onClick={() => {
-                        setPhotoPreview(null);
+                        resetImage();
                         setFormData((prev) => ({ ...prev, photo: "" }));
                       }}
                     >
@@ -328,7 +290,7 @@ const CreateUserPage: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Enabled */}
             <div>
               <div className="flex items-center">
@@ -348,7 +310,7 @@ const CreateUserPage: React.FC = () => {
                 Users that are not enabled cannot log in to the system.
               </p>
             </div>
-            
+
             {/* Roles */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -377,7 +339,7 @@ const CreateUserPage: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Submit Button */}
         <div className="mt-8 flex justify-end">
           <button

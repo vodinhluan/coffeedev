@@ -31,7 +31,7 @@ const UsersPage = () => {
     if (!window.confirm(`Bạn có chắc muốn xóa user ${user.name}?`)) return;
   
     try {
-      const token = localStorage.getItem("token"); // Lấy token từ localStorage (hoặc context)
+      const token = localStorage.getItem("token"); 
       if (!token) throw new Error("Token không tồn tại!");
   
       const response = await fetch(`http://localhost:8082/CoffeeDev/api/users/${user.id}`, {

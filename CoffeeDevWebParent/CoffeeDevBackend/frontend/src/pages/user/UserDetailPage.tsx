@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useFetchData from "../../useFetchData";
 import { User } from "../../type/User";
+import { useImageUpload } from "../../utils/imageUpload";
 
 const ROLES = ["SalePerson", "Admin", "Shipper"];
 
@@ -11,9 +12,14 @@ const UserDetailPage = () => {
     const { data: user, loading, error } = useFetchData<User>(`http://localhost:8082/CoffeeDev/api/users/${id}`);
 
     const [formData, setFormData] = useState<User | null>(null);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-    const [isUploading, setIsUploading] = useState(false);
+    
+    // Initialize the image upload hook with the user's photo URL once it's available
+    const { 
+        photoPreview, 
+        isUploading, 
+        handleFileChange, 
+        uploadImage 
+    } = useImageUpload(user?.photo || '');
 
     useEffect(() => {
         if (user) setFormData(user);
@@ -29,52 +35,14 @@ const UserDetailPage = () => {
         });
     };
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setSelectedFile(file);
-            const reader = new FileReader();
-            reader.onloadend = () => setPhotoPreview(reader.result as string);
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const uploadImage = async () => {
-        if (!selectedFile) return null;
-
-        setIsUploading(true);
-        const uploadFormData = new FormData();
-        uploadFormData.append("file", selectedFile);
-
-        try {
-            const response = await fetch("http://localhost:8082/CoffeeDev/api/upload", {
-                method: "POST",
-                mode: "cors",
-                body: uploadFormData,
-            });
-
-            if (!response.ok) throw new Error("Upload failed");
-
-            const data = await response.json();
-            return data.url;
-        } catch (error) {
-            console.error("Error uploading image:", error);
-            alert("Failed to upload image. Please try again.");
-            return null;
-        } finally {
-            setIsUploading(false);
-        }
-    };
-
     const handleUpdate = async () => {
         if (!formData) return;
 
         try {
             let photoUrl = formData.photo;
-            if (selectedFile) {
-                const uploadedUrl = await uploadImage();
-                if (uploadedUrl) photoUrl = uploadedUrl;
-            }
+            // Only upload if there's a new file selected
+            const newPhotoUrl = await uploadImage();
+            if (newPhotoUrl) photoUrl = newPhotoUrl;
 
             const updatedData = { ...formData, photo: photoUrl };
             const token = localStorage.getItem("token");
