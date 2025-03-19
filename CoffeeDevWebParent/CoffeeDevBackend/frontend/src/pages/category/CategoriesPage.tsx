@@ -43,10 +43,13 @@ const CategoriesPage = () => {
       <h1 className="text-3xl font-bold mb-4">Categories Management</h1>
       <button
         className="bg-green-500 text-white py-2 px-4 rounded mb-4 hover:bg-green-600"
-        onClick={() => console.log("Create category")}
+        onClick={() => {
+          navigate("/create-category");
+        }}
       >
         Create Category
       </button>
+
 
       {currentCategories.length > 0 ? (
         <>

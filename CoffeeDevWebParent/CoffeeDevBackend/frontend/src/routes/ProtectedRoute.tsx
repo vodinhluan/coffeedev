@@ -8,7 +8,6 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ isAuthenticated, children }) => {
   if (!isAuthenticated) {
-    // Nếu không có token, chuyển hướng về trang đăng nhập
     return <Navigate to="/login" replace />;
   }
   return children;
