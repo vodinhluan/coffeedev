@@ -62,17 +62,18 @@ const CategoriesPage = () => {
                 header: "Image",
                 accessor: "image",
                 cell: (row) => {
-                  console.log("Hello");
-                  console.log("Photo URL:", row.image); // ✅ Giờ sẽ log đúng
                   return (
-                    <img
-                      src={row.image ? row.image : "/avatar_default.png"}
-                      alt={row.name}
-                      className="w-16 h-16 rounded-full object-cover"
-                    />
+                    <div className="flex justify-center">
+                      <img
+                        src={row.image ? row.image : "/avatar_default.png"}
+                        alt={row.name}
+                        className="w-16 h-16 rounded-full object-cover"
+                      />
+                    </div>
                   );
                 },
-              }, { header: "Enabled", accessor: "enabled" },
+              }, 
+              { header: "Enabled", accessor: "enabled" },
             ]}
             onEdit={handleEdit}
             onDelete={handleDelete}

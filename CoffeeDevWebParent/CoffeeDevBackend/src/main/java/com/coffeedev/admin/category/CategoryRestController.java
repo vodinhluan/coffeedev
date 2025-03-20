@@ -55,7 +55,6 @@ public class CategoryRestController {
 	}
 
 	@PutMapping("/{id}")
-	// @PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<CategoryDTO> updateCategory(
 			@PathVariable Integer id, 
 			@Valid @RequestBody CategoryDTO categoryDTO) {

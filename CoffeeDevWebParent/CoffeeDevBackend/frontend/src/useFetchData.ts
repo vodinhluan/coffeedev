@@ -9,7 +9,7 @@ const useFetchData = <T,>(url: string, options: RequestInit = {}) => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token"); 
-        console.log('token:  ', token);
+        // console.log('token:  ', token);
         if (!token) throw new Error("Unauthorized: No token found");
 
         const res = await fetch(url, {

@@ -1,38 +1,30 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaUpload, FaAccessibleIcon, FaImage } from "react-icons/fa";
+import { FaUpload, FaImage, FaGlassCheers } from "react-icons/fa";
 import { useImageUpload } from "../../utils/imageUpload";
 
 interface FormData {
   name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  photo: string;
+  image: string;
   enabled: boolean;
-  roles: string[];
 }
 
 const CreateCategoryPage: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    photo: "",
+    image: "",
     enabled: true,
-    roles: ["Admin"],
   });
   const [errors, setErrors] = useState<Partial<FormData>>({});
-  
+
   // Use the image upload hook
-  const { 
-    photoPreview, 
-    isUploading, 
-    handleFileChange, 
-    uploadImage, 
-    resetImage 
+  const {
+    photoPreview,
+    isUploading,
+    handleFileChange,
+    uploadImage,
+    resetImage
   } = useImageUpload();
 
 
@@ -49,7 +41,7 @@ const CreateCategoryPage: React.FC = () => {
     const newErrors: Partial<FormData> = {};
 
     if (!formData.name.trim()) newErrors.name = "Name is required";
-   
+
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -68,39 +60,38 @@ const CreateCategoryPage: React.FC = () => {
     }
 
     try {
-      let uploadedUrl = formData.photo; // Keep existing if available
+      let uploadedUrl = formData.image; // Keep existing if available
 
       // Only upload if there's a new file selected
       if (photoPreview && !uploadedUrl) {
-        uploadedUrl = (await uploadImage()) || ""; 
+        uploadedUrl = (await uploadImage()) || "";
         if (!uploadedUrl) return console.log("Error uploading image.");
       }
 
-      const userData = {
+      const categoryData = {
         ...formData,
-        photo: uploadedUrl, // Assign image URL to formData
-        roles: formData.roles, // Keep roles as string array
+        image: uploadedUrl, // Assign image URL to formData
       };
 
-      console.log("userData being sent:", userData);
+      console.log("categoryData being sent:", categoryData);
 
-      const response = await fetch("http://localhost:8082/CoffeeDev/api/users", {
+      const response = await fetch("http://localhost:8082/CoffeeDev/api/categories", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(categoryData),
       });
 
       if (!response.ok)
-        throw new Error(`Failed to create user: ${response.statusText}`);
+        throw new Error(`Failed to create category: ${response.statusText}`);
 
       alert("Category created successfully!");
-      navigate("/users");
+      navigate("/categories");
     } catch (error) {
-      console.error("Error creating user:", error);
-      alert("Failed to create user. Please try again.");
+      console.error("Error creating category:", error);
+      alert("Failed to create category. Please try again.");
     }
   };
 
@@ -109,7 +100,7 @@ const CreateCategoryPage: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Create New Category</h1>
         <button
-          onClick={() => navigate("/users")}
+          onClick={() => navigate("/categories")}
           className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors text-gray-700"
         >
           Back to Categories
@@ -127,7 +118,7 @@ const CreateCategoryPage: React.FC = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaAccessibleIcon className="text-gray-400" />
+                  <FaGlassCheers  className="text-gray-400" />
                 </div>
                 <input
                   type="text"
@@ -173,8 +164,8 @@ const CreateCategoryPage: React.FC = () => {
                   <label
                     htmlFor="photo-upload"
                     className={`inline-block px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium ${isUploading
-                        ? "bg-gray-300 text-gray-500 cursor-wait"
-                        : "bg-white text-gray-700 hover:bg-gray-50 cursor-pointer"
+                      ? "bg-gray-300 text-gray-500 cursor-wait"
+                      : "bg-white text-gray-700 hover:bg-gray-50 cursor-pointer"
                       }`}
                   >
                     <div className="flex items-center">

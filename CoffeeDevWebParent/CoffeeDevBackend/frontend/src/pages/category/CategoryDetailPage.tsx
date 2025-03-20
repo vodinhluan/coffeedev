@@ -43,7 +43,7 @@ const CategoryDetailPage = () => {
             const newPhotoUrl = await uploadImage();
             if (newPhotoUrl) photoUrl = newPhotoUrl;
 
-            const updatedData = { ...formData, photo: photoUrl };
+            const updatedData = { ...formData, image: photoUrl };
             const token = localStorage.getItem("token");
             const res = await fetch(`http://localhost:8082/CoffeeDev/api/categories/${id}`, {
                 method: "PUT",
@@ -89,9 +89,10 @@ const CategoryDetailPage = () => {
                         </div>
                         
                         <div>
-                            <label className="block text-gray-700 font-medium">Photo</label>
-                            <input type="file" name="photo" onChange={handleFileChange} className="input-field" />
+                            <label className="block text-gray-700 font-medium">Image</label>
+                            <input type="file" name="image" onChange={handleFileChange} className="input-field" />
                         </div>
+
                         
                         <div className="flex items-center mt-4">
                             <input type="checkbox" name="enabled" checked={formData.enabled} onChange={(e) => setFormData({ ...formData, enabled: e.target.checked })} className="mr-2" />

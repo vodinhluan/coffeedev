@@ -49,23 +49,26 @@ public class ProductService {
 
     // ✅ Save or Update Product
     public ProductDTO save(ProductDTO productDTO) {
-        Product product = new Product();
-        
-        if (productDTO.getId() != null) {
-            product.setId(productDTO.getId());
-        }
-        
+        Product product = productRepo.findById(productDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Sản phẩm không tồn tại"));
+    
+        // Cập nhật các trường từ productDTO
         product.setName(productDTO.getName());
         product.setAlias(productDTO.getAlias());
         product.setDescription(productDTO.getDescription());
         product.setPrice(productDTO.getPrice());
-        product.setImage(productDTO.getImage());
         product.setEnabled(productDTO.isEnabled());
         product.setCategory(new Category(productDTO.getCategoryId()));
-
+    
+        // Chỉ cập nhật image nếu có giá trị mới
+        if (productDTO.getImage() != null) {
+            product.setImage(productDTO.getImage());
+        }
+    
         Product savedProduct = productRepo.save(product);
         return convertToDTO(savedProduct);
     }
+    
 
     // ✅ Get Product by ID
     public ProductDTO get(Integer id) throws ProductNotFoundException {

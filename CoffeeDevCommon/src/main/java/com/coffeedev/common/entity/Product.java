@@ -36,7 +36,7 @@ public class Product {
 	@Column(nullable = false)
 	private Double price;
 
-	@Column(length = 64)
+	@Column(length=128, nullable=false)
 	public String image;
 
 	public boolean enabled;

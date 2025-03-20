@@ -19,7 +19,6 @@ const ProductsPage = () => {
   const startIndex = (currentPage - 1) * productsPerPage;
   const endIndex = startIndex + productsPerPage;
   const currentProducts = products ? products.slice(startIndex, endIndex) : [];
-  console.log("Current Products: ", currentProducts);
 
   const handleEdit = (product: Product) => {
     navigate(`/products/${product.id}`);
@@ -44,7 +43,9 @@ const ProductsPage = () => {
       <h1 className="text-3xl font-bold mb-4">Products Management</h1>
       <button
         className="bg-green-500 text-white py-2 px-4 rounded mb-4 hover:bg-green-600"
-        onClick={() => console.log("Create product")}
+        onClick={() => 
+          navigate("/create-product")
+        }
       >
         Create Product
       </button>
@@ -56,7 +57,25 @@ const ProductsPage = () => {
             columns={[
               { header: "ID", accessor: "id" },
               { header: "Name", accessor: "name" },
-              { header: "Image", accessor: "image" },
+              {
+                header: "Image",
+                accessor: "image",
+                cell: (row) => {
+                  return (
+                    <div className="flex justify-center">
+                      <img
+                        src={row.image ? row.image : "/avatar_default.png"}
+                        alt={row.name}
+                        className="w-16 h-16 rounded-full object-cover"
+                      />
+                    </div>
+                  );
+                },
+              }, 
+              { header: "Price", 
+                accessor: "price",
+                cell: (row) => <span>{`${row.price}.000`}</span>
+              },
               { header: "Enabled", accessor: "enabled" },
             ]} 
             onEdit={handleEdit} 

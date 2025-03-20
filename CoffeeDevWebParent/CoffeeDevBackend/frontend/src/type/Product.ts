@@ -1,5 +1,4 @@
 export interface Product {
-    
     id: number;
     name: string;
     alias: string;
@@ -8,10 +7,10 @@ export interface Product {
     image: string;
     enabled: boolean;
     categoryId: number;
-    categoryName: string;
 
-    createdTime: Date;
-    updatedTime: Date;
-    createdBy: string;
-    updatedBy: string;
+    // categoryName: string;
+    // createdTime: Date;
+    // updatedTime: Date;
+    // createdBy: string;
+    // updatedBy: string;
 }
