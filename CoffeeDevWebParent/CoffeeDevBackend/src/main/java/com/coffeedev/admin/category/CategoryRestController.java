@@ -46,7 +46,7 @@ public class CategoryRestController {
 	}
 
 	@PostMapping
-	@PreAuthorize("hasRole('ADMIN')")
+	// @PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
 		Category category = modelMapper.map(categoryDTO, Category.class);
 		Category savedCategory = categoryService.save(category);
@@ -55,7 +55,7 @@ public class CategoryRestController {
 	}
 
 	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+	// @PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<CategoryDTO> updateCategory(
 			@PathVariable Integer id, 
 			@Valid @RequestBody CategoryDTO categoryDTO) {
@@ -67,7 +67,7 @@ public class CategoryRestController {
 	}
 
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+	// @PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> deleteCategory(@PathVariable Integer id) {
 		try {
 			categoryService.delete(id);

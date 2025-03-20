@@ -11,10 +11,10 @@ const CategoriesPage = () => {
   );
 
   const navigate = useNavigate();
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const categoriesPerPage = 5; 
+  const categoriesPerPage = 5;
   const totalPages = categories ? Math.ceil(categories.length / categoriesPerPage) : 0;
   const startIndex = (currentPage - 1) * categoriesPerPage;
   const endIndex = startIndex + categoriesPerPage;
@@ -26,7 +26,7 @@ const CategoriesPage = () => {
 
   const handleDelete = (category: Category) => {
     console.log("Delete category: ", category);
-    setData((prevCategories: Category[] | null) => 
+    setData((prevCategories: Category[] | null) =>
       prevCategories ? prevCategories.filter((c) => c.id !== category.id) : []
     );
   };
@@ -53,20 +53,33 @@ const CategoriesPage = () => {
 
       {currentCategories.length > 0 ? (
         <>
-          <AdminTable<Category> 
-            data={currentCategories} 
+          <AdminTable<Category>
+            data={currentCategories}
             columns={[
               { header: "ID", accessor: "id" },
               { header: "Name", accessor: "name" },
-              { header: "Image", accessor: "image" },
-              { header: "Enabled", accessor: "enabled" },
-            ]} 
-            onEdit={handleEdit} 
-            onDelete={handleDelete} 
+              {
+                header: "Image",
+                accessor: "image",
+                cell: (row) => {
+                  console.log("Hello");
+                  console.log("Photo URL:", row.image); // ✅ Giờ sẽ log đúng
+                  return (
+                    <img
+                      src={row.image ? row.image : "/avatar_default.png"}
+                      alt={row.name}
+                      className="w-16 h-16 rounded-full object-cover"
+                    />
+                  );
+                },
+              }, { header: "Enabled", accessor: "enabled" },
+            ]}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
           />
 
           {/* Pagination Controls */}
-          <Pagination 
+          <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}

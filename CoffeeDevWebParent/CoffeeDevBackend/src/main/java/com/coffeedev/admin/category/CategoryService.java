@@ -16,8 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.coffeedev.common.entity.Category;
-import com.coffeedev.common.entity.User;
-import com.coffeedev.admin.category.CategoryNotFoundException;
+
 
 @Service
 @Transactional

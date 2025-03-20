@@ -16,11 +16,7 @@ public class CloudinaryConfig {
     private final String apiKey = dotenv.get("CLOUDINARY_API_KEY");
     private final String apiSecret = dotenv.get("CLOUDINARY_API_SECRET");
 
-    public CloudinaryConfig() {
-        System.out.println("Cloud Name: " + cloudName);
-        System.out.println("API Key: " + apiKey);
-        System.out.println("API Secret: " + apiSecret);
-    }
+
 
     @Bean
     public Cloudinary cloudinary() {
