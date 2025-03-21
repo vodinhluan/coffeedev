@@ -4,6 +4,7 @@ import AdminTable from "../../components/AdminTable";
 import useFetchData from "../../useFetchData";
 import Pagination from "../../components/Pagination";
 import { Product } from "../../type/Product";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const ProductsPage = () => {
   const { data: products = [], loading, error, setData } = useFetchData<Product[]>(
@@ -24,18 +25,40 @@ const ProductsPage = () => {
     navigate(`/products/${product.id}`);
   };
 
-  const handleDelete = (product: Product) => {
-    console.log("Delete product: ", product);
-    setData((prevProducts: Product[] | null) => 
-      prevProducts ? prevProducts.filter((c) => c.id !== product.id) : []
-    );
+const handleDelete = async (product: Product) => {
+    if (!window.confirm(`Bạn có chắc muốn xóa product ${product.name}?`)) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Token không tồn tại!");
+
+      const response = await fetch(`http://localhost:8082/CoffeeDev/api/products/${product.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error("Xóa product thất bại!");
+
+      // Xóa product khỏi danh sách state nếu API xóa thành công
+      setData((prevProducts: Product[] | null) =>
+        prevProducts ? prevProducts.filter((u) => u.id !== product.id) : []
+      );
+
+      alert(`Product ${product.name} đã bị xóa!`);
+    } catch (error) {
+      console.error("Lỗi khi xóa product:", error);
+      alert("Không thể xóa product. Vui lòng thử lại!");
+    }
   };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  if (loading) return <div>Loading...</div>;
+if (loading) return <LoadingSpinner />;
   if (error) return <div>Error: {error}</div>;
 
   return (

@@ -3,9 +3,7 @@ package com.coffeedev.common.entity;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import jakarta.persistence.Transient;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,34 +14,31 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-
 @Entity
-@Table(name="categories")
+@Table(name = "categories")
 public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(length=128, nullable=false, unique=true)
+	@Column(length = 128, nullable = false, unique = true)
 	private String name;
 
-	@Column(length=128, nullable=false)
+	@Column(length = 128, nullable = false)
 	private String image;
 
 	private boolean enabled;
 
 	@ManyToOne()
-	@JoinColumn(name="parent_id")
+	@JoinColumn(name = "parent_id")
 	private Category parent;
 
-	@OneToMany(mappedBy="parent")
+	@OneToMany(mappedBy = "parent")
 	private Set<Category> children = new HashSet<Category>();
-	
+
 	@OneToMany(mappedBy = "category")
 	private List<Product> products;
-	
-	
-	
+
 	public List<Product> getProducts() {
 		return products;
 	}
@@ -70,7 +65,7 @@ public class Category {
 		this.image = "default";
 		this.parent = parent;
 	}
-	
+
 	public static Category copyIdandName(Category category) {
 		Category copyCategory = new Category();
 		copyCategory.setId(category.getId());
@@ -86,8 +81,6 @@ public class Category {
 
 		return copyCategory;
 	}
-
-
 
 	public Category(Integer id, String name) {
 		super();
@@ -109,7 +102,7 @@ public class Category {
 	public static Category copyFull(Category category, String name) {
 		Category copyCategory = Category.copyFull(category);
 		copyCategory.setName(name);
-		return copyCategory;		
+		return copyCategory;
 	}
 
 	public Integer getId() {
@@ -162,30 +155,26 @@ public class Category {
 
 	@Transient
 	public String getImagePath() {
-		if (this.id==null) return "/images/category-images.png";
-		return "/category-images/"+this.id+"/"+this.image;
+		if (this.id == null)
+			return "/images/category-images.png";
+		return "/category-images/" + this.id + "/" + this.image;
 	}
-	
-	
-	
-	
+
 	// Delete Category
-		public boolean isHasChildren() {
-			return hasChildren;
-		}
-		
-		public void setHasChildren(boolean hasChildren) {
-			this.hasChildren = hasChildren;
-		}
+	public boolean isHasChildren() {
+		return hasChildren;
+	}
 
-		@Transient
-		private boolean hasChildren;
-		
-		
-		@Override
-		public String toString() {
-			return this.name;
-		}
+	public void setHasChildren(boolean hasChildren) {
+		this.hasChildren = hasChildren;
+	}
 
+	@Transient
+	private boolean hasChildren;
+
+	@Override
+	public String toString() {
+		return this.name;
+	}
 
 }

@@ -4,6 +4,7 @@ import AdminTable from "../../components/AdminTable";
 import useFetchData from "../../useFetchData";
 import { Customer } from "../../type/Customer";
 import Pagination from "../../components/Pagination";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const CustomersPage = () => {
   const { data: customers = [], loading, error, setData } = useFetchData<Customer[]>(
@@ -35,7 +36,7 @@ const CustomersPage = () => {
     setCurrentPage(page);
   };
 
-  if (loading) return <div>Loading...</div>;
+if (loading) return <LoadingSpinner />;
   if (error) return <div>Error: {error}</div>;
 
   return (

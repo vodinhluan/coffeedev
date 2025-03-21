@@ -100,22 +100,22 @@ public class CategoryController {
 		}
 	}	
 
-	@GetMapping("/categories/delete/{id}")
-	public String deleteCategory(@PathVariable(name = "id") Integer id, 
-			Model model,
-			RedirectAttributes redirectAttributes) { // path variable
-		try {
-			service.delete(id);
-			String categoryDir = "../category-images/" + id;
-			FileUploadUtil.removeDir(categoryDir);
+	// @GetMapping("/categories/delete/{id}")
+	// public String deleteCategory(@PathVariable(name = "id") Integer id, 
+	// 		Model model,
+	// 		RedirectAttributes redirectAttributes) { // path variable
+	// 	try {
+	// 		service.delete(id);
+	// 		String categoryDir = "../category-images/" + id;
+	// 		FileUploadUtil.removeDir(categoryDir);
 
-			redirectAttributes.addFlashAttribute("message", 
-					"Loại sản phẩm với ID " + id + " đã được xóa thành công");
-		} catch (CategoryNotFoundException ex) {
-			redirectAttributes.addFlashAttribute("message", ex.getMessage());
-		} 
- 		return "redirect:/categories";
-	}
+	// 		redirectAttributes.addFlashAttribute("message", 
+	// 				"Loại sản phẩm với ID " + id + " đã được xóa thành công");
+	// 	} catch (CategoryNotFoundException ex) {
+	// 		redirectAttributes.addFlashAttribute("message", ex.getMessage());
+	// 	} 
+ 	// 	return "redirect:/categories";
+	// }
 
 	@GetMapping("/categories/{id}/enabled/{status}")
 	public String updateCategoryEnabledStatus(@PathVariable("id") Integer id,

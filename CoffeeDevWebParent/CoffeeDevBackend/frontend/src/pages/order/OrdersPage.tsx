@@ -4,6 +4,7 @@ import AdminTable from "../../components/AdminTable";
 import useFetchData from "../../useFetchData";
 import Pagination from "../../components/Pagination";
 import { Order } from "../../type/Order";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 interface ApiResponse {
   content: Order[];
@@ -21,10 +22,10 @@ const OrdersPage = () => {
   const orders = apiResponse?.content || [];
 
   const navigate = useNavigate();
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const ordersPerPage = 5; 
+  const ordersPerPage = 5;
   const totalPages = Math.ceil(orders.length / ordersPerPage);
   const startIndex = (currentPage - 1) * ordersPerPage;
   const endIndex = startIndex + ordersPerPage;
@@ -39,7 +40,7 @@ const OrdersPage = () => {
     console.log("Delete order: ", order);
     setData((prevResponse: ApiResponse | null) => {
       if (!prevResponse) return { content: [] };
-      
+
       const updatedContent = prevResponse.content.filter(o => o.id !== order.id);
       return { ...prevResponse, content: updatedContent };
     });
@@ -49,7 +50,7 @@ const OrdersPage = () => {
     setCurrentPage(page);
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <LoadingSpinner />;
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -64,8 +65,8 @@ const OrdersPage = () => {
 
       {currentOrders.length > 0 ? (
         <>
-          <AdminTable<Order> 
-            data={currentOrders} 
+          <AdminTable<Order>
+            data={currentOrders}
             columns={[
               { header: "ID", accessor: "id" },
               { header: "Name", accessor: "name" },
@@ -74,13 +75,13 @@ const OrdersPage = () => {
               { header: "Total Cost", accessor: "totalCost" },
               { header: "Payment Method", accessor: "paymentMethod" },
               { header: "Order Status", accessor: "orderStatus" },
-            ]} 
-            onEdit={handleEdit} 
-            onDelete={handleDelete} 
+            ]}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
           />
 
           {/* Pagination Controls */}
-          <Pagination 
+          <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}

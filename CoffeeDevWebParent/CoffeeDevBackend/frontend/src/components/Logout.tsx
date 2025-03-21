@@ -17,7 +17,7 @@ const Logout = () => {
 
   return (
     <button onClick={handleLogout} className="w-full bg-red-500 py-2 rounded-lg hover:bg-red-600 transition duration-300">
-      Đăng xuất
+      Logout
     </button>
   );
 };

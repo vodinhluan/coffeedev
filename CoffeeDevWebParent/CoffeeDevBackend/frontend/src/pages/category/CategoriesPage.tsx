@@ -4,6 +4,7 @@ import AdminTable from "../../components/AdminTable";
 import useFetchData from "../../useFetchData";
 import Pagination from "../../components/Pagination";
 import { Category } from "../../type/Category";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const CategoriesPage = () => {
   const { data: categories = [], loading, error, setData } = useFetchData<Category[]>(
@@ -24,18 +25,40 @@ const CategoriesPage = () => {
     navigate(`/categories/${category.id}`);
   };
 
-  const handleDelete = (category: Category) => {
-    console.log("Delete category: ", category);
-    setData((prevCategories: Category[] | null) =>
-      prevCategories ? prevCategories.filter((c) => c.id !== category.id) : []
-    );
+const handleDelete = async (category: Category) => {
+    if (!window.confirm(`Bạn có chắc muốn xóa category ${category.name}?`)) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Token không tồn tại!");
+
+      const response = await fetch(`http://localhost:8082/CoffeeDev/api/categories/${category.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error("Xóa category thất bại!");
+
+      // Xóa category khỏi danh sách state nếu API xóa thành công
+      setData((prevCategories: Category[] | null) =>
+        prevCategories ? prevCategories.filter((u) => u.id !== category.id) : []
+      );
+
+      alert(`Category ${category.name} đã bị xóa!`);
+    } catch (error) {
+      console.error("Lỗi khi xóa category:", error);
+      alert("Không thể xóa category. Vui lòng thử lại!");
+    }
   };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  if (loading) return <div>Loading...</div>;
+if (loading) return <LoadingSpinner />;
   if (error) return <div>Error: {error}</div>;
 
   return (

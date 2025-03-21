@@ -7,6 +7,7 @@ import { useImageUpload } from "../../utils/imageUpload";
 interface Category {
     id: number;
     name: string;
+    enabled: boolean;
 }
 
 const ProductDetailPage = () => {
@@ -16,6 +17,8 @@ const ProductDetailPage = () => {
 
     const [formData, setFormData] = useState<Product | null>(null);
     const [categories, setCategories] = useState<Category[]>([]);
+    const filteredCategories = categories?.filter(cat => cat.enabled);
+
 
 
     // Initialize the image upload hook with the product's photo URL once it's available
@@ -140,7 +143,7 @@ const ProductDetailPage = () => {
                                 onChange={handleChange}
                                 className="input-field"
                             >
-                                {categories.map((category) => (
+                                {filteredCategories.map((category) => (
                                     <option key={category.id} value={category.id}>
                                         {category.name}
                                     </option>

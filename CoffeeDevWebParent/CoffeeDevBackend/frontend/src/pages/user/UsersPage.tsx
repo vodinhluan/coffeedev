@@ -4,6 +4,7 @@ import AdminTable from "../../components/AdminTable";
 import Pagination from "../../components/Pagination";
 import { User } from "../../type/User";
 import useFetchData from "../../useFetchData";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const UsersPage = () => {
   // Fetch user data
@@ -61,7 +62,7 @@ const UsersPage = () => {
     setCurrentPage(page);
   };
 
-  if (loading) return <div>Loading...</div>;
+if (loading) return <LoadingSpinner />;
   if (error) return <div>Error: {error}</div>;
 
   return (

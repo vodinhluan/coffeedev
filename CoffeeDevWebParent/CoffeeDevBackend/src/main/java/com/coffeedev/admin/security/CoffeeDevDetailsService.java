@@ -20,9 +20,6 @@ public class CoffeeDevDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
-        System.out.println("DEBUG: Loaded user email: " + user.getEmail());
-        System.out.println("DEBUG: Loaded user password: " + user.getPassword()); 
-
         return new CoffeeDevUserDetails(user);
     }
 }
