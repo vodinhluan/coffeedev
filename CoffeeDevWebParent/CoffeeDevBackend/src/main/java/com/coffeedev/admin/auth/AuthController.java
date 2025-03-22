@@ -31,8 +31,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody AuthRequest loginRequest) {
-        System.out.println("🔍 [DEBUG] Đang đăng nhập với email: " + loginRequest.getEmail());
-        System.out.println("🔍 [DEBUG] Mật khẩu nhập vào: " + loginRequest.getPassword());
+        // System.out.println("🔍 [DEBUG] Đang đăng nhập với email: " + loginRequest.getEmail());
+        // System.out.println("🔍 [DEBUG] Mật khẩu nhập vào: " + loginRequest.getPassword());
         System.out.println(new BCryptPasswordEncoder().encode(loginRequest.getPassword()));
         // $2a$10$bT4E7Zap0OJmqsC7U9UQbe9azUcxhyoAyFL3nSiq7XaMEvzPM1s/m
         // $2a$10$NWwo6TtygCz3cS44QeISC.gow8PcFQfC1eieAo7.zU5QsHcCFAD..

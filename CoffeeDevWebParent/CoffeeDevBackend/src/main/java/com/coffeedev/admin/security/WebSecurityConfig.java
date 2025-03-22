@@ -88,6 +88,8 @@ public class WebSecurityConfig {
 						.requestMatchers("/api/categories/**").hasAnyAuthority("Admin", "SalePerson", "Shipper")
 						.requestMatchers("/api/products/**").hasAnyAuthority("Admin", "SalePerson", "Shipper")
 						.requestMatchers("/api/customers/**", "/api/orders/**").hasAnyAuthority("Admin")
+						.requestMatchers("/api/ingredients/**", "/api/ingredients/**").hasAnyAuthority("Admin")
+
 						.anyRequest().authenticated());
 
 		http.authenticationProvider(authenticationProvider());
