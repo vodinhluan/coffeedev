@@ -118,9 +118,15 @@ const ProductDetailPage = () => {
                             <input type="text" name="name" value={formData.alias} onChange={handleChange} className="input-field" />
                         </div>
 
-                        <div>
+                        <div className="col-span-2">
                             <label className="block text-gray-700 font-medium">Description</label>
-                            <textarea name="description" value={formData.description} className="input-field" />
+                            <textarea
+                                name="description"
+                                value={formData.description}
+                                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-slate-400 min-h-[120px]"
+                                placeholder="Enter product description..."
+                            />
                         </div>
 
 

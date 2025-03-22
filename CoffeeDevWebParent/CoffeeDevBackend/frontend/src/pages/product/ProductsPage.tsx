@@ -1,21 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminTable from "../../components/AdminTable";
 import useFetchData from "../../useFetchData";
 import Pagination from "../../components/Pagination";
 import { Product } from "../../type/Product";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import SearchFilterComponent from "../../components/SearchFilterComponent";
 
 const ProductsPage = () => {
   const { data: products = [], loading, error, setData } = useFetchData<Product[]>(
     "http://localhost:8082/CoffeeDev/api/products"
   );
 
+  const [originalProducts, setOriginalProducts] = useState<Product[]>([]);
+
+  // Khi dữ liệu thay đổi, cập nhật danh sách gốc
+  useEffect(() => {
+    if (products && products.length > 0 && originalProducts.length === 0) {
+      setOriginalProducts(products);
+    }
+  }, [products, originalProducts.length]);
+
   const navigate = useNavigate();
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 5; 
+  const productsPerPage = 5;
   const totalPages = products ? Math.ceil(products.length / productsPerPage) : 0;
   const startIndex = (currentPage - 1) * productsPerPage;
   const endIndex = startIndex + productsPerPage;
@@ -25,7 +35,7 @@ const ProductsPage = () => {
     navigate(`/products/${product.id}`);
   };
 
-const handleDelete = async (product: Product) => {
+  const handleDelete = async (product: Product) => {
     if (!window.confirm(`Bạn có chắc muốn xóa product ${product.name}?`)) return;
 
     try {
@@ -58,7 +68,11 @@ const handleDelete = async (product: Product) => {
     setCurrentPage(page);
   };
 
-if (loading) return <LoadingSpinner />;
+
+  const minPrice = 10;
+  const maxPrice = 50;
+
+  if (loading) return <LoadingSpinner />;
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -66,17 +80,41 @@ if (loading) return <LoadingSpinner />;
       <h1 className="text-3xl font-bold mb-4">Products Management</h1>
       <button
         className="bg-green-500 text-white py-2 px-4 rounded mb-4 hover:bg-green-600"
-        onClick={() => 
+        onClick={() =>
           navigate("/create-product")
         }
       >
         Create Product
       </button>
+      
+      <div className="flex justify-between items-center mb-4">
+
+      </div>
+
+      <SearchFilterComponent
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          onSearch={(query: string) => {
+            if (!query.trim()) {
+              setData(originalProducts); // Reset về danh sách gốc
+            } else {
+              const filteredProducts = originalProducts.filter(product =>
+                product.name.toLowerCase().includes(query.toLowerCase())
+              );
+              setData(filteredProducts);
+            }
+          }}
+          onReset={() => setData(originalProducts)}
+          onFilter={(max) => {
+            const filteredProducts = originalProducts.filter(product => product.price <= max);
+            setData(filteredProducts);
+          }}
+        />
 
       {currentProducts.length > 0 ? (
         <>
-          <AdminTable<Product> 
-            data={currentProducts} 
+          <AdminTable<Product>
+            data={currentProducts}
             columns={[
               { header: "ID", accessor: "id" },
               { header: "Name", accessor: "name" },
@@ -94,19 +132,20 @@ if (loading) return <LoadingSpinner />;
                     </div>
                   );
                 },
-              }, 
-              { header: "Price", 
+              },
+              {
+                header: "Price",
                 accessor: "price",
                 cell: (row) => <span>{`${row.price}.000`}</span>
               },
               { header: "Enabled", accessor: "enabled" },
-            ]} 
-            onEdit={handleEdit} 
-            onDelete={handleDelete} 
+            ]}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
           />
 
           {/* Pagination Controls */}
-          <Pagination 
+          <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
