@@ -32,7 +32,8 @@ const Sidebar = ({ isOpen, toggleSidebar }: { isOpen: boolean; toggleSidebar: ()
           { to: "/products", label: "☕ Products" },
           { to: "/categories", label: "📂 Categories" },
           { to: "/customers", label: "👤 Customers" },
-          { to: "/users", label: "👥 Users" }
+          { to: "/users", label: "👥 Users" },
+          { to: "/ingredients", label: "🥛 Ingredients" }
         ].map(({ to, label }) => (
           <li key={to} className="mb-4">
             <NavLink

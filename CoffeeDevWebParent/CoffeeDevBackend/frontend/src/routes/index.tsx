@@ -19,6 +19,9 @@ import ProductDetailPage from "../pages/product/ProductDetailPage";
 import CreateProductPage from "../pages/product/CreateProductPage";
 import OrderDetailPage from "../pages/order/OrderDetailPage";
 import CreateOrderPage from "../pages/order/CreateOrderPage";
+import IngredientsPage from "../pages/ingredient/IngredientsPage";
+import IngredientDetailPage from "../pages/ingredient/IngredientDetailPage";
+import CreateIngredientPage from "../pages/ingredient/CreateIngredientPage";
 
 const AppRoutes = () => {
   const isAuthenticated = useRecoilValue(authState);
@@ -61,6 +64,12 @@ const AppRoutes = () => {
           <Route path="users" element={<UsersPage />} />
           <Route path="/users/:id" element={<UserDetailPage />} />
           <Route path="create-user" element={<CreateUserPage />} />
+
+          {/* Ingredient Routes */}
+          <Route path="ingredients" element={<IngredientsPage />} />
+          <Route path="ingredients/:id" element={<IngredientDetailPage />} />
+          <Route path="create-ingredient" element={<CreateIngredientPage />} />
+
 
         </Route>
         <Route path="*" element={<NotFoundPage />} />
