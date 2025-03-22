@@ -69,9 +69,6 @@ const ProductsPage = () => {
   };
 
 
-  const minPrice = 10;
-  const maxPrice = 50;
-
   if (loading) return <LoadingSpinner />;
   if (error) return <div>Error: {error}</div>;
 
@@ -86,30 +83,33 @@ const ProductsPage = () => {
       >
         Create Product
       </button>
-      
+
       <div className="flex justify-between items-center mb-4">
 
       </div>
 
       <SearchFilterComponent
-          minPrice={minPrice}
-          maxPrice={maxPrice}
-          onSearch={(query: string) => {
-            if (!query.trim()) {
-              setData(originalProducts); // Reset về danh sách gốc
-            } else {
-              const filteredProducts = originalProducts.filter(product =>
-                product.name.toLowerCase().includes(query.toLowerCase())
-              );
-              setData(filteredProducts);
-            }
-          }}
-          onReset={() => setData(originalProducts)}
-          onFilter={(max) => {
-            const filteredProducts = originalProducts.filter(product => product.price <= max);
+        minPrice={10}
+        maxPrice={50}
+        onSearch={(query: string) => {
+          if (!query.trim()) {
+            setData(originalProducts); // Reset về danh sách gốc
+          } else {
+            const filteredProducts = originalProducts.filter(product =>
+              product.name.toLowerCase().includes(query.toLowerCase())
+            );
             setData(filteredProducts);
-          }}
-        />
+          }
+        }}
+        onReset={() => setData(originalProducts)}
+        onFilter={(min, max) => {
+          const filteredProducts = originalProducts.filter(product =>
+            product.price >= min && product.price <= max
+          );
+          setData(filteredProducts);
+        }}
+      />
+
 
       {currentProducts.length > 0 ? (
         <>

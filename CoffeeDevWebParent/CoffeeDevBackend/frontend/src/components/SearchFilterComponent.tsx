@@ -1,17 +1,18 @@
 import React, { useState } from "react";
+import * as Slider from "@radix-ui/react-slider";
 
 interface SearchFilterProps {
   onSearch: (query: string) => void;
   onReset: () => void;
-  onFilter: (maxPrice: number) => void;
-  minPrice?: number;
-  maxPrice?: number;
+  onFilter: (minPrice: number, maxPrice: number) => void;
+  minPrice: number;
+  maxPrice: number;
 }
 
 const SearchFilterComponent: React.FC<SearchFilterProps> = ({ onSearch, onReset, onFilter, minPrice, maxPrice }) => {
   const [query, setQuery] = useState("");
   const [showFilter, setShowFilter] = useState(false);
-  const [price, setPrice] = useState<number>(maxPrice ?? 0);
+  const [priceRange, setPriceRange] = useState<[number, number]>([minPrice, maxPrice]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
@@ -26,18 +27,18 @@ const SearchFilterComponent: React.FC<SearchFilterProps> = ({ onSearch, onReset,
     onReset();
   };
 
-  // Khi nhấn Enter trong ô search, thực hiện tìm kiếm
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       handleSearch();
     }
   };
 
-  // Khi áp dụng filter, gọi onFilter và ẩn thanh trượt
+  const handlePriceChange = (values: number[]) => {
+    setPriceRange([values[0], values[1]]);
+  };
+
   const handleApplyFilter = () => {
-    if (price !== undefined) {
-      onFilter(price);
-    }
+    onFilter(priceRange[0], priceRange[1]);
     setShowFilter(false);
   };
 
@@ -77,17 +78,36 @@ const SearchFilterComponent: React.FC<SearchFilterProps> = ({ onSearch, onReset,
       {showFilter && (
         <div className="p-4 border border-gray-300 rounded-lg shadow-md bg-white w-full max-w-md mx-auto">
           <h2 className="text-lg font-bold mb-2 text-center">Filter by Price</h2>
-          <div className="text-center mb-2 text-gray-600">
-            {minPrice}K - {price}K
+
+          {/* Hiển thị giá trị Min - Max */}
+          <div className="flex justify-between text-sm text-gray-600 mb-2">
+            <span>{priceRange[0]}.000</span>
+            <span>{priceRange[1]}.000</span>
           </div>
-          <input
-            type="range"
+
+          {/* Thanh trượt Min - Max */}
+          <Slider.Root
+            className="relative flex items-center select-none touch-none w-full h-6"
+            value={priceRange}
+            onValueChange={handlePriceChange}
             min={minPrice}
             max={maxPrice}
-            value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
-            className="w-full"
-          />
+            step={1}
+          >
+            <Slider.Track className="bg-gray-300 relative grow rounded-full h-2">
+              <Slider.Range className="absolute bg-blue-500 rounded-full h-full" />
+            </Slider.Track>
+            <Slider.Thumb
+              className="block w-4 h-4 bg-blue-500 rounded-full shadow cursor-pointer hover:bg-blue-600"
+              aria-label="Minimum Price"
+            />
+            <Slider.Thumb
+              className="block w-4 h-4 bg-blue-500 rounded-full shadow cursor-pointer hover:bg-blue-600"
+              aria-label="Maximum Price"
+            />
+          </Slider.Root>
+
+          {/* Nút Apply */}
           <button
             onClick={handleApplyFilter}
             className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
