@@ -1,7 +1,6 @@
 import axios from "axios";
-import { Ingredient, IngredientLog } from "../type/Ingredient";
 
-const API_URL = "http://localhost:8082/CoffeeDev/api/ingredients";
+const API_URL = "http://localhost:8082/CoffeeDev/api/users";
 
 // ✅ Luôn lấy token mới nhất từ `localStorage`
 const getAuthToken = () => {
@@ -41,24 +40,7 @@ api.interceptors.response.use(
 );
 
 // 🟢 API CALLS
-export const getIngredients = async (): Promise<Ingredient[]> => {
-  const response = await api.get("");
-  return response.data;
-};
-
-export const createIngredient = async (ingredient: Partial<Ingredient>) => {
-  return await api.post("", ingredient);
-};
-
-export const importIngredient = async (id: number, quantity: number, createdBy: string) => {
-  return await api.post(`/import/${id}`, { quantity, createdBy });
-};
-
-export const exportIngredient = async (id: number, quantity: number, createdBy: string) => {
-  return await api.post(`/export/${id}`, { quantity, createdBy });
-};
-
-export const getIngredientLogs = async (): Promise<IngredientLog[]> => {
-  const response = await api.get("/logs");
+export const getAdmins = async (): Promise<{ id: number; name: string }[]> => {
+  const response = await api.get("admins");
   return response.data;
 };

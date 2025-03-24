@@ -33,9 +33,9 @@ public class Ingredient {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    // Quan hệ 1-N với InventoryLog
+    // Quan hệ 1-N với IngredientLog
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<InventoryLog> inventoryLogs = new ArrayList<>();
+    private List<IngredientLog> IngredientLogs = new ArrayList<>();
 
     // Constructor
     public Ingredient() {
@@ -102,12 +102,12 @@ public class Ingredient {
         return updatedAt;
     }
 
-    public List<InventoryLog> getInventoryLogs() {
-        return inventoryLogs;
+    public List<IngredientLog> getIngredientLogs() {
+        return IngredientLogs;
     }
 
-    public void setInventoryLogs(List<InventoryLog> inventoryLogs) {
-        this.inventoryLogs = inventoryLogs;
+    public void setIngredientLogs(List<IngredientLog> IngredientLogs) {
+        this.IngredientLogs = IngredientLogs;
     }
 
     public Ingredient orElseThrow(Object object) {

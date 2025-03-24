@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "inventory_logs")
-public class InventoryLog {
+@Table(name = "Ingredient_logs")
+public class IngredientLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,7 @@ public class InventoryLog {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private InventoryLogType type; // IMPORT hoặc EXPORT
+    private IngredientLogType type; // IMPORT hoặc EXPORT
 
     @Column(nullable = false)
     private Double quantity;
@@ -30,7 +30,7 @@ public class InventoryLog {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Date createdAt;
 
-    public InventoryLog() {
+    public IngredientLog() {
     }
 
     @PrePersist
@@ -56,11 +56,11 @@ public class InventoryLog {
         this.ingredient = ingredient;
     }
 
-    public InventoryLogType getType() {
+    public IngredientLogType getType() {
         return type;
     }
 
-    public void setType(InventoryLogType type) {
+    public void setType(IngredientLogType type) {
         this.type = type;
     }
 

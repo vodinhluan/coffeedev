@@ -133,4 +133,9 @@ public class UserService {
 		userRepo.updateEnabledStatus(id, enabled);
 	}
 
+	public List<User> getAdmins() {
+        return userRepo.findByRoles_Name("Admin");
+    }
+
+
 }

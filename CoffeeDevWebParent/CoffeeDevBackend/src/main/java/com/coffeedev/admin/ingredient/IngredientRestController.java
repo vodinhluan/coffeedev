@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.coffeedev.common.dto.IngredientDTO;
-import com.coffeedev.common.dto.InventoryLogDTO;
+import com.coffeedev.common.dto.IngredientLogDTO;
 import com.coffeedev.common.entity.Ingredient;
 
 @RestController
@@ -56,7 +56,7 @@ public class IngredientRestController {
     @PostMapping("/import/{id}")
     public ResponseEntity<IngredientDTO> importIngredient(
             @PathVariable Integer id,
-            @RequestBody InventoryLogDTO logDTO) { // ✅ Nhận JSON body
+            @RequestBody IngredientLogDTO logDTO) { // ✅ Nhận JSON body
         try {
             Ingredient updated = ingredientService.importIngredient(id, logDTO.getQuantity(), logDTO.getCreatedBy());
             return ResponseEntity.ok(convertToDTO(updated));
@@ -69,7 +69,7 @@ public class IngredientRestController {
     @PostMapping("/export/{id}")
     public ResponseEntity<IngredientDTO> exportIngredient(
             @PathVariable Integer id,
-            @RequestBody InventoryLogDTO logDTO) { // ✅ Nhận JSON từ body
+            @RequestBody IngredientLogDTO logDTO) { // ✅ Nhận JSON từ body
         try {
             Ingredient updated = ingredientService.exportIngredient(id, logDTO.getQuantity(), logDTO.getCreatedBy());
             return ResponseEntity.ok(convertToDTO(updated));

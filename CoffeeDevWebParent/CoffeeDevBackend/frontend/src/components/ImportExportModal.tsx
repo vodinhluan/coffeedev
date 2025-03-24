@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Ingredient } from "../type/Ingredient";
 import { exportIngredient, importIngredient } from "../api/ingredientService";
+import { getAdmins } from "../api/userService";
 
 
 interface Props {
@@ -13,6 +14,20 @@ interface Props {
 const ImportExportModal = ({ ingredient, type, onClose, onReload }: Props) => {
   const [quantity, setQuantity] = useState<number>(0);
   const [createdBy, setCreatedBy] = useState<string>("");
+  const [admins, setAdmins] = useState<{ id: number; name: string }[]>([]);
+
+  useEffect(() => {
+    const fetchAdmins = async () => {
+      try {
+        const data = await getAdmins();
+        setAdmins(data);
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách Admin:", error);
+      }
+    };
+    fetchAdmins();
+  }, []);
+
 
   const handleSubmit = async () => {
     try {
@@ -21,6 +36,7 @@ const ImportExportModal = ({ ingredient, type, onClose, onReload }: Props) => {
       } else {
         await exportIngredient(ingredient.id, quantity, createdBy);
       }
+      alert("Thao tác thành công!");
       onReload();
       onClose();
     } catch (error) {
@@ -35,8 +51,18 @@ const ImportExportModal = ({ ingredient, type, onClose, onReload }: Props) => {
         <p>{ingredient.name} ({ingredient.unit})</p>
 
         <input type="number" placeholder="Số lượng" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} className="border p-2 w-full mt-2" />
-        <input type="text" placeholder="Người thực hiện" value={createdBy} onChange={(e) => setCreatedBy(e.target.value)} className="border p-2 w-full mt-2" />
-
+        <select
+          className="border p-2 w-full mt-2"
+          value={createdBy}
+          onChange={(e) => setCreatedBy(e.target.value)}
+        >
+          <option value="">-- Chọn Người thực hiện --</option>
+          {admins.map((admin) => (
+            <option key={admin.id} value={admin.name}>
+              {admin.name}
+            </option>
+          ))}
+        </select>
         <div className="mt-4 flex justify-end">
           <button onClick={onClose} className="mr-2">❌ Hủy</button>
           <button onClick={handleSubmit}>✅ Xác nhận</button>

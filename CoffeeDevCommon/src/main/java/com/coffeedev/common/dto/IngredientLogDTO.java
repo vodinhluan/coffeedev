@@ -2,7 +2,7 @@ package com.coffeedev.common.dto;
 
 import java.util.Date;
 
-public class InventoryLogDTO {
+public class IngredientLogDTO {
     private Integer id;
     private Integer ingredientId;
     private String type; // IMPORT hoặc EXPORT
@@ -10,7 +10,7 @@ public class InventoryLogDTO {
     private String createdBy;
     private Date createdAt;
 
-    public InventoryLogDTO() {}
+    public IngredientLogDTO() {}
 
     public Integer getId() {
         return id;

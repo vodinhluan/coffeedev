@@ -2,10 +2,12 @@ package com.coffeedev.admin.user;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -33,7 +35,10 @@ public interface UserRepository extends PagingAndSortingRepository<User, Integer
 
 	@Query("SELECT u FROM User u WHERE u.email = :email")
 	public Optional<User> findByEmail(@Param("email") String email);
+
+    List<User> findByRoles_Name(String roleName); // Tìm User theo tên Role
 }
+
 
 
 

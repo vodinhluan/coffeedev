@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.coffeedev.common.entity.Ingredient;
-import com.coffeedev.common.entity.InventoryLog;
-import com.coffeedev.common.entity.InventoryLogType;
+import com.coffeedev.common.entity.IngredientLog;
+import com.coffeedev.common.entity.IngredientLogType;
 
 @Service
 @Transactional
@@ -19,7 +19,7 @@ public class IngredientService {
     private IngredientRepository ingredientRepo;
     
     @Autowired
-    private InventoryLogRepository inventoryLogRepo;
+    private IngredientLogRepository IngredientLogRepo;
 
     public List<Ingredient> listAll() {
         return (List<Ingredient>) ingredientRepo.findAll();
@@ -48,12 +48,12 @@ public class IngredientService {
         ingredient.setQuantity(ingredient.getQuantity() + importQty);
         Ingredient savedIngredient = ingredientRepo.save(ingredient);
         
-        InventoryLog log = new InventoryLog();
+        IngredientLog log = new IngredientLog();
         log.setIngredient(savedIngredient);
-        log.setType(InventoryLogType.IMPORT);
+        log.setType(IngredientLogType.IMPORT);
         log.setQuantity(importQty);
         log.setCreatedBy(createdBy);
-        inventoryLogRepo.save(log);
+        IngredientLogRepo.save(log);
         
         return savedIngredient;
     }
@@ -71,12 +71,12 @@ public class IngredientService {
         ingredient.setQuantity(ingredient.getQuantity() - exportQty);
         Ingredient savedIngredient = ingredientRepo.save(ingredient);
         
-        InventoryLog log = new InventoryLog();
+        IngredientLog log = new IngredientLog();
         log.setIngredient(savedIngredient);
-        log.setType(InventoryLogType.EXPORT);
+        log.setType(IngredientLogType.EXPORT);
         log.setQuantity(exportQty);
         log.setCreatedBy(createdBy);
-        inventoryLogRepo.save(log);
+        IngredientLogRepo.save(log);
         
         return savedIngredient;
     }

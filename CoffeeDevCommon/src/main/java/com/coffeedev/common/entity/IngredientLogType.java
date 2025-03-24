@@ -1,6 +1,6 @@
 package com.coffeedev.common.entity;
 
-public enum InventoryLogType {
+public enum IngredientLogType {
     IMPORT,
     EXPORT
 }

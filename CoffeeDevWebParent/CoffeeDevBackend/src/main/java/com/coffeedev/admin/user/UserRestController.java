@@ -114,6 +114,11 @@ public class UserRestController {
         return ResponseEntity.ok("User created successfully");
     }
 
+    @GetMapping("/admins")
+    public List<User> getAdmins() {
+        return service.getAdmins();
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Integer id, @Valid @RequestBody UserDTO userDTO) {
         try {
