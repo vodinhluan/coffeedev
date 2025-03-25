@@ -14,14 +14,14 @@ import com.coffeedev.product.ProductService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
 @Controller
 public class MainController {
 	@GetMapping("/index")
 	public String viewHomePage() {
 		return "index";
 	}
-	
-	
+
 	@GetMapping("/login")
 	public String viewLoginPage() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -30,24 +30,21 @@ public class MainController {
 		}
 
 		return "redirect:/";
-	}	
-	
-	
+	}
+
 	@GetMapping("/about")
 	public String viewAbout() {
 		return "about";
 	}
-	
+
 	@GetMapping("/shop")
 	public String viewShop() {
 		return "shop";
 	}
-	
+
 	@GetMapping("/contact")
 	public String viewServices() {
 		return "contact";
 	}
-	
-	
-	
+
 }

@@ -10,7 +10,7 @@
 			<input type="submit" value="Logout" />
 		</form>
 	</th:block>
-	<div th:replace="navigation :: menu"></div>
+    <div th:replace="navigation :: menu"></div>
 
 	<!-- END nav -->
 
@@ -69,7 +69,6 @@
 			</div>
 		</div>
 	</section>
-
 
 
 	<section class="ftco-about d-md-flex">
@@ -135,8 +134,6 @@
 						</div>
 					</div>
 				</div>
-
-
 			</div>
 		</div>
 	</section>
@@ -155,7 +152,7 @@
 				<div class="col-md-4">
 					<div class="card m-2" style="background-color: chocolate;">
 						<div class="card-body" style="text-align: center;">
-							<img th:src="@{${product.imagePath}}" width="170px" height="180px">
+							<img th:src="@{${product.image}}" width="170px" height="180px">
 							<h5 class="card-title" th:text="${product.name}"></h5>
 							<a class="btn" style="text-align: center; background-color:rgb(255, 202, 104);"
 								th:href="@{/product_detail/{alias}(alias=${product.alias})}">Chi Tiết</a>
