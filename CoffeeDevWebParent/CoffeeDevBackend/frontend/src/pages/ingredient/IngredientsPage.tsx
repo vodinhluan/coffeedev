@@ -53,6 +53,7 @@ const IngredientsPage = () => {
           setSelectedIngredient(ing);
           setModalType(type);
         }}
+        onReload={loadIngredients} // ✅ Đảm bảo truyền đúng hàm reload
       />
 
       {/* Modal nhập/xuất nguyên liệu */}

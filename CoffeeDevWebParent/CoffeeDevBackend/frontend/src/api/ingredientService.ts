@@ -62,3 +62,7 @@ export const getIngredientLogs = async (): Promise<IngredientLog[]> => {
   const response = await api.get("/logs");
   return response.data;
 };
+
+export const deleteIngredient = async (id: number) => {
+  return await api.delete(`/${id}`);
+}
