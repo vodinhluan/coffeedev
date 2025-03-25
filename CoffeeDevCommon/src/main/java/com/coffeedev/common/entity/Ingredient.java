@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.coffeedev.common.dto.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "ingredients")
 public class Ingredient {
@@ -34,7 +37,8 @@ public class Ingredient {
     private Date updatedAt;
 
     // Quan hệ 1-N với IngredientLog
-    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIgnore 
     private List<IngredientLog> IngredientLogs = new ArrayList<>();
 
     // Constructor

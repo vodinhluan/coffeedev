@@ -1,17 +1,21 @@
 package com.coffeedev.common.entity;
 
+import com.coffeedev.common.dto.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Ingredient_logs")
+@Table(name = "ingredient_logs")
+@JsonIgnoreProperties({"ingredient"})
 public class IngredientLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // Quan hệ Many-to-One với Ingredient
     @ManyToOne
     @JoinColumn(name = "ingredient_id", nullable = false)
     private Ingredient ingredient;
@@ -28,14 +32,12 @@ public class IngredientLog {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
     private Date createdAt;
 
-    public IngredientLog() {
-    }
-
     @PrePersist
-    protected void onCreate() {
-        createdAt = new Date();
+    private void prePersist() {
+        this.createdAt = new Date();
     }
 
     // Getters & Setters
@@ -82,5 +84,9 @@ public class IngredientLog {
 
     public Date getCreatedAt() {
         return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }

@@ -8,8 +8,8 @@ export interface Ingredient {
 
 export interface IngredientLog {
     id: number;
-    ingredientId: number;
-    type: "import" | "export";
+    ingredientName: string;
+    type: "IMPORT" | "EXPORT";
     quantity: number;
     createdBy: string;
     createdAt: string;

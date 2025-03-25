@@ -1,17 +1,26 @@
 package com.coffeedev.common.dto;
 
-import java.util.Date;
+import com.coffeedev.common.entity.IngredientLog;
+import com.coffeedev.common.entity.IngredientLogType;
 
 public class IngredientLogDTO {
     private Integer id;
-    private Integer ingredientId;
-    private String type; // IMPORT hoặc EXPORT
+    private String ingredientName; 
+    private IngredientLogType type;
     private Double quantity;
     private String createdBy;
-    private Date createdAt;
+    private String createdAt;
 
-    public IngredientLogDTO() {}
+    public IngredientLogDTO(IngredientLog log) {
+        this.id = log.getId();
+        this.ingredientName = log.getIngredient().getName();
+        this.type = log.getType();
+        this.quantity = log.getQuantity();
+        this.createdBy = log.getCreatedBy();
+        this.createdAt = log.getCreatedAt().toString();
+    }
 
+    // Getters & Setters
     public Integer getId() {
         return id;
     }
@@ -20,19 +29,19 @@ public class IngredientLogDTO {
         this.id = id;
     }
 
-    public Integer getIngredientId() {
-        return ingredientId;
+    public String getIngredientName() {
+        return ingredientName;
     }
 
-    public void setIngredientId(Integer ingredientId) {
-        this.ingredientId = ingredientId;
+    public void setIngredientName(String ingredientName) {
+        this.ingredientName = ingredientName;
     }
 
-    public String getType() {
+    public IngredientLogType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(IngredientLogType type) {
         this.type = type;
     }
 
@@ -52,11 +61,12 @@ public class IngredientLogDTO {
         this.createdBy = createdBy;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
+
 }

@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.coffeedev.admin.ingredient_log.IngredientLogRepository;
 import com.coffeedev.common.entity.Ingredient;
 import com.coffeedev.common.entity.IngredientLog;
 import com.coffeedev.common.entity.IngredientLogType;

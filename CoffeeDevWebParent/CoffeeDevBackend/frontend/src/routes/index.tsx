@@ -22,6 +22,7 @@ import CreateOrderPage from "../pages/order/CreateOrderPage";
 import IngredientsPage from "../pages/ingredient/IngredientsPage";
 import IngredientDetailPage from "../pages/ingredient/IngredientDetailPage";
 import CreateIngredientPage from "../pages/ingredient/CreateIngredientPage";
+import IngredientLogsPage from "../pages/ingredient_log/IngredientLogsPage";
 
 const AppRoutes = () => {
   const isAuthenticated = useRecoilValue(authState);
@@ -69,6 +70,8 @@ const AppRoutes = () => {
           <Route path="ingredients" element={<IngredientsPage />} />
           <Route path="ingredients/:id" element={<IngredientDetailPage />} />
           <Route path="create-ingredient" element={<CreateIngredientPage />} />
+          <Route path="/ingredient-logs" element={<IngredientLogsPage />} /> 
+
 
 
         </Route>
