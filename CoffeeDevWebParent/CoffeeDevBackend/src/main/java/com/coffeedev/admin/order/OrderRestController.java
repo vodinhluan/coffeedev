@@ -20,17 +20,17 @@ public class OrderRestController {
     private OrderService service;
 
     @GetMapping
-    public ResponseEntity<Page<OrderDTO>> listByPage(@RequestParam(defaultValue = "1") int pageNum,
+    public ResponseEntity<?> listByPage(
+            @RequestParam(required = false) Integer pageNum,
             @RequestParam(defaultValue = "id") String sortField,
-            @RequestParam(defaultValue = "asc") String sortDir,
+            @RequestParam(defaultValue = "desc") String sortDir,
             @RequestParam(required = false) String keyword) {
-        Page<Order> page = service.listByPage(pageNum, sortField, sortDir, keyword);
-
-        // Sử dụng OrderMapper thay vì constructor
-        Page<OrderDTO> dtoPage = page.map(order -> OrderMapper.toDTO(order));
-
-        return ResponseEntity.ok(dtoPage);
+    
+        List<OrderDTO> orders = service.listByPage(pageNum, sortField, sortDir, keyword);
+    
+        return ResponseEntity.ok(orders);
     }
+    
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrder(@PathVariable("id") Integer id) {
