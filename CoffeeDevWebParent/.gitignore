@@ -4,6 +4,11 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Maven & Spring Boot project files
+pom.xml
+HELP.md
+.project
+
 ### STS ###
 .apt_generated
 .classpath
