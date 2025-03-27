@@ -8,10 +8,15 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.coffeedev.common.entity.Category;
 
-public interface CategoryRepository extends PagingAndSortingRepository<Category, Integer>, CrudRepository<Category, Integer> {
+public interface CategoryRepository
+		extends PagingAndSortingRepository<Category, Integer>, CrudRepository<Category, Integer> {
 	@Query("SELECT c FROM Category c WHERE  c.enabled =true ORDER BY c.name ASC")
 	public List<Category> findAllEnabled();
-	
+
 	@Query("SELECT c FROM Category c WHERE c.enabled = true AND c.name = ?1")
 	public Category findByNameEnabled(String name);
+
+	@Query("SELECT c FROM Category c LEFT JOIN FETCH c.children WHERE c.enabled = true AND c.parent IS NULL ORDER BY c.name ASC")
+	List<Category> findAllParentCategories();
+
 }

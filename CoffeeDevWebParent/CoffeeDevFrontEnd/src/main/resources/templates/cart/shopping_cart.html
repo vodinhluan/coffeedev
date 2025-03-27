@@ -1,80 +1,105 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments :: page_head('Giỏ Hàng')">
+<head th:replace="fragments :: page_head('Giỏ Hàng')"></head>
+</head>
+
+<style>
+	.custom-margin {
+	  margin-top: 50px; 
+	}
+  
+	@media (min-width: 992px) { 
+	  .custom-margin {
+		margin-top: 120px;
+	  }
+	}
+</style>
 
 <body>
-
-	<div class="container">
 		<div th:replace="navigation :: menu"></div>
 
-		<h1 style="text-align: center; margin-top: 100px;">Your Shopping Cart</h1>
+		<div class="container custom-margin">
+			<div class="shopping-cart-container">
+				<h1 class="text-center mt-24">Giỏ Hàng Của Bạn</h1>
 
-		<div class="row mt-5">
-			<!-- Left Section - List of Products -->
-			<div class="col-md-8">
-				<div th:each="cartItem : ${cartItems}">
-					<div class="row mb-3">
-						<div class="col-md-3">
-							<img th:src="@{${cartItem.product.imagePath}}" width="100%" height="auto"
-								alt="Product Image" />
-						</div>
-						<div class="col-md-3">
-							<h4 th:text="${cartItem.product.name}"></h4>
-							<h4 th:text="${cartItem.product.price}+'00'"></h4>
-							<div
-								th:replace="cart/quantity_control :: quantity_control(${cartItem.quantity}, ${cartItem.product.id})">
+				<div class="row">
+					<!-- Danh sách sản phẩm -->
+					<div class="col-lg-8 mx-auto">
+						<div class="list-group">
+							<div class="list-group-item d-flex align-items-center justify-content-between bg-primary p-3 rounded mb-2" 
+								 th:each="cartItem : ${cartItems}">
+								<!-- Ảnh sản phẩm -->
+								<img th:src="@{${cartItem.product.image}}" alt="Product Image" class="rounded" style="width: 80px; height: auto;">
+		
+								<!-- Thông tin sản phẩm -->
+								<div class="flex-grow-1 ms-3 d-flex justify-content-between align-items-center ml-3 mr-7">
+									<div class="ml-3">
+										<h5 class="mb-1" th:text="${cartItem.product.name}"></h5>
+										<h5 class="mb-0">
+											Giá: <span class="text-white" th:text="${cartItem.product.price} + '00'"></span>
+										</h5>
+									</div>
+									<div class="mr-5">
+										<div th:replace="cart/quantity_control :: quantity_control(${cartItem.quantity}, ${cartItem.product.id})"></div>
+									</div>
+								</div>
+								
+		
+								<!-- Tổng giá sản phẩm -->
+								<div class="mr-2">
+									<h3 class="text-danger fw-bold" th:id="'subtotal' + ${cartItem.product.id}">
+										[[${cartItem.subtotal}]]00
+									</h3>
+								</div>
 							</div>
-
-							<h4 th:id="'subtotal' + ${cartItem.product.id}" class="subtotal">
-								[[${cartItem.subtotal}]]<span>00</span>
-							</h4>
-
 						</div>
 					</div>
 				</div>
-
-				<!-- Right Section - Add Product and Total -->
-				<div class="col-md-4" th:if="${not #lists.isEmpty(cartItems)}">
-					<div>
-						<!--<h3 class="mt-4" id="total">Thành Tiền: [[${estimatedTotal}]]00</h3>-->
-						<a th:href="@{'/checkout'}"
-							style="font-size: 30px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: orangered;">
-							Thanh Toán
-						</a>
+		
+				<!-- Tổng tiền & Thanh toán -->
+				<div class="row mt-4">
+					<div class="col-lg-8 mx-auto">
+						<div class="card p-4 shadow-sm" th:if="${not #lists.isEmpty(cartItems)}">
+							<div class="d-flex justify-content-between">
+								<h4 class="text-dark">Tổng Tiền</h4>
+								<h3 class="text-success fw-bold text-end">[[${estimatedTotal}]]00</h3>
+							</div>
+							<a th:href="@{'/checkout'}" class="btn btn-primary btn-lg mt-3 w-100">Thanh Toán</a>
+						</div>
+						
 					</div>
-
 				</div>
-				<div class="col-md-4" th:if="${#lists.isEmpty(cartItems)}">
-				</div>
-
 			</div>
 		</div>
-		<script type="text/javascript">
-			contextPath = "[[@{/}]]";
-			var csrfHeaderName = "[[${_csrf.headerName}]]";
-			var csrfValue = "[[${_csrf.token}]]";
-		</script>
 
-		<script th:src="@{/js/jquery.min.js}"></script>
-		<script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
-		<script th:src="@{/js/popper.min.js}"></script>
-		<script th:src="@{/js/bootstrap.min.js}"></script>
-		<script th:src="@{/js/jquery.easing.1.3.js}"></script>
-		<script th:src="@{/js/jquery.waypoints.min.js}"></script>
-		<script th:src="@{/js/jquery.stellar.min.js}"></script>
-		<script th:src="@{/js/owl.carousel.min.js}"></script>
-		<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
-		<script th:src="@{/js/aos.js}"></script>
-		<script th:src="@{/js/jquery.animateNumber.min.js}"></script>
-		<script th:src="@{/js/bootstrap-datepicker.js}"></script>
-		<script th:src="@{/js/jquery.timepicker.min.js}"></script>
-		<script th:src="@{/js/scrollax.min.js}"></script>
-		<script th:src="@{/js/main.js}"></script>
-		<script th:src="@{/js/add_to_cart.js}"></script>
-		<script th:src="@{/js/common_modal.js}"></script>
-		<script th:src="@{/js/quantity_control.js}"></script>
-
+		
 </body>
+
+
+<script type="text/javascript">
+	contextPath = "[[@{/}]]";
+	var csrfHeaderName = "[[${_csrf.headerName}]]";
+	var csrfValue = "[[${_csrf.token}]]";
+</script>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/jquery.easing.1.3.js}"></script>
+<script th:src="@{/js/jquery.waypoints.min.js}"></script>
+<script th:src="@{/js/jquery.stellar.min.js}"></script>
+<script th:src="@{/js/owl.carousel.min.js}"></script>
+<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/js/aos.js}"></script>
+<script th:src="@{/js/jquery.animateNumber.min.js}"></script>
+<script th:src="@{/js/bootstrap-datepicker.js}"></script>
+<script th:src="@{/js/jquery.timepicker.min.js}"></script>
+<script th:src="@{/js/scrollax.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/add_to_cart.js}"></script>
+<script th:src="@{/js/common_modal.js}"></script>
+<script th:src="@{/js/quantity_control.js}"></script>
 
 </html>

@@ -1,160 +1,190 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Trang Đăng Nhập</title>
+    <!-- Sử dụng Bootstrap với màu chủ đề liên quan đến coffee -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="icon"
+      href="https://www.pngmart.com/files/1/Coffee-Logo-PNG-Image.png"
+      type="image/x-icon"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,700"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Great+Vibes"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css" />
+    <link rel="stylesheet" href="css/animate.css" />
+    <link rel="stylesheet" href="css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="css/owl.theme.default.min.css" />
+    <link rel="stylesheet" href="css/magnific-popup.css" />
+    <link rel="stylesheet" href="css/aos.css" />
+    <link rel="stylesheet" href="css/ionicons.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css" />
+    <link rel="stylesheet" href="css/jquery.timepicker.css" />
+    <link rel="stylesheet" href="css/flaticon.css" />
+    <link rel="stylesheet" href="css/icomoon.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .container-login {
+        width: 70%;
+        max-width: 500px; 
+        margin-top: 100px; 
+		    margin-bottom: 30px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgb(105, 78, 32);
+        text-align: center;
+      }
 
-<head>
-	<title>Trang Đăng Nhập</title>
-	<!-- Sử dụng Bootstrap với màu chủ đề liên quan đến coffee -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="icon" href="https://www.pngmart.com/files/1/Coffee-Logo-PNG-Image.png" type="image/x-icon">
+      input {
+        background-color:chocolate;
+        color: red;
+      }
+    </style>
+  </head>
 
-	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet">
-
-	<link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
-	<link rel="stylesheet" href="css/animate.css">
-
-	<link rel="stylesheet" href="css/owl.carousel.min.css">
-	<link rel="stylesheet" href="css/owl.theme.default.min.css">
-	<link rel="stylesheet" href="css/magnific-popup.css">
-
-	<link rel="stylesheet" href="css/aos.css">
-
-	<link rel="stylesheet" href="css/ionicons.min.css">
-
-	<link rel="stylesheet" href="css/bootstrap-datepicker.css">
-	<link rel="stylesheet" href="css/jquery.timepicker.css">
-
-
-	<link rel="stylesheet" href="css/flaticon.css">
-	<link rel="stylesheet" href="css/icomoon.css">
-	<link rel="stylesheet" href="css/style.css">
-	<style>
-		body {
-			background-color: #ffeecc;
-			/* Màu nền liên quan đến coffee */
-		}
-
-		.container-login {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			text-align: center;
-			/* Căn giữa nội dung theo chiều ngang */
-			width: 500px;
-			/* Điều chỉnh chiều rộng của phần container-login */
-			background-color: #fff;
-			/* Màu nền của container */
-			padding: 20px;
-			border-radius: 5px;
-			box-shadow: 0 0 10px rgb(105, 78, 32);
-			/* Đổ bóng */
-		}
-
-		#login-form {
-			max-width: 400px;
-			/* Điều chỉnh độ rộng của form */
-			margin: 0 auto;
-			/* Căn giữa form theo chiều ngang */
-		}
-	</style>
-</head>
-
-<body>
-	<div th:replace="navigation :: menu"></div>
-
-
-	<div class="container-login">
-		<h1 class="mt-5" style="color: saddlebrown;">Đăng Nhập</h1>
-
-		<!-- Thông báo thành công và thất bại dưới dạng bảng thông báo Bootstrap -->
-		<div id="success-alert" class="alert alert-success" style="display: none;">
-			Đăng nhập thành công! Chào mừng bạn <span id="user-name"></span>.
-		</div>
-
-		<div id="error-alert" class="alert alert-danger" style="display: none;">
-			Đăng nhập thất bại! Vui lòng kiểm tra tên đăng nhập và mật khẩu.
-		</div>
-
-		<form th:action="@{/login}" method="post" style="max-width: 350px; margin: 0 auto">
-			<div th:if="${param.error}">
-				<p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
-			</div>
-			<div th:if="${param.logout}">
-				<p class="text-warning">You have been logged out.</p>
-			</div>
-
-			<div class="border border-secondary rounded p-3" style="background-color: bisque;">
-				<p>
-					<input type="email" name="email" class="form-control" placeholder="E-mail" required />
-				</p>
-				<p>
-					<input type="password" name="password" class="form-control" placeholder="Password" required />
-				</p>
-				<p>
-					<input type="checkbox" name="remember-me" />&nbsp;Remember Me
-				</p>
-				<p>
-					<input type="submit" value="Login" class="btn btn-primary" />
-				</p>
-			</div>
-
-			<div>
-				or <a th:href="@{/forgot_password}">Forgot Password</a>
-			</div>
-		</form>
-
-		<!-- Liên kết đăng ký -->
-		<p class="mt-3">Nếu chưa có tài khoản, <a th:href="@{/register}">đăng ký tại đây</a>.</p>
-		<div class="mt-3">
-			<a class="btn btn-lg btn-secondary fab fa-google" th:href="@{/oauth2/authorization/google}"
-				style="background-color: red;">&nbsp;&nbsp;Continue with Google</a>
-		</div>
-
-		<div>&nbsp;</div>
-	</div>
-
-	<script>
-		// Lấy form và các phần tử thông báo
-		const loginForm = document.getElementById("login-form");
-		const successAlert = document.getElementById("success-alert");
-		const errorAlert = document.getElementById("error-alert");
-		const userNameSpan = document.getElementById("user-name");
-
-		// Xử lý sự kiện đăng nhập
-		loginForm.addEventListener("submit", function (event) {
-			event.preventDefault();
-
-			// Lấy giá trị từ form
-			const username = document.getElementById("username").value;
-			const password = document.getElementById("password").value;
-
-			// Kiểm tra tài khoản giả
-			if (username === "leomessi@gmail.com" && password === "leomessi123") {
-				// Hiển thị thông báo thành công
-				successAlert.style.display = "block";
-				errorAlert.style.display = "none";
-				userNameSpan.innerText = username;
-
-				// Tùy chỉnh hành vi chuyển hướng sau khi đăng nhập thành công
-				setTimeout(function () {
-					// Chuyển hướng về trang chủ và truyền tên đăng nhập
-					window.location.href = "index.html?user=" + username;
-				}, 2000); // Đợi 2 giây trước khi chuyển hướng
-			} else {
-				// Hiển thị thông báo thất bại
-				successAlert.style.display = "none";
-				errorAlert.style.display = "block";
-			}
-		});
+  <body>
+    <th:block sec:authorize="isAuthenticated()">
+      <form
+        th:action="@{/logout}"
+        method="post"
+        th:hidden="true"
+        name="logoutForm"
+      >
+        <input type="submit" value="Logout" />
+      </form>
+    </th:block>
+    <div th:replace="navigation :: menu"></div>
+    
+    <section class="login-page min-vh-100 d-flex flex-column align-items-center justify-content-center">
+      <div class="container-login">
+        <h1 class="mt-5" style="color: saddlebrown">Đăng Nhập</h1>
+  
+        <!-- Thông báo thành công và thất bại dưới dạng bảng thông báo Bootstrap -->
+        <div id="success-alert" class="alert alert-success" style="display: none">
+          Đăng nhập thành công! Chào mừng bạn <span id="user-name"></span>.
+        </div>
+  
+        <div id="error-alert" class="alert alert-danger" style="display: none">
+          Đăng nhập thất bại! Vui lòng kiểm tra tên đăng nhập và mật khẩu.
+        </div>
+  
+        <form
+          th:action="@{/login}"
+          method="post"
+          style="max-width: 350px; margin: 0 auto"
+        >
+          <div th:if="${param.error}">
+            <p class="text-danger">
+              [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
+            </p>
+          </div>
+          <div th:if="${param.logout}">
+            <p class="text-warning">You have been logged out.</p>
+          </div>
+  
+          <div
+            class="border border-secondary rounded p-3"
+            style="background-color: bisque"
+          >
+            <p>
+              <input
+                type="email"
+                name="email"
+                class="form-control"
+                placeholder="E-mail"
+                required
+              />
+            </p>
+            <p>
+              <input
+                type="password"
+                name="password"
+                class="form-control"
+                placeholder="Password"
+                required
+              />
+            </p>
+            <p><input type="checkbox" name="remember-me" />&nbsp;Remember Me</p>
+            <p>
+              <input type="submit" value="Login" class="btn btn-primary" />
+            </p>
+          </div>
+  
+          <div>or <a th:href="@{/forgot_password}">Forgot Password</a></div>
+        </form>
+  
+        <!-- Liên kết đăng ký -->
+        <p class="mt-3">
+          Nếu chưa có tài khoản, <a th:href="@{/register}">đăng ký tại đây</a>.
+        </p>
+        <div class="mt-3">
+          <a
+            class="btn btn-lg btn-secondary fab fa-google"
+            th:href="@{/oauth2/authorization/google}"
+            style="background-color: red"
+            >&nbsp;&nbsp;Continue with Google</a
+          >
+        </div>
+  
+        <div>&nbsp;</div>
+      </div>
+    </section>
 
 
-		// Xử lý phần đăng nhập thành công -> lưu tên trên thanh nav
+    <script>
+      // Lấy form và các phần tử thông báo
+      const loginForm = document.getElementById("login-form");
+      const successAlert = document.getElementById("success-alert");
+      const errorAlert = document.getElementById("error-alert");
+      const userNameSpan = document.getElementById("user-name");
 
-	</script>
-</body>
+      // Xử lý sự kiện đăng nhập
+      loginForm.addEventListener("submit", function (event) {
+        event.preventDefault();
 
+        // Lấy giá trị từ form
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        // Kiểm tra tài khoản giả
+        if (username === "leomessi@gmail.com" && password === "leomessi123") {
+          // Hiển thị thông báo thành công
+          successAlert.style.display = "block";
+          errorAlert.style.display = "none";
+          userNameSpan.innerText = username;
+
+          // Tùy chỉnh hành vi chuyển hướng sau khi đăng nhập thành công
+          setTimeout(function () {
+            // Chuyển hướng về trang chủ và truyền tên đăng nhập
+            window.location.href = "index.html?user=" + username;
+          }, 2000); // Đợi 2 giây trước khi chuyển hướng
+        } else {
+          // Hiển thị thông báo thất bại
+          successAlert.style.display = "none";
+          errorAlert.style.display = "block";
+        }
+      });
+
+      // Xử lý phần đăng nhập thành công -> lưu tên trên thanh nav
+    </script>
+  </body>
 </html>

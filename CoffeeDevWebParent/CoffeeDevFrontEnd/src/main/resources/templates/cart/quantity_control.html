@@ -2,21 +2,40 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="quantity_control(quantityValue, productId)">
-	<nav>
-		<ul class="pagination">
-			<li class="page-item">
-				<a class="page-link linkMinus" th:pid="${productId}" href=""><b>-</b></a>
-			</li>
-			<li class="page-item">
-				<input type="text" th:value="${quantityValue}" th:id="'quantity' + ${productId}" 
-					onkeydown="return false;" 
-					class="form-control text-center" style="width: 50px; height:200px"/>
-			</li>			
-			<li class="page-item">
-				<a class="page-link linkPlus" th:pid="${productId}" href=""><b>+</b></a>
-			</li>			
-		</ul>
-	</nav>
+    <div class="d-flex align-items-center">
+        <!-- Nút giảm -->
+        <button class="btn btn-lg  fw-bold linkMinus" th:pid="${productId}" type="button" 
+                aria-label="Giảm số lượng">
+            −
+        </button>
+
+        <!-- Input số lượng -->
+        <input type="text" th:value="${quantityValue}" th:id="'quantity' + ${productId}"
+               onkeydown="return false;"
+               class="form-control text-center mx-3 fw-bold quantity-input text-dark"
+               style="width: 60px; height: 50px; font-size: 22px; border: none; background: transparent;"
+               aria-label="Số lượng sản phẩm"
+               title="Nhập số lượng"
+               placeholder="0"/>
+
+        <!-- Nút tăng -->
+        <button class="btn btn-lg  fw-bold linkPlus" th:pid="${productId}" type="button" 
+                aria-label="Tăng số lượng">
+            +
+        </button>
+    </div>
 </div>
+
+<!-- CSS ép màu số -->
+<style>
+    .quantity-input {
+        color: #ff5722 !important; /* Ép màu cam đậm */
+        text-align: center;
+    }
+    .quantity-input:focus {
+        outline: none;
+        box-shadow: none;
+    }
+</style>
 </body>
 </html>

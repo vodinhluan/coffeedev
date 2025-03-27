@@ -6,30 +6,20 @@ import Pagination from "../../components/Pagination";
 import { Order } from "../../type/Order";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
-interface ApiResponse {
-  content: Order[];
-  // You can add other pagination fields from the response if needed
-  // totalPages?: number;
-  // totalElements?: number;
-}
-
 const OrdersPage = () => {
-  const { data: apiResponse = { content: [] }, loading, error, setData } = useFetchData<ApiResponse>(
+  const { data: orders = [], loading, error, setData } = useFetchData<Order[]>(
     "http://localhost:8082/CoffeeDev/api/orders"
   );
-
-  // Extract orders from the content array
-  const orders = apiResponse?.content || [];
 
   const navigate = useNavigate();
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 5;
-  const totalPages = Math.ceil(orders.length / ordersPerPage);
+  const totalPages = Math.ceil((orders?.length || 0) / ordersPerPage);
   const startIndex = (currentPage - 1) * ordersPerPage;
   const endIndex = startIndex + ordersPerPage;
-  const currentOrders = orders.slice(startIndex, endIndex);
+  const currentOrders = (orders ?? []).slice(startIndex, endIndex);
   console.log("Current Orders: ", currentOrders);
 
   const handleEdit = (order: Order) => {
@@ -38,11 +28,9 @@ const OrdersPage = () => {
 
   const handleDelete = (order: Order) => {
     console.log("Delete order: ", order);
-    setData((prevResponse: ApiResponse | null) => {
-      if (!prevResponse) return { content: [] };
-
-      const updatedContent = prevResponse.content.filter(o => o.id !== order.id);
-      return { ...prevResponse, content: updatedContent };
+    setData((prevOrders: Order[] | null) => {
+      if (!prevOrders) return [];
+      return prevOrders.filter(o => o.id !== order.id);
     });
   };
 
