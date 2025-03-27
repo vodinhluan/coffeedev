@@ -4,60 +4,76 @@
 <head th:replace="fragments :: page_head('Giỏ Hàng')"></head>
 </head>
 
-<body>
-    
-        <div th:replace="navigation :: menu"></div>
-		<div class="shopping-cart-container" style="margin-top: 120px;">
-			<h1 class="text-center mt-24">Giỏ Hàng Của Bạn</h1>
+<style>
+	.custom-margin {
+	  margin-top: 50px; 
+	}
+  
+	@media (min-width: 992px) { 
+	  .custom-margin {
+		margin-top: 120px;
+	  }
+	}
+</style>
 
-			<div class="row">
-				<!-- Danh sách sản phẩm -->
-				<div class="col-lg-8 mx-auto">
-					<div class="list-group">
-						<div class="list-group-item d-flex align-items-center justify-content-between bg-primary p-3 rounded mb-2" 
-							 th:each="cartItem : ${cartItems}">
-							<!-- Ảnh sản phẩm -->
-							<img th:src="@{${cartItem.product.image}}" alt="Product Image" class="rounded" style="width: 80px; height: auto;">
-	
-							<!-- Thông tin sản phẩm -->
-							<div class="flex-grow-1 ms-3 d-flex justify-content-between align-items-center ml-3 mr-7">
-								<div class="ml-3">
-									<h5 class="mb-1" th:text="${cartItem.product.name}"></h5>
-									<h5 class="mb-0">
-										Giá: <span class="text-white" th:text="${cartItem.product.price} + '00'"></span>
-									</h5>
+<body>
+		<div th:replace="navigation :: menu"></div>
+
+		<div class="container custom-margin">
+			<div class="shopping-cart-container">
+				<h1 class="text-center mt-24">Giỏ Hàng Của Bạn</h1>
+
+				<div class="row">
+					<!-- Danh sách sản phẩm -->
+					<div class="col-lg-8 mx-auto">
+						<div class="list-group">
+							<div class="list-group-item d-flex align-items-center justify-content-between bg-primary p-3 rounded mb-2" 
+								 th:each="cartItem : ${cartItems}">
+								<!-- Ảnh sản phẩm -->
+								<img th:src="@{${cartItem.product.image}}" alt="Product Image" class="rounded" style="width: 80px; height: auto;">
+		
+								<!-- Thông tin sản phẩm -->
+								<div class="flex-grow-1 ms-3 d-flex justify-content-between align-items-center ml-3 mr-7">
+									<div class="ml-3">
+										<h5 class="mb-1" th:text="${cartItem.product.name}"></h5>
+										<h5 class="mb-0">
+											Giá: <span class="text-white" th:text="${cartItem.product.price} + '00'"></span>
+										</h5>
+									</div>
+									<div class="mr-5">
+										<div th:replace="cart/quantity_control :: quantity_control(${cartItem.quantity}, ${cartItem.product.id})"></div>
+									</div>
 								</div>
-								<div class="mr-5">
-									<div th:replace="cart/quantity_control :: quantity_control(${cartItem.quantity}, ${cartItem.product.id})"></div>
+								
+		
+								<!-- Tổng giá sản phẩm -->
+								<div class="mr-2">
+									<h3 class="text-danger fw-bold" th:id="'subtotal' + ${cartItem.product.id}">
+										[[${cartItem.subtotal}]]00
+									</h3>
 								</div>
-							</div>
-							
-	
-							<!-- Tổng giá sản phẩm -->
-							<div class="mr-2">
-								<h3 class="text-danger fw-bold" th:id="'subtotal' + ${cartItem.product.id}">
-									[[${cartItem.subtotal}]]00
-								</h3>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-	
-			<!-- Tổng tiền & Thanh toán -->
-			<div class="row mt-4">
-				<div class="col-lg-8 mx-auto">
-					<div class="card p-4 shadow-sm" th:if="${not #lists.isEmpty(cartItems)}">
-						<div class="d-flex justify-content-between">
-							<h4 class="text-dark">Tổng Tiền</h4>
-							<h3 class="text-success fw-bold text-end">[[${estimatedTotal}]]00</h3>
+		
+				<!-- Tổng tiền & Thanh toán -->
+				<div class="row mt-4">
+					<div class="col-lg-8 mx-auto">
+						<div class="card p-4 shadow-sm" th:if="${not #lists.isEmpty(cartItems)}">
+							<div class="d-flex justify-content-between">
+								<h4 class="text-dark">Tổng Tiền</h4>
+								<h3 class="text-success fw-bold text-end">[[${estimatedTotal}]]00</h3>
+							</div>
+							<a th:href="@{'/checkout'}" class="btn btn-primary btn-lg mt-3 w-100">Thanh Toán</a>
 						</div>
-						<a th:href="@{'/checkout'}" class="btn btn-primary btn-lg mt-3 w-100">Thanh Toán</a>
+						
 					</div>
-					
 				</div>
 			</div>
 		</div>
+
+		
 </body>
 
 

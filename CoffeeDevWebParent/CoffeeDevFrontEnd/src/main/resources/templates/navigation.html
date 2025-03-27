@@ -139,6 +139,17 @@
           </div>
         </div>
       </nav>
+
+      <th:block sec:authorize="isAuthenticated()">
+        <form
+          th:action="@{/logout}"
+          method="post"
+          th:hidden="true"
+          name="logoutForm"
+        >
+          <input type="submit" value="Logout" />
+        </form>
+      </th:block>
     </div>
   </body>
 </html>

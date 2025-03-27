@@ -870,7 +870,7 @@ h1, h2, h3, h4, h5,
 			z-index: -1;
 		}
 		h3{
-			width: calc(100% - 80px;);
+			width: calc(100% - 80px);
 			font-size: 18px;
 			span{
 				background: $darken;
@@ -939,7 +939,7 @@ h1, h2, h3, h4, h5,
 		background: transparent;
 		padding: 16px 20px;
 	}
-	button,.form-control{;
+	button,.form-control{
 		height: 54px !important;
 		text-align: center;
 		bordeR: 1px solid rgba(255,255,255,.1) !important;
@@ -993,7 +993,7 @@ h1, h2, h3, h4, h5,
 		background: transparent;
 		padding: 16px 20px;
 	}
-	button,.form-control{;
+	button,.form-control{
 		height: 54px !important;
 		text-align: center;
 		bordeR: 1px solid rgba(255,255,255,.1) !important;
