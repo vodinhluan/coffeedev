@@ -3,7 +3,8 @@ export interface Order {
     name: string;
     phoneNumber: string;
     address: string;
-    orderTime: Date;
+    district?: string; 
+    orderTime: string | Date;
     totalCost: number;  
     paymentMethod: string;
     orderStatus: string;

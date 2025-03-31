@@ -5,6 +5,7 @@ import useFetchData from "../../useFetchData";
 import Pagination from "../../components/Pagination";
 import { Order } from "../../type/Order";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import { deleteOrder } from "../../api/orderService";
 
 const OrdersPage = () => {
   const { data: orders = [], loading, error, setData } = useFetchData<Order[]>(
@@ -26,12 +27,20 @@ const OrdersPage = () => {
     navigate(`/orders/${order.id}`);
   };
 
-  const handleDelete = (order: Order) => {
-    console.log("Delete order: ", order);
-    setData((prevOrders: Order[] | null) => {
-      if (!prevOrders) return [];
-      return prevOrders.filter(o => o.id !== order.id);
-    });
+  const handleDelete = async (order: Order) => {
+    if (window.confirm(`Are you sure you want to delete the order with ID: ${order.id}?`)) {
+      try {
+        await deleteOrder(order.id); 
+        console.log("Order deleted: ", order);
+        setData((prevOrders: Order[] | null) => {
+          if (!prevOrders) return [];
+          return prevOrders.filter(o => o.id !== order.id);
+        });
+      } catch (error) {
+        console.error("Failed to delete order: ", error);
+        alert("Failed to delete the order. Please try again.");
+      }
+    }
   };
 
   const handlePageChange = (page: number) => {
@@ -60,7 +69,14 @@ const OrdersPage = () => {
               { header: "Name", accessor: "name" },
               { header: "Phone Number", accessor: "phoneNumber" },
               { header: "Order Time", accessor: "orderTime" },
-              { header: "Total Cost", accessor: "totalCost" },
+              {
+                header: "Total Cost", 
+                accessor: "totalCost" as keyof Order, 
+                cell: (row: Order) => {
+                  const cost = row.totalCost || 0;
+                  return <>{cost.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 })}</>;
+                }
+              },
               { header: "Payment Method", accessor: "paymentMethod" },
               { header: "Order Status", accessor: "orderStatus" },
             ]}

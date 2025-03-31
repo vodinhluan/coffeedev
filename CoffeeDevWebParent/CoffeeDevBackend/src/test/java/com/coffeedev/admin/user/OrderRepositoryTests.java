@@ -49,7 +49,7 @@ public class OrderRepositoryTests {
 		mainOrder.setDistrict(district.getName()); 
 		mainOrder.setTotalCost(cart.getSubtotal()+cart.getShippingCost());
 		mainOrder.setPaymentMethod(PaymentMethod.COD);
-		mainOrder.setOrderStatus(OrderStatus.PICKED);
+		mainOrder.setOrderStatus(OrderStatus.PAID);
 		
 		OrderDetail orderDetail = new OrderDetail();
 		orderDetail.setProduct(product);

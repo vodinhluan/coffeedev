@@ -1,5 +1,8 @@
 package com.coffeedev.common.entity;
 
+import com.coffeedev.common.dto.JsonBackReference;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +17,8 @@ public class OrderDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
+	@Column(name = "product_name", length = 100)
+	private String productName;
 	private int quantity;
 	private Double productCost;
 	private Double shippingCost;
@@ -36,6 +40,14 @@ public class OrderDetail {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
 	public int getQuantity() {

@@ -3,13 +3,14 @@ package com.coffeedev.admin.order;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.coffeedev.common.dto.OrderDTO;
 import com.coffeedev.common.entity.Order;
+import com.coffeedev.common.entity.OrderDetail;
+import com.coffeedev.common.entity.OrderStatus;
 import com.coffeedev.common.mapper.OrderMapper;
 
 @RestController
@@ -25,12 +26,11 @@ public class OrderRestController {
             @RequestParam(defaultValue = "id") String sortField,
             @RequestParam(defaultValue = "desc") String sortDir,
             @RequestParam(required = false) String keyword) {
-    
+
         List<OrderDTO> orders = service.listByPage(pageNum, sortField, sortDir, keyword);
-    
+
         return ResponseEntity.ok(orders);
     }
-    
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrder(@PathVariable("id") Integer id) {
@@ -66,12 +66,48 @@ public class OrderRestController {
     public ResponseEntity<?> updateOrder(@PathVariable("id") Integer id, @RequestBody Order orderDetails) {
         try {
             Order existingOrder = service.get(id);
+
+            // Không cho cập nhật nếu đơn hàng đã hoàn tất
+            if (existingOrder.getOrderStatus() == OrderStatus.DELIVERED ||
+                    existingOrder.getOrderStatus() == OrderStatus.CANCELLED) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Không thể cập nhật đơn hàng ở trạng thái " + existingOrder.getOrderStatus());
+            }
+
+            // Cập nhật thông tin cơ bản của đơn hàng
             existingOrder.setPaymentMethod(orderDetails.getPaymentMethod());
             existingOrder.setOrderStatus(orderDetails.getOrderStatus());
+            existingOrder.setName(orderDetails.getName());
+            existingOrder.setPhoneNumber(orderDetails.getPhoneNumber());
+            existingOrder.setAddress(orderDetails.getAddress());
+            existingOrder.setDistrict(orderDetails.getDistrict());
+            existingOrder.setTotalCost(orderDetails.getTotalCost());
+
+            // ✅ Cập nhật danh sách OrderDetails
+            for (OrderDetail updatedDetail : orderDetails.getOrderDetails()) {
+                for (OrderDetail existingDetail : existingOrder.getOrderDetails()) {
+                    if (existingDetail.getId().equals(updatedDetail.getId())) {
+                        existingDetail.setQuantity(updatedDetail.getQuantity());
+                        existingDetail.setProductCost(updatedDetail.getProductCost());
+                        existingDetail.setShippingCost(updatedDetail.getShippingCost());
+                        existingDetail.setSubtotalCost(updatedDetail.getSubtotalCost());
+                        existingDetail.setTotalCost(updatedDetail.getTotalCost());
+
+                        // ✅ Cập nhật tên sản phẩm (productName)
+                        existingDetail.setProductName(updatedDetail.getProductName());
+                    }
+                }
+            }
+
             service.save(existingOrder);
-            return ResponseEntity.ok(existingOrder);
+
+            // ✅ CHUYỂN ORDER THÀNH DTO TRƯỚC KHI TRẢ VỀ ĐỂ TRÁNH VÒNG LẶP
+            OrderDTO orderDTO = OrderMapper.toDTO(existingOrder);
+            return ResponseEntity.ok(orderDTO);
+
         } catch (OrderNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
 }
