@@ -89,6 +89,8 @@ public class WebSecurityConfig {
 						.requestMatchers("/api/categories/**").hasAnyAuthority("Admin", "SalePerson", "Shipper")
 						.requestMatchers("/api/products/**").hasAnyAuthority("Admin", "SalePerson", "Shipper")
 						.requestMatchers("/api/customers/**").hasAnyAuthority("Admin")
+						.requestMatchers("/api/dashboard/**").hasAnyAuthority("Admin")
+
 						.requestMatchers("/api/ingredients/**", "/api/ingredients/**").hasAnyAuthority("Admin")
 						.requestMatchers("/api/ingredient-logs/**", "/api/ingredient-logs/**").hasAnyAuthority("Admin")
 

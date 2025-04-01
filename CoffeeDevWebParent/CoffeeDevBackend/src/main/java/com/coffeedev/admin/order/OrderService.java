@@ -1,6 +1,8 @@
 package com.coffeedev.admin.order;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.coffeedev.common.dto.OrderDTO;
+import com.coffeedev.common.dto.OrderStatisticsDTO;
+import com.coffeedev.common.dto.OrderSummaryDTO;
 import com.coffeedev.common.entity.Order;
+import com.coffeedev.common.entity.OrderStatus;
 import com.coffeedev.common.mapper.OrderMapper;
 
 @Service
@@ -57,5 +62,32 @@ public class OrderService {
 
     public Order save(Order order) {
         return repo.save(order);
+    }
+
+    public OrderSummaryDTO getOrderSummary() {
+        long totalOrders = repo.getTotalOrders();
+        double totalSales = repo.getTotalSales() != null ? repo.getTotalSales() : 0.0;
+        long orderCountCurrentWeek = repo.getOrderCountCurrentWeek();
+        long orderCountCurrentMonth = repo.getOrderCountCurrentMonth();
+        double totalSalesCurrentMonth = repo.getTotalSalesCurrentMonth() != null ? repo.getTotalSalesCurrentMonth()
+                : 0.0;
+
+        // Lấy danh sách số lượng đơn hàng theo trạng thái
+        Map<String, Long> orderStatusCount = new HashMap<>();
+        List<Object[]> statusResults = repo.getOrderCountByStatus();
+        for (Object[] row : statusResults) {
+            orderStatusCount.put(((OrderStatus) row[0]).name(), ((Number) row[1]).longValue());
+        }
+
+        return new OrderSummaryDTO(totalOrders, totalSales, orderCountCurrentWeek, orderCountCurrentMonth,
+                totalSalesCurrentMonth, orderStatusCount);
+    }
+
+    public List<OrderStatisticsDTO> getOrderStatisticsByDate() {
+        List<Object[]> results = repo.getOrderCountByDate();
+        return results.stream()
+                .map(row -> new OrderStatisticsDTO(((java.sql.Date) row[0]).toLocalDate(),
+                        ((Number) row[1]).longValue()))
+                .collect(Collectors.toList());
     }
 }

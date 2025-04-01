@@ -53,4 +53,25 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	 */
 	@Query("SELECT o FROM Order o LEFT JOIN FETCH o.orderDetails od LEFT JOIN FETCH od.product WHERE o.id = :id")
 	Optional<Order> findByIdWithDetails(@Param("id") Integer id);
+
+	@Query("SELECT COUNT(o) FROM Order o")
+    long getTotalOrders();
+
+    @Query("SELECT SUM(o.totalCost) FROM Order o")
+    Double getTotalSales();
+
+    @Query("SELECT o.orderStatus, COUNT(o) FROM Order o GROUP BY o.orderStatus")
+    List<Object[]> getOrderCountByStatus();
+
+    @Query("SELECT DATE(o.orderTime), COUNT(o) FROM Order o GROUP BY DATE(o.orderTime) ORDER BY DATE(o.orderTime) DESC")
+    List<Object[]> getOrderCountByDate();
+
+    @Query(value = "SELECT COUNT(*) FROM orders WHERE order_time BETWEEN CURDATE() - INTERVAL (DAYOFWEEK(CURDATE())-1) DAY AND CURDATE()", nativeQuery = true)
+    long getOrderCountCurrentWeek();
+
+    @Query(value = "SELECT COUNT(*) FROM orders WHERE MONTH(order_time) = MONTH(CURDATE()) AND YEAR(order_time) = YEAR(CURDATE())", nativeQuery = true)
+    long getOrderCountCurrentMonth();
+
+    @Query(value = "SELECT SUM(total_cost) FROM orders WHERE MONTH(order_time) = MONTH(CURDATE()) AND YEAR(order_time) = YEAR(CURDATE())", nativeQuery = true)
+    Double getTotalSalesCurrentMonth();
 }
