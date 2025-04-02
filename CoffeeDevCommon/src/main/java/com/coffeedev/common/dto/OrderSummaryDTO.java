@@ -14,4 +14,6 @@ public class OrderSummaryDTO {
     private long orderCountCurrentMonth;
     private double totalSalesCurrentMonth;
     private Map<String, Long> orderStatusCount;
+    private Map<String, Double> totalSalesByDate;
+
 }

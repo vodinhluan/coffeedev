@@ -64,6 +64,7 @@ public class OrderService {
         return repo.save(order);
     }
 
+
     public OrderSummaryDTO getOrderSummary() {
         long totalOrders = repo.getTotalOrders();
         double totalSales = repo.getTotalSales() != null ? repo.getTotalSales() : 0.0;
@@ -76,11 +77,26 @@ public class OrderService {
         Map<String, Long> orderStatusCount = new HashMap<>();
         List<Object[]> statusResults = repo.getOrderCountByStatus();
         for (Object[] row : statusResults) {
+            // Thêm số lượng đơn hàng theo trạng thái vào map, sử dụng tên của trạng thái làm key
+            // row[0] chứa trạng thái đơn hàng (OrderStatus), row[1] chứa số lượng đơn hàng tương ứng
+            // Chuyển trạng thái đơn hàng (OrderStatus) thành chuỗi tên (name()) để làm key trong map
+            // Chuyển số lượng đơn hàng (row[1]) thành giá trị kiểu long để lưu trữ trong map
             orderStatusCount.put(((OrderStatus) row[0]).name(), ((Number) row[1]).longValue());
         }
 
+        // Lấy tổng doanh thu theo ngày
+        Map<String, Double> totalSalesByDate = new HashMap<>();
+        List<Object[]> salesResults = repo.getTotalSalesByDate();
+        for (Object[] row : salesResults) {
+            // Thêm tổng doanh thu theo ngày vào map.
+            // Sử dụng giá trị của cột đầu tiên trong kết quả truy vấn (row[0]) làm key, 
+            // chuyển đổi thành chuỗi (toString()) để lưu trữ dưới dạng chuỗi ngày.
+            // Sử dụng giá trị của cột thứ hai trong kết quả truy vấn (row[1]) làm giá trị, 
+            // chuyển đổi thành kiểu double (doubleValue()) để lưu trữ tổng doanh thu tương ứng.
+            totalSalesByDate.put(row[0].toString(), ((Number) row[1]).doubleValue());
+        }
         return new OrderSummaryDTO(totalOrders, totalSales, orderCountCurrentWeek, orderCountCurrentMonth,
-                totalSalesCurrentMonth, orderStatusCount);
+                totalSalesCurrentMonth, orderStatusCount, totalSalesByDate);
     }
 
     public List<OrderStatisticsDTO> getOrderStatisticsByDate() {

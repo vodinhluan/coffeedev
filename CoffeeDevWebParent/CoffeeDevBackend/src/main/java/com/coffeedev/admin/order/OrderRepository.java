@@ -74,4 +74,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     @Query(value = "SELECT SUM(total_cost) FROM orders WHERE MONTH(order_time) = MONTH(CURDATE()) AND YEAR(order_time) = YEAR(CURDATE())", nativeQuery = true)
     Double getTotalSalesCurrentMonth();
+
+	// tôi muốn query doanh thu theo ngày
+	@Query(value = "SELECT DATE(order_time), SUM(total_cost) FROM orders GROUP BY DATE(order_time) ORDER BY DATE(order_time) DESC", nativeQuery = true)
+	List<Object[]> getTotalSalesByDate();
 }
