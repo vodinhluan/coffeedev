@@ -3,7 +3,6 @@ import { useRecoilValue } from "recoil";
 import { authState } from "../state";
 import Login from "../components/Login";
 import MainLayout from "../components/MainLayout";
-import DashboardPage from "../pages/DashboardPage";
 import UsersPage from "../pages/user/UsersPage";
 import OrdersPage from "../pages/order/OrdersPage";
 import ProductsPage from "../pages/product/ProductsPage";
@@ -23,6 +22,7 @@ import IngredientsPage from "../pages/ingredient/IngredientsPage";
 import IngredientDetailPage from "../pages/ingredient/IngredientDetailPage";
 import CreateIngredientPage from "../pages/ingredient/CreateIngredientPage";
 import IngredientLogsPage from "../pages/ingredient_log/IngredientLogsPage";
+import DashboardPage from "../pages/dashboard/DashboardPage";
 
 const AppRoutes = () => {
   const isAuthenticated = useRecoilValue(authState);
@@ -41,6 +41,7 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         >
+          {/* Dashboard Routes */}
           <Route path="dashboard" element={<DashboardPage />} />
 
           {/* Order Routes */}
@@ -71,7 +72,6 @@ const AppRoutes = () => {
           <Route path="ingredients/:id" element={<IngredientDetailPage />} />
           <Route path="create-ingredient" element={<CreateIngredientPage />} />
           <Route path="/ingredient-logs" element={<IngredientLogsPage />} /> 
-
 
 
         </Route>

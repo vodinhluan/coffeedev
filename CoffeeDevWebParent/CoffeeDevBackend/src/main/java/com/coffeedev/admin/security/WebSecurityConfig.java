@@ -85,9 +85,12 @@ public class WebSecurityConfig {
 						.requestMatchers("/user-photos/**", "/images/**", "/js/**", "/webjars/**").permitAll()
 						.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 						.requestMatchers("/api/users/**").hasAuthority("Admin")
+						.requestMatchers("/api/orders/**").hasAuthority("Admin")
 						.requestMatchers("/api/categories/**").hasAnyAuthority("Admin", "SalePerson", "Shipper")
 						.requestMatchers("/api/products/**").hasAnyAuthority("Admin", "SalePerson", "Shipper")
-						.requestMatchers("/api/customers/**", "/api/orders/**").hasAnyAuthority("Admin")
+						.requestMatchers("/api/customers/**").hasAnyAuthority("Admin")
+						.requestMatchers("/api/dashboard/**").hasAnyAuthority("Admin")
+
 						.requestMatchers("/api/ingredients/**", "/api/ingredients/**").hasAnyAuthority("Admin")
 						.requestMatchers("/api/ingredient-logs/**", "/api/ingredient-logs/**").hasAnyAuthority("Admin")
 

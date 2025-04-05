@@ -4,6 +4,7 @@ interface Column<T> {
   header: string;
   accessor: keyof T;
   cell?: (row: T) => JSX.Element;
+  render?: (row: T) => React.ReactNode; 
 }
 
 interface AdminTableProps<T extends { id: number }> {
